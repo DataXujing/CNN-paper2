@@ -1,0 +1,17 @@
+
+1. 项目地址： https://github.com/DataXujing/CNN_other  
+
+2. 传统的 LeNet-5 AlexNet VGG16(19),MSRANet 我们将不再展示论文，可参见https://dataxujing.github.io/深度学习之CNN/
+
+3. 每个文件夹中列出了相应网路结构的相关论文包括 
+     ResNet(V1,V2)、
+     NIN， 
+     Inception(V1-V4), 
+     R-CNN,SPP-Net,Fast R-CNN,Mask R-CNN,Faster R-CNN, 
+     YOLO(V1-V3)
+     SSD
+
+相信读完这些paper 对于卷积网络，目标检测，人脸识别，自动驾驶就会有全新的认识
+
+
+4. 扩展学习：FCN(反卷积),STNet,CNN与RNN的混合结构

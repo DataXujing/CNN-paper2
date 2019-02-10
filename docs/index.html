@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="description" content="Description">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <link rel="stylesheet" href="//unpkg.com/docsify/lib/themes/vue.css">
+</head>
+<body>
+  <div id="app">加载中...</div>
+  <script>
+    window.$docsify = {
+      search: 'auto', // 默认值
+      search:{
+         placeholder: '搜索...',
+      },
+      loadSidebar: true,
+      // el: '#main',
+      name: '卷积神经网络',
+      // logo: '_media/icon.svg',
+      repo: 'https://github.com/DataXujing/CNN-paper2',
+      alias: {
+      '/.*/_sidebar.md': '/_sidebar.md'
+      },
+      subMaxLevel: 3,
+
+      loadNavbar: true,
+
+      coverpage: true,
+
+      // footer
+      plugins: [
+        function (hook) {
+          var footer = [
+            '<hr/>',
+            '<footer>',
+            '<span><a href="https://github.com/DataXujing">徐静</a> &copy;2019.</span>',
+            '<span>Proudly published with <a href="https://github.com/docsifyjs/docsify" target="_blank">docsify</a>.</span>',
+            '</footer>'
+          ].join('')
+
+          hook.afterEach(function (html) {
+            return html + footer
+          })
+        }
+      ]
+
+
+    }
+  </script>
+  <script src="//unpkg.com/docsify/lib/docsify.min.js"></script>
+  <script src="//unpkg.com/docsify/lib/plugins/search.js"></script>
+
+
+<!-- gittalk -->
+<!--   <link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+  <script src="//unpkg.com/docsify/lib/plugins/gitalk.min.js"></script>
+  <script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script>
+    const gitalk = new Gitalk({
+      clientID: 'Github Application Client ID',
+      clientSecret: 'Github Application Client Secret',
+      repo: 'https://github.com/DataXujing/CNN-paper2',
+      owner: 'https://github.com/DataXujing',
+      admin: ['https://github.com/DataXujing'],
+      // facebook-like distraction free mode
+      distractionFreeMode: false
+    })
+  </script> -->
+
+  <!-- 代码高亮 -->
+</body>
+</html>
