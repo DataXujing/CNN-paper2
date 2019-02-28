@@ -55,7 +55,7 @@
 
 深度学习中常用的对一个3D体积执行卷积，但通常而言，仍称为2D卷积。这是在3D体积数据上的2D卷积，卷积核的深度和输入深度（channel的个数）是一至的，这个3D过滤器仅沿两个方向移动（图像的高和宽）。这种操作的输出是一张2D图像（仅有一个通道）
 
-而3D卷积怎么做呢？其卷积核深度小于输入深度（卷积核的大小小于通道大小）。因此，3D过滤器可以在所有三个方向（图像的宽，高，深度（通道））上一定。在每个位置，逐元素的乘法和加法都会提供一个数值。因为过滤器是划过了一个3D空间排布。
+而3D卷积怎么做呢？其卷积核深度小于输入深度（卷积核的大小小于通道大小）。因此，3D过滤器可以在所有三个方向（图像的宽，高，深度（通道））上移动。在每个位置，逐元素的乘法和加法都会提供一个数值。因为过滤器是划过了一个3D空间排布。
 
 <div align=center>
 <img src="zh-cn/img/conv12/p5.png" /> 
@@ -71,22 +71,22 @@
 
 略，详细的参考 《Network in Network》
 
-### 5.转置卷积（去（反）卷积）
+### 5.转置卷积（反(去)卷积）
 
 对于很多网络架构的很多应用而言，我们往往需要进行与普通卷积方向相反的转换，即我们希望执行上采样。例子包括生成高分辨率图像以及将低维特征图映射到高维空间，比如在自动编码器或形义分割中。（在后者的例子中，形义分割首先会提取编码器中的特征图，然后在解码器中恢复原来的图像大小，使其可以分类原始图像中的每个像素。）在DCGAN中的生成器将会用随机值转变为一个全尺寸(full-size)的图片，这个时候就需要用到转置卷积。
 
 
 实现上采样的传统方法是应用插值方案或人工创建规则。而神经网络等现代架构则倾向于让网络自己自动学习合适的变换，无需人类干预。为了做到这一点，我们可以使用转置卷积
 
-转置卷积（transposed Convolutions）又名反卷积（deconvolution）或是分数步长卷积（fractially straced convolutions）。反卷积（Transposed Convolution, Fractionally Strided Convolution or Deconvolution）的概念第一次出现是Zeiler在2010年发表的论文Deconvolutional networks中。需要指出「反（去）卷积（deconvolution）」这个名称并不是很合适，因为转置卷积并非信号/图像处理领域定义的那种真正的去卷积。从技术上讲，信号处理中的去卷积是卷积运算的逆运算。但这里却不是这种运算。因此，某些作者强烈反对将转置卷积称为去卷积。人们称之为去卷积主要是因为这样说很简单。后面我们会介绍为什么将这种运算称为转置卷积更自然且更合适。
+转置卷积（transposed Convolutions）又名反卷积（deconvolution）或是分数步长卷积（fractially straced convolutions）。反卷积（Deconvolution）的概念第一次出现是Zeiler在2010年发表的论文Deconvolutional Networks中。需要指出「反（去）卷积（deconvolution）」这个名称并不是很合适，因为转置卷积并非信号/图像处理领域定义的那种真正的去卷积。从技术上讲，信号处理中的去卷积是卷积运算的逆运算。但这里却不是这种运算。因此，某些作者强烈反对将转置卷积称为去卷积。人们称之为去卷积主要是因为这样说很简单。后面我们会介绍为什么将这种运算称为转置卷积更自然且更合适。
 
-**一般卷积的过程：**
+**一般卷积的过程:**
 
 <div align=center>
 <img src="zh-cn/img/conv12/p7.png" /> 
 </div>
 
-卷积核大小是3X3，stride是2，padding是1的普通卷积，通过对应关系我们发现输入元素a金鱼第一个输出元素1有关，而输入元素b和输出元素1和2军有关。同理可以看到其他元素的关系，那么尽心转置卷积时，依然应该保持这个链接关系不变。
+卷积核大小是3X3，stride是2，padding是1的普通卷积，通过对应关系我们发现输入元素a仅于第一个输出元素1有关，而输入元素b和输出元素1和2均有关。同理可以看到其他元素的关系，那么进行转置卷积时，依然应该保持这个链接关系不变。
 
 **转置卷积的过程：**
 
@@ -156,29 +156,29 @@
 + 只包含decoder部分：比如sparse coding, 和deconvolution network.
 + 只包含encoder部分，那就是普通的feed-forward network.
 
-Deconvolution network的中文名字是反卷积网络，那么什么是反卷积呢？其概念从字面就很容易理解，假设A=BXC 表示的是：B和C的卷积是A，也就是说已知B和C，求A这一过程叫做卷积。那么如果已知A和B求C或者已知A和C求B，则这个过程就叫做反卷积了: deconvolution.
+Deconvolution Network的中文名字是反卷积网络，那么什么是反卷积呢？其概念从字面就很容易理解，假设A=BXC 表示的是：B和C的卷积是A，也就是说已知B和C，求A这一过程叫做卷积。那么如果已知A和B求C或者已知A和C求B，则这个过程就叫做反卷积了: deconvolution.
 
 <div align=center>
 <img src="zh-cn/img/conv12/p13.png" /> 
 </div>
 
-1.feature map z: 对于每一幅图像x,他对应的feature map z表征它的latent features.
+1.**feature map z:** 对于每一幅图像x,他对应的feature map z表征它的latent features
 
-2.filters F: 通过在一组图像上训练得到的filter,CNN为简化参数往往都进行权值共享
+2.**filters F:** 通过在一组图像上训练得到的filter,CNN为简化参数往往都进行权值共享
 
-3.图像的reconstruction: 如果得到上述的filters 和feature map就可以利用他们重构图像了，如上图所示： $N_k^1$  个feature map 分别和filters卷积后求和就能够重构出原始输入图像了。对于x的某个channel  $x_c$ 的reconstruction公式如下：
+3.**图像的reconstruction:** 如果得到上述的filters 和feature map就可以利用他们重构图像了，如上图所示： $N_k^1$  个feature map 分别和filters卷积后求和就能够重构出原始输入图像了。对于x的某个channel  $x_c$ 的reconstruction公式如下：
 
 <div align=center>
 <img src="zh-cn/img/conv12/p14.png" /> 
 </div>
 
-4.网络结构
+4.**网络结构**
 
 1）第一层输入input image,输出是第一层提取到的feature map z1
 
 2）其他层输入是上一层输出的feature map $z^{L-1}$, 输出是L层对应的feature map $z^{L}$，即第L层视图重构第L-1层的feature map.
 
-5.Cost function：代价函数，整个算法通过优化代价函数得到F和z,代价函数的定义如下图：
+5.**Cost function：**  代价函数，整个算法通过优化代价函数得到F和z,代价函数的定义如下图：
 
 <div align=center>
 <img src="zh-cn/img/conv12/p15.png" /> 
@@ -190,7 +190,7 @@ Deconvolution network的中文名字是反卷积网络，那么什么是反卷�
 
 最终算法输出filters F和每一幅图像对应的feature map z。
 
-6.根据filters F对违建图像提取feature map(以2层网络为例):
+6.**根据filters F对违建图像提取feature map(以2层网络为例):**
 
 <div align=center>
 <img src="zh-cn/img/conv12/p17.png" /> 
@@ -203,7 +203,7 @@ Deconvolution network的中文名字是反卷积网络，那么什么是反卷�
 
 ### 6.Dilated Conv/Atrous Conv
 
-扩张卷积由这两篇引入：
+扩张卷积由这几篇paper引入：
 
 + [Semantic Image Segmentation with Deep Convolutional Nets and Fully Connected CRFs](https://arxiv.org/abs/1412.7062)
 
@@ -211,7 +211,12 @@ Deconvolution network的中文名字是反卷积网络，那么什么是反卷�
 
 + [DeepLab: Semantic Image Segmentation with Deep Convolutional Nets, Atrous Convolution, and Fully Connected CRFs](https://arxiv.org/abs/1606.00915)
 
++ [DeepLab V2](https://arxiv.org/pdf/1412.7062v3.pdf)
+
 + [Rethinking Atrous Convolution for Semantic Image Segmentation](https://arxiv.org/abs/1706.05587)
+
++ [Deeplab v3+](http://cn.arxiv.org/abs/1802.02611)
+
 
 **空洞卷积:Dilated Convolutions**
 
@@ -239,6 +244,10 @@ Dilated Convolutions，翻译为扩张卷积或空洞卷积。扩张卷积与普
 
 论文《Multi-scale context aggregation by dilated convolutions》的作者用多个扩张卷积层构建了一个网络，其中扩张率 l 每层都按指数增大。由此，有效的感受野大小随层而指数增长，而参数的数量仅线性增长。
 
+<div align=center>
+<img src="zh-cn/img/conv12/p36.png" /> 
+</div>
+
 扩展卷积在保持参数个数不变的情况下增大了卷积核的感受野，同时它可以保证输出的特征映射（feature map）的大小保持不变。一个扩张率为2的3×3卷积核，感受野与5×5的卷积核相同，但参数数量仅为9个，是5×5卷积参数数量的36%。扩张卷积在**图像分割**、**语音合成**、**机器翻译**、**目标检测**中都有应用。
 
 
@@ -262,7 +271,7 @@ Atrous 卷积，就是带洞的卷积，卷积核是稀疏的。
 
 而且带洞卷积的有效性基于一个假设：紧密相邻的像素几乎相同，全部纳入属于冗余，不如跳H(hole size)个取一个。
 
-自己感觉空洞卷积和多孔卷积是同一个东西，但是来自于不同的文章，解决的问题也主要在图像中的语义分割上。具体的参阅相关paper。
+自己感觉空洞卷积和多孔卷积是同一个东西，但是来自于不同的文章，《Deformable Convolutional Networks》paper验证了我们的判断。解决的问题也主要在图像中的语义分割上。具体的参阅相关paper。
 
 
 ### 7. 可分卷积（深度可分卷积,空间可分卷积）
@@ -346,7 +355,7 @@ example: MobileNet V1 （测试效果并不理想，如果效率没问题不建�
 
 尽管空间可分卷积能节省成本，但深度学习却很少使用它。一大主要原因是并非所有的核都能分成两个更小的核。如果我们用空间可分卷积替代所有的传统卷积，那么我们就限制了自己在训练过程中搜索所有可能的核。这样得到的训练结果可能是次优的。
 
-### 8. 分组卷积
+### 8.分组卷积
 
 AlexNet 论文（<https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf>）在 2012 年引入了分组卷积。实现分组卷积的主要原因是让网络训练可在 2 个内存有限（每个 GPU 有 1.5 GB 内存）的 GPU 上进行。下面的 AlexNet 表明在大多数层中都有两个分开的卷积路径。这是在两个 GPU 上执行模型并行化（当然如果可以使用更多 GPU，还能执行多 GPU 并行化）。
 
@@ -389,7 +398,7 @@ AlexNet 论文（<https://papers.nips.cc/paper/4824-imagenet-classification-with
 <div align=center>
 <img src="zh-cn/img/conv12/p32.png" /> 
 </div>
-图片来源: <https://arxiv.org/abs/1611.05431>
+图片来源: https://arxiv.org/abs/1611.05431
 
 In particular, a 101-layer ResNeXt is able to achieve better accuracy than ResNet-200 but has only 50% complexity.
 
@@ -403,4 +412,4 @@ In particular, a 101-layer ResNeXt is able to achieve better accuracy than ResNe
 <img src="zh-cn/img/conv12/p31.png" /> 
 </div>
 
-除此之外还有类似于像平展卷积,混洗分组卷积,逐点分组卷积等，我们不是很常用的卷积操作，感兴趣可自己阅读相关的paper.
+除此之外还有类似于像平展卷积,混洗分组卷积,逐点分组卷积等，不是很常用的卷积操作，感兴趣可自己阅读相关的paper。
