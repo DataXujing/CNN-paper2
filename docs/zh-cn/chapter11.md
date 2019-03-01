@@ -50,6 +50,7 @@
 <div align=center>
 <img src="zh-cn/img/conv12/p4.png" /> 
 </div>
+图片来源:Andrew Ng deeplearning.ai from Coursera 
 
 2.3D卷积
 
