@@ -159,43 +159,20 @@
 Deconvolution Network的中文名字是反卷积网络，那么什么是反卷积呢？其概念从字面就很容易理解，假设A=BXC 表示的是：B和C的卷积是A，也就是说已知B和C，求A这一过程叫做卷积。那么如果已知A和B求C或者已知A和C求B，则这个过程就叫做反卷积了: deconvolution.
 
 <div align=center>
-<img src="zh-cn/img/conv12/p13.png" /> 
-</div>
-
-1.**feature map z:** 对于每一幅图像x,他对应的feature map z表征它的latent features
-
-2.**filters F:** 通过在一组图像上训练得到的filter,CNN为简化参数往往都进行权值共享
-
-3.**图像的reconstruction:** 如果得到上述的filters 和feature map就可以利用他们重构图像了，如上图所示： $N_k^1$  个feature map 分别和filters卷积后求和就能够重构出原始输入图像了。对于x的某个channel  $x_c$ 的reconstruction公式如下：
-
-<div align=center>
-<img src="zh-cn/img/conv12/p14.png" /> 
-</div>
-
-4.**网络结构**
-
-1）第一层输入input image,输出是第一层提取到的feature map z1
-
-2）其他层输入是上一层输出的feature map $z^{L-1}$, 输出是L层对应的feature map $z^{L}$，即第L层视图重构第L-1层的feature map.
-
-5.**Cost function：**  代价函数，整个算法通过优化代价函数得到F和z,代价函数的定义如下图：
-
-<div align=center>
-<img src="zh-cn/img/conv12/p15.png" /> 
+<img src="zh-cn/img/conv12/p41.png" width='120%' height='120%' /> 
 </div>
 
 <div align=center>
-<img src="zh-cn/img/conv12/p16.png" /> 
+<img src="zh-cn/img/conv12/p42.png" width='120%' height='120%'  /> 
 </div>
-
-最终算法输出filters F和每一幅图像对应的feature map z。
-
-6.**根据filters F对违建图像提取feature map(以2层网络为例):**
 
 <div align=center>
-<img src="zh-cn/img/conv12/p17.png" /> 
+<img src="zh-cn/img/conv12/p43.png" width='120%' height='120%'  /> 
 </div>
 
+<div align=center>
+<img src="zh-cn/img/conv12/p39.png" /> 
+</div>
 
 
 值得注意的反卷积虽然存在，但是在深度学习中并不常用。而转置卷积虽然又名反卷积，却不是真正意义上的反卷积。因为根据反卷积的数学含义，通过反卷积可以将通过卷积的输出信号，完全还原输入信号。而事实是，转置卷积只能还原shape大小，而不能还原value。你可以理解成，至少在数值方面上，转置卷积不能实现卷积操作的逆过程。所以说转置卷积与真正的反卷积有点相似，因为两者产生了相同的空间分辨率。但是又名反卷积（deconvolutions）的这种叫法是不合适的，因为它不符合反卷积的概念。
