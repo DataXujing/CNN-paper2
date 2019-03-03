@@ -311,7 +311,19 @@ example: MobileNet V1 （测试效果并不理想，如果效率没问题不建�
 
 <div align=center>
 <img src="zh-cn/img/conv12/p24.png" /> 
+<p>(图片来源： 个人项目)</p>
 </div>
+
+
+MobileNet v1同时可以用来做人脸识别(之前的项目: faceNet天换成了MobileNet V1之后的结果)
+
+<div align=center>
+<iframe aligin=center height=498 width=750 src="zh-cn/img/conv12/faceNet.mp4" frameborder=0 allowfullscreen >
+</iframe>
+<p>(视频来源： 个人项目)</p>
+</div>
+
+
 
 **空间可分卷积**
 
