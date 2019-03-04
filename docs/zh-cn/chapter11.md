@@ -318,6 +318,8 @@ example: MobileNet V1 （测试效果并不理想，如果效率没问题不建�
 
 MobileNet v1同时可以用来做人脸识别(之前的项目: faceNet天换成了MobileNet V1之后的结果)
 
+速度没什么变化,训练的准确率上下降了很多！
+
 <!-- <div align=center>
 <iframe aligin=center height=498 width=750 src="zh-cn/img/conv12/faceNet.mp4" frameborder=0 allowfullscreen >
 </iframe>
@@ -329,7 +331,7 @@ MobileNet v1同时可以用来做人脸识别(之前的项目: faceNet天换成�
 <video id="video" controls="" preload="none" poster="http://om2bks7xs.bkt.clouddn.com/2017-08-26-Markdown-Advance-Video.jpg">
 	<source id="mp4" src="zh-cn/img/conv12/faceNet.mp4" type="video/mp4">
 </video>
-<p>(图片来源： 个人项目)
+<p>(视频来源： 个人项目)
 </div>
 
 
