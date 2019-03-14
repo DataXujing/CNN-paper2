@@ -18,7 +18,7 @@
 
 ----
 
-+ 小编水平有限，对NLP理解也不是很深入，文档中有错误或不当的地方，请移步到[我的CNN_paper2项目](https://github.com/DataXujing/CNN-paper2/issues)进行留言指正，小编在此一并谢过。
++ 小编水平有限，对CV理解也不是很深入，文档中有错误或不当的地方，请移步到[我的CNN_paper2项目](https://github.com/DataXujing/CNN-paper2/issues)进行留言指正，小编在此一并谢过。
 
 ----
 

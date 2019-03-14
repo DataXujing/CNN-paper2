@@ -79,9 +79,19 @@ from: <https://github.com/weiaicunzai/awesome-image-classification>
 + R-CNN, Selective Search, SPP-net
 + Fast R-CNN
 + Faster R-CNN
-+ SSD
++ Light-Head R-CNN
++ Cascade R-CNN
++ SSD系列
 + Mask R-CNN
 + YOLO
++ Pelee
++ R-FCN
++ FPN
++ RetinaNet
++ MegDet
++ DetNet
++ ZSD
++ RFBNet
 + 从MobileNet到ShuffleNet
 + 神经风格转换
 + 人脸识别

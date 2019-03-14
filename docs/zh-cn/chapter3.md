@@ -12,6 +12,7 @@ R-CNN系列论文(R-CNN,fast R-CNN,faster R-CNN,mask R-CNN)是深度学习进行
 <div align=center>
 <img src="zh-cn/img/R-CNN/pic1.png" /> 
 </div>
+
 **图1：CV中的主要问题:Classify,localization(单目标),detection(多目标)**
 
 **0.摘要：**
@@ -52,6 +53,7 @@ CNNs在1990年代被广泛使用，但随即便因为SVM的崛起而淡出研究
 <div align=center>
 <img src="zh-cn/img/R-CNN/pic2.png" /> 
 </div>
+
 **图2：R-CNN目标检测系统过程. （1）获取一张输入图片，（2）产生2000个与类别无关的region proposal，（3）用大型的卷积计算备选区域的特征，（4）使用线性SVM对每一个定位进行分类**
 
 检测中面对的第二个挑战是标签数据太少，现在可获得的数据远远不够用来训练一个大型卷积网络。传统方法多是采用无监督与训练，再进行有监督调优。本文的第二个核心贡献是在辅助数据集（ILSVRC）上进行有监督预训练，再在小数据集上针对特定问题进行调优。这是在训练数据稀少的情况下一个非常有效的训练大型卷积神经网络的方法。我们的实验中，针对检测的调优将mAP提高了8个百分点。调优后，我们的系统在VOC2010上达到了54%的mAP，远远超过高度优化的基于HOG的可变性部件模型（deformable part model，DPM）
@@ -107,6 +109,7 @@ R-CNN计算高效： 原因都是小型矩阵的乘积，特征在不同类别�
 <div align=center>
 <img src="zh-cn/img/R-CNN/pic3.png" /> 
 </div>
+
 **原paper的Table1**
 
 在数据集ILSVR2013数据集上得到了相似的结果
@@ -120,7 +123,7 @@ R-CNN计算高效： 原因都是小型矩阵的乘积，特征在不同类别�
 我们可视化了第五层的池化层pool5，是卷积网络的最后一层，feature_map(卷积核和特征数的总称)的大小是6 x 6 x 256 = 9216维。忽略边界效应，每个pool5单元拥有195×195的感受野，输入是227×227。pool5中间的单元，几乎是一个全局视角，而边缘的单元有较小的带裁切的支持。 
 图4的每一行显示了对于一个pool5单元的最高16个激活区域情况，这个实例来自于VOC 2007上我们调优的CNN，这里只展示了256个单元中的6个（附录D包含更多）。我们看看这些单元都学到了什么。第二行，有一个单元看到狗和斑点的时候就会激活，第三行对应红斑点，还有人脸，当然还有一些抽象的模式，比如文字和带窗户的三角结构。这个网络似乎学到了一些类别调优相关的特征，这些特征都是形状、纹理、颜色和材质特性的分布式表示。而后续的fc6层则对这些丰富的特征建立大量的组合来表达各种不同的事物。
 
-**3.2消融研究（Ablation studies）**
+**3.2消融研究(Ablation studies)**
 
 ablation study 就是为了研究模型中所提出的一些结构是否有效而设计的实验。如你提出了某某结构，但是要想确定这个结构是否有利于最终的效果，那就要将去掉该结构的网络与加上该结构的网络所得到的结果进行对比，这就是ablation study。也就是（控制变量法）
 
@@ -249,6 +252,7 @@ mAP: mean average precision,对所有类别的AP取平均
 <div align=center>
 <img src="zh-cn/img/R-CNN/pic_mpa1.png" /> 
 </div>
+
 **标注图像：Ground Truth**
 
 对于上面的例子，我们在模型在训练中得到了下图所示的目标边界框和3组数字定义的ground truth(假设这个图像是1000*800px，所有这些坐标都是构建在像素层面上的) 
@@ -256,6 +260,7 @@ mAP: mean average precision,对所有类别的AP取平均
 <div align=center>
 <img src="zh-cn/img/R-CNN/pic_map2.png" /> 
 </div>
+
 **模型需要预测的：关于详细的一些模型预测label的设定建议学习吴恩达的deeplearning.ai关于卷积网络学习的网课**
 
 开始计算mAP的步骤：
@@ -265,6 +270,7 @@ mAP: mean average precision,对所有类别的AP取平均
 <div align=center>
 <img src="zh-cn/img/R-CNN/pic_map3.png" /> 
 </div>
+
 **预测结果**
 
 但是怎样在实际中量化这些检测区域的正确性呢？ 
@@ -403,11 +409,11 @@ Bounding Boxregression是 RCNN中使用的边框回归方法，在RCNN的论文�
 
 线性回归就是给定输入的特征向量 X, 学习一组参数 W, 使得经过线性回归后的值跟真实值 Y(Ground Truth)非常接近. 即Y≈WX 。
 
-边框回归的目的既是：给定(Px,Py,Pw,Ph)(Px,Py,Pw,Ph)寻找一种映射ff， 使得f(Px,Py,Pw,Ph)=(Gx^,Gy^,Gw^,Gh^)f(Px,Py,Pw,Ph)=(Gx^,Gy^,Gw^,Gh^) 并且(Gx^,Gy^,Gw^,Gh^)≈(Gx,Gy,Gw,Gh)
+边框回归的目的既是：给定(Px,Py,Pw,Ph)寻找一种映射f， 使得f(Px,Py,Pw,Ph)=(Gx^,Gy^,Gw^,Gh^)并且(Gx^,Gy^,Gw^,Gh^)≈(Gx,Gy,Gw,Gh)
 
 
 
-例如上图：我们现在要讲P框进行bbr,gt为G框，那么我们希望经过变换之后，P框能接近G框（比如，上图的G^框）。现在进行变换,过程如下： 
+例如上图：我们现在要讲P框进行BBR,gt为G框，那么我们希望经过变换之后，P框能接近G框（比如，上图的G^框）。现在进行变换,过程如下： 
 
 我们用一个四维向量（x,y,w,h）来表示一个窗口，其中x,y,w,h分别代表框的中心点的坐标以及宽，高。我们要从P得到G^，需要经过平移和缩放。 
 
@@ -427,7 +433,7 @@ Bounding Boxregression是 RCNN中使用的边框回归方法，在RCNN的论文�
 也就是，我们将转换d换成转换t,就得到了P到G的映射。 di -> ti。 
 现在我们只需要学习 这四个变换dx(P),dy(P),dw(P),dh(P)，然后最小化t和d之间的距离，最小化这个loss，即可。
 
-注意：此时看起来我们只要输入P的四维向量，就可以学习,然后求出，但是，其实我们输入的是pool5之后的features，记做φ5，因为如果只是单纯的靠坐标回归的话，CNN根本就没有发挥任何作用，但其实，bb的位置应该有CNN计算得到的features来fine-tune。所以，我们选择将pool5的feature作为输入。 
+注意：此时看起来我们只要输入P的四维向量，就可以学习,然后求出，但是，其实我们输入的是pool5之后的features，记做φ5，因为如果只是单纯的靠坐标回归的话，CNN根本就没有发挥任何作用，但其实，BB的位置应该有CNN计算得到的features来fine-tune。所以，我们选择将pool5的feature作为输入。 
 
 
 <div align=center>
@@ -584,6 +590,7 @@ HOG主要应用于行人检测方面，以行人照片为例。
 <div align=center>
 <img src="zh-cn/img/R-CNN/HOG/p7.jpg" /> 
 </div>
+
 ------
 
 ### 10.LBP（Local Binary Pattern)
@@ -1802,6 +1809,8 @@ DPM: Object detection with discriminatively trained part based models
 SIFT<https://wenku.baidu.com/view/87270d2c2af90242a895e52e.html?sxts=1547523076821>
 
 BOW<https://wenku.baidu.com/view/6370f28d26fff705cc170aab.html?sxts=1547522805171>
+
+R-CNN tensorflow实现<https://github.com/Liu-Yicheng/R-CNN>
 
 
 
