@@ -9,7 +9,6 @@
 * -图像分割
 * -人脸识别
 
->最后更新时间：2019-3-17  更新内容：DenseNet
 
 [GitHub](https://github.com/DataXujing/CNN-paper2)
 [Get Started](/zh-cn/index)
