@@ -18,5 +18,10 @@
 
 ### 5.ResNeXt
 
+------
+
+
+### 6.SqueezeNet
+
 
 

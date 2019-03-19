@@ -7,7 +7,7 @@
 
 ------
 徐静 （[dataxujing](https://github.com/DataXujing)） AI图像算法研发工程师，硕士研究生，数据科学爱好者，喜欢R, Python, C++, Java 关注机器学习，深度学习等AI领域； 喜欢网络爬虫，关注前端可视化; 对ASR，NLP，图像均有涉猎；
-目前从事医学图像AI算法的研究和落地工作。个人还是个小白，希望多交流！
+目前从事医疗影像AI算法的研究和落地工作。个人还是个小白，希望多交流！
 
 ------
 
@@ -82,6 +82,7 @@ from: <https://github.com/weiaicunzai/awesome-image-classification>
 + ResNet
 + Google Inception
 + DensenNet
++ SENet
 + R-CNN, Selective Search, SPP-net
 + Fast R-CNN
 + Faster R-CNN
@@ -107,7 +108,12 @@ from: <https://github.com/weiaicunzai/awesome-image-classification>
 
 更新日志：
 
-+ 2019-03-17： DenseNets
-+ 2019-03-18: Faster R-CNN
+|    日期         |   更新内容       |
+|:---------------:|:---------------:|
+|2019-03-17前     |  其他内容        |
+|2019-03-17       |  DenseNets      |
+|2019-03-18       | Faster R-CNN    |
+|2019-03-19       | YOLO V1         |
+
 
 
