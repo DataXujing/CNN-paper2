@@ -16,12 +16,11 @@
 
 ------
 
-### 5.ResNeXt
+
+
+### 5.SqueezeNet
 
 ------
-
-
-### 6.SqueezeNet
 
 
 

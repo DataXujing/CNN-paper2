@@ -2,7 +2,7 @@
 * [1.ResNet](zh-cn/chapter1)
 * [2.Google Inception](zh-cn/chapter2)
 * [3.DenseNet](zh-cn/densenet.md)
-* [4.SENet](zh-cn/senet.md)
+* [4.SENet and ResNeXt](zh-cn/senet.md)
 * [5.R-CNN、图像特征提取、selective Search、SPP-net](zh-cn/chapter3)
 * [6.Fast R-CNN](zh-cn/chapter4)
 * [7.Faster R-CNN](zh-cn/chapter5)

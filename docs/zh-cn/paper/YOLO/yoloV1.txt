@@ -1,0 +1,38 @@
+arxiv: http://arxiv.org/abs/1506.02640
+code: http://pjreddie.com/darknet/yolo/
+github: https://github.com/pjreddie/darknet
+blog: https://pjreddie.com/publications/yolo/
+slides: https://docs.google.com/presentation/d/1aeRvtKG21KHdD5lg6Hgyhx5rPq_ZOsGjG5rJ1HP7BbA/pub?start=false&loop=false&delayms=3000&slide=id.p
+reddit: https://www.reddit.com/r/MachineLearning/comments/3a3m0o/realtime_object_detection_with_yolo/
+github: https://github.com/gliese581gg/YOLO_tensorflow
+github: https://github.com/xingwangsfu/caffe-yolo
+github: https://github.com/frankzhangrui/Darknet-Yolo
+github: https://github.com/BriSkyHekun/py-darknet-yolo
+github: https://github.com/tommy-qichang/yolo.torch
+github: https://github.com/frischzenger/yolo-windows
+github: https://github.com/AlexeyAB/yolo-windows
+github: https://github.com/nilboy/tensorflow-yolo
+darkflow - translate darknet to tensorflow. Load trained weights, retrain/fine-tune them using tensorflow, export constant graph def to C++
+
+blog: https://thtrieu.github.io/notes/yolo-tensorflow-graph-buffer-cpp
+github: https://github.com/thtrieu/darkflow
+Start Training YOLO with Our Own Data
+
+
+
+intro: train with customized data and class numbers/labels. Linux / Windows version for darknet.
+blog: http://guanghan.info/blog/en/my-works/train-yolo/
+github: https://github.com/Guanghan/darknet
+YOLO: Core ML versus MPSNNGraph
+
+intro: Tiny YOLO for iOS implemented using CoreML but also using the new MPS graph API.
+blog: http://machinethink.net/blog/yolo-coreml-versus-mps-graph/
+github: https://github.com/hollance/YOLO-CoreML-MPSNNGraph
+TensorFlow YOLO object detection on Android
+
+intro: Real-time object detection on Android using the YOLO network with TensorFlow
+github: https://github.com/natanielruiz/android-yolo
+Computer Vision in iOS ¨C Object Detection
+
+blog: https://sriraghu.com/2017/07/12/computer-vision-in-ios-object-detection/
+github:https://github.com/r4ghu/iOS-CoreML-Yolo

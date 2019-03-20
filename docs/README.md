@@ -77,7 +77,7 @@ from: <https://github.com/weiaicunzai/awesome-image-classification>
 + ResNet
 + Google Inception
 + DensenNet
-+ SENet
++ SENet and ResNeXt
 + R-CNN, Selective Search, SPP-net
 + Fast R-CNN
 + Faster R-CNN
