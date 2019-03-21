@@ -451,7 +451,7 @@ from: <https://github.com/weiaicunzai/awesome-image-classification>
 
 + arxiv: <http://arxiv.org/abs/1312.6229>
 + github: <https://github.com/sermanet/OverFeat>
-+ code: <http://cilvr.nyu.edu/doku.php?id=software:overfeat:start>
++ code: `https://cilvr.nyu.edu/doku.php?id=software:overfeat:start`
 
 
 **R-CNN**
@@ -758,134 +758,153 @@ from: <https://github.com/weiaicunzai/awesome-image-classification>
 
 + https://github.com/weiliu89/caffe/issues/327
 
-DSSD
-DSSD : Deconvolutional Single Shot Detector
+**DSSD**
+**DSSD : Deconvolutional Single Shot Detector**
 
-intro: UNC Chapel Hill & Amazon Inc
-arxiv: https://arxiv.org/abs/1701.06659
-github: https://github.com/chengyangfu/caffe/tree/dssd
-github: https://github.com/MTCloudVision/mxnet-dssd
-demo: http://120.52.72.53/www.cs.unc.edu/c3pr90ntc0td/~cyfu/dssd_lalaland.mp4
-Enhancement of SSD by concatenating feature maps for object detection
++ intro: UNC Chapel Hill & Amazon Inc
++ arxiv: https://arxiv.org/abs/1701.06659
++ github: https://github.com/chengyangfu/caffe/tree/dssd
++ github: https://github.com/MTCloudVision/mxnet-dssd
++ demo: http://120.52.72.53/www.cs.unc.edu/c3pr90ntc0td/~cyfu/dssd_lalaland.mp4
 
-intro: rainbow SSD (R-SSD)
-arxiv: https://arxiv.org/abs/1705.09587
-Context-aware Single-Shot Detector
+**Enhancement of SSD by concatenating feature maps for object detection**
 
-keywords: CSSD, DiCSSD, DeCSSD, effective receptive fields (ERFs), theoretical receptive fields (TRFs)
-arxiv: https://arxiv.org/abs/1707.08682
-Feature-Fused SSD: Fast Detection for Small Objects
++ intro: rainbow SSD (R-SSD)
++ arxiv: https://arxiv.org/abs/1705.09587
 
-https://arxiv.org/abs/1709.05054
+**Context-aware Single-Shot Detector**
 
-FSSD
-FSSD: Feature Fusion Single Shot Multibox Detector
+**keywords: CSSD, DiCSSD, DeCSSD, effective receptive fields (ERFs), theoretical receptive fields (TRFs)**
 
-https://arxiv.org/abs/1712.00960
++ arxiv: https://arxiv.org/abs/1707.08682
 
-Weaving Multi-scale Context for Single Shot Detector
+**Feature-Fused SSD: Fast Detection for Small Objects**
 
-intro: WeaveNet
-keywords: fuse multi-scale information
-arxiv: https://arxiv.org/abs/1712.03149
-ESSD
-Extend the shallow part of Single Shot MultiBox Detector via Convolutional Neural Network
++ https://arxiv.org/abs/1709.05054
 
-https://arxiv.org/abs/1801.05918
+**FSSD**
+**FSSD: Feature Fusion Single Shot Multibox Detector**
 
-Tiny SSD: A Tiny Single-shot Detection Deep Convolutional Neural Network for Real-time Embedded Object Detection
++ https://arxiv.org/abs/1712.00960
 
-https://arxiv.org/abs/1802.06488
+**Weaving Multi-scale Context for Single Shot Detector**
 
-MDSSD: Multi-scale Deconvolutional Single Shot Detector for small objects
++ intro: WeaveNet
++ keywords: fuse multi-scale information
++ arxiv: https://arxiv.org/abs/1712.03149
 
-intro: Zhengzhou University
-arxiv: https://arxiv.org/abs/1805.07009
-Inside-Outside Net (ION)
-Inside-Outside Net: Detecting Objects in Context with Skip Pooling and Recurrent Neural Networks
+**ESSD**
+**Extend the shallow part of Single Shot MultiBox Detector via Convolutional Neural Network**
 
-intro: “0.8s per image on a Titan X GPU (excluding proposal generation) without two-stage bounding-box regression and 1.15s per image with it”.
-arxiv: http://arxiv.org/abs/1512.04143
-slides: http://www.seanbell.ca/tmp/ion-coco-talk-bell2015.pdf
-coco-leaderboard: http://mscoco.org/dataset/#detections-leaderboard
-Adaptive Object Detection Using Adjacency and Zoom Prediction
++ https://arxiv.org/abs/1801.05918
 
-intro: CVPR 2016. AZ-Net
-arxiv: http://arxiv.org/abs/1512.07711
-github: https://github.com/luyongxi/az-net
-youtube: https://www.youtube.com/watch?v=YmFtuNwxaNM
-G-CNN: an Iterative Grid Based Object Detector
+**Tiny SSD: A Tiny Single-shot Detection Deep Convolutional Neural Network for Real-time Embedded Object Detection**
 
-arxiv: http://arxiv.org/abs/1512.07729
-Factors in Finetuning Deep Model for object detection
++ https://arxiv.org/abs/1802.06488
 
-Factors in Finetuning Deep Model for Object Detection with Long-tail Distribution
+**MDSSD: Multi-scale Deconvolutional Single Shot Detector for small objects**
 
-intro: CVPR 2016.rank 3rd for provided data and 2nd for external data on ILSVRC 2015 object detection
-project page: http://www.ee.cuhk.edu.hk/~wlouyang/projects/ImageNetFactors/CVPR16.html
-arxiv: http://arxiv.org/abs/1601.05150
-We don’t need no bounding-boxes: Training object class detectors using only human verification
++ intro: Zhengzhou University
++ arxiv: https://arxiv.org/abs/1805.07009
 
-arxiv: http://arxiv.org/abs/1602.08405
-HyperNet: Towards Accurate Region Proposal Generation and Joint Object Detection
+**Inside-Outside Net (ION)**
+**Inside-Outside Net: Detecting Objects in Context with Skip Pooling and Recurrent Neural Networks**
 
-arxiv: http://arxiv.org/abs/1604.00600
-A MultiPath Network for Object Detection
++ intro: “0.8s per image on a Titan X GPU (excluding proposal generation) without two-stage bounding-box regression and 1.15s per image with it”.
++ arxiv: http://arxiv.org/abs/1512.04143
++ slides: http://www.seanbell.ca/tmp/ion-coco-talk-bell2015.pdf
++ coco-leaderboard: http://mscoco.org/dataset/#detections-leaderboard
 
-intro: BMVC 2016. Facebook AI Research (FAIR)
-arxiv: http://arxiv.org/abs/1604.02135
-github: https://github.com/facebookresearch/multipathnet
-CRAFT
-CRAFT Objects from Images
+**Adaptive Object Detection Using Adjacency and Zoom Prediction**
 
-intro: CVPR 2016. Cascade Region-proposal-network And FasT-rcnn. an extension of Faster R-CNN
-project page: http://byangderek.github.io/projects/craft.html
-arxiv: https://arxiv.org/abs/1604.03239
-paper: http://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/Yang_CRAFT_Objects_From_CVPR_2016_paper.pdf
-github: https://github.com/byangderek/CRAFT
-OHEM
-Training Region-based Object Detectors with Online Hard Example Mining
++ intro: CVPR 2016. AZ-Net
++ arxiv: http://arxiv.org/abs/1512.07711
++ github: https://github.com/luyongxi/az-net
++ youtube: https://www.youtube.com/watch?v=YmFtuNwxaNM
 
-intro: CVPR 2016 Oral. Online hard example mining (OHEM)
-arxiv: http://arxiv.org/abs/1604.03540
-paper: http://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/Shrivastava_Training_Region-Based_Object_CVPR_2016_paper.pdf
-github(Official): https://github.com/abhi2610/ohem
-author page: http://abhinav-shrivastava.info/
-S-OHEM: Stratified Online Hard Example Mining for Object Detection
+**G-CNN: an Iterative Grid Based Object Detector**
 
-https://arxiv.org/abs/1705.02233
++ arxiv: http://arxiv.org/abs/1512.07729
 
-Exploit All the Layers: Fast and Accurate CNN Object Detector with Scale Dependent Pooling and Cascaded Rejection Classifiers
+**Factors in Finetuning Deep Model for object detection**
 
-intro: CVPR 2016
-keywords: scale-dependent pooling (SDP), cascaded rejection classifiers (CRC)
-paper: http://www-personal.umich.edu/~wgchoi/SDP-CRC_camready.pdf
-R-FCN
-R-FCN: Object Detection via Region-based Fully Convolutional Networks
+**Factors in Finetuning Deep Model for Object Detection with Long-tail Distribution**
 
-arxiv: http://arxiv.org/abs/1605.06409
-github: https://github.com/daijifeng001/R-FCN
-github(MXNet): https://github.com/msracver/Deformable-ConvNets/tree/master/rfcn
-github: https://github.com/Orpine/py-R-FCN
-github: https://github.com/PureDiors/pytorch_RFCN
-github: https://github.com/bharatsingh430/py-R-FCN-multiGPU
-github: https://github.com/xdever/RFCN-tensorflow
-R-FCN-3000 at 30fps: Decoupling Detection and Classification
++ intro: CVPR 2016.rank 3rd for provided data and 2nd for external data on ILSVRC 2015 object detection
++ project page: http://www.ee.cuhk.edu.hk/~wlouyang/projects/ImageNetFactors/CVPR16.html
++ arxiv: http://arxiv.org/abs/1601.05150
 
-https://arxiv.org/abs/1712.01802
+**We don’t need no bounding-boxes: Training object class detectors using only human verification**
 
-Recycle deep features for better object detection
++ arxiv: http://arxiv.org/abs/1602.08405
 
-arxiv: http://arxiv.org/abs/1607.05066
-MS-CNN
-A Unified Multi-scale Deep Convolutional Neural Network for Fast Object Detection
+**HyperNet: Towards Accurate Region Proposal Generation and Joint Object Detection**
 
-intro: ECCV 2016
-intro: 640×480: 15 fps, 960×720: 8 fps
-arxiv: http://arxiv.org/abs/1607.07155
-github: https://github.com/zhaoweicai/mscnn
-poster: http://www.eccv2016.org/files/posters/P-2B-38.pdf
-Multi-stage Object Detection with Group Recursive Learning
++ arxiv: http://arxiv.org/abs/1604.00600
+
+**A MultiPath Network for Object Detection**
+
++ intro: BMVC 2016. Facebook AI Research (FAIR)
++ arxiv: http://arxiv.org/abs/1604.02135
++ github: https://github.com/facebookresearch/multipathnet
+
+**CRAFT**
+**CRAFT Objects from Images**
+
++ intro: CVPR 2016. Cascade Region-proposal-network And FasT-rcnn. an extension of Faster R-CNN
++ project page: http://byangderek.github.io/projects/craft.html
++ arxiv: https://arxiv.org/abs/1604.03239
++ paper: http://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/Yang_CRAFT_Objects_From_CVPR_2016_paper.pdf
++ github: https://github.com/byangderek/CRAFT
+
+**OHEM**
+**Training Region-based Object Detectors with Online Hard Example Mining**
+
++ intro: CVPR 2016 Oral. Online hard example mining (OHEM)
++ arxiv: http://arxiv.org/abs/1604.03540
++ paper: http://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/Shrivastava_Training_Region-Based_Object_CVPR_2016_paper.pdf
++ github(Official): https://github.com/abhi2610/ohem
++ author page: http://abhinav-shrivastava.info/
+
+**S-OHEM: Stratified Online Hard Example Mining for Object Detection**
+
++ https://arxiv.org/abs/1705.02233
+
+**Exploit All the Layers: Fast and Accurate CNN Object Detector with Scale Dependent Pooling and Cascaded Rejection Classifiers**
+
++ intro: CVPR 2016
++ keywords: scale-dependent pooling (SDP), cascaded rejection classifiers (CRC)
++ paper: http://www-personal.umich.edu/~wgchoi/SDP-CRC_camready.pdf
+
+**R-FCN**
+**R-FCN: Object Detection via Region-based Fully Convolutional Networks**
+
++ arxiv: http://arxiv.org/abs/1605.06409
++ github: https://github.com/daijifeng001/R-FCN
++ github(MXNet): https://github.com/msracver/Deformable-ConvNets/tree/master/rfcn
++ github: https://github.com/Orpine/py-R-FCN
++ github: https://github.com/PureDiors/pytorch_RFCN
++ github: https://github.com/bharatsingh430/py-R-FCN-multiGPU
++ github: https://github.com/xdever/RFCN-tensorflow
+
+**R-FCN-3000 at 30fps: Decoupling Detection and Classification**
+
++ https://arxiv.org/abs/1712.01802
+
+**Recycle deep features for better object detection**
+
++ arxiv: http://arxiv.org/abs/1607.05066
+
+**MS-CNN**
+**A Unified Multi-scale Deep Convolutional Neural Network for Fast Object Detection**
+
++ intro: ECCV 2016
++ intro: 640×480: 15 fps, 960×720: 8 fps
++ arxiv: http://arxiv.org/abs/1607.07155
++ github: https://github.com/zhaoweicai/mscnn
++ poster: http://www.eccv2016.org/files/posters/P-2B-38.pdf
+
+**Multi-stage Object Detection with Group Recursive Learning**
 
 intro: VOC2007: 78.6%, VOC2012: 74.9%
 arxiv: http://arxiv.org/abs/1608.05159
@@ -2758,14 +2777,5 @@ deep learning object detection
 intro: A paper list of object detection using deep learning.
 arxiv: https://github.com/hoya012/deep_learning_object_detection
 
-### 更新日志
-
-|    日期              |   更新内容              |
-|:--------------------:|:----------------------:|
-|2019-03-17前          |  其他内容               |
-|2019-03-17            |  DenseNets             |
-|2019-03-18            | Faster R-CNN           |
-|2019-03-19            | YOLO V1                |
-|2019-03-20            | SSD及目标检测资源       |
 
 

@@ -1,3 +1,4 @@
+* [关于](zh-cn/about)
 * [0.主页](zh-cn/index)
 * [1.ResNet](zh-cn/chapter1)
 * [2.Google Inception](zh-cn/chapter2)
@@ -24,4 +25,3 @@
 * [23.人脸识别](zh-cn/chapter9)
 * [24.图像分割](zh-cn/chapter10)
 * [25.N种卷积](zh-cn/chapter11)
-* [关于](zh-cn/about)
