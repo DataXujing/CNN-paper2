@@ -906,67 +906,85 @@ from: <https://github.com/weiaicunzai/awesome-image-classification>
 
 **Multi-stage Object Detection with Group Recursive Learning**
 
-intro: VOC2007: 78.6%, VOC2012: 74.9%
-arxiv: http://arxiv.org/abs/1608.05159
-Subcategory-aware Convolutional Neural Networks for Object Proposals and Detection
++ intro: VOC2007: 78.6%, VOC2012: 74.9%
++ arxiv: http://arxiv.org/abs/1608.05159
 
-intro: WACV 2017. SubCNN
-arxiv: http://arxiv.org/abs/1604.04693
-github: https://github.com/tanshen/SubCNN
-PVANET
-PVANet: Lightweight Deep Neural Networks for Real-time Object Detection
+**Subcategory-aware Convolutional Neural Networks for Object Proposals and Detection**
 
-intro: Presented at NIPS 2016 Workshop on Efficient Methods for Deep Neural Networks (EMDNN). Continuation of arXiv:1608.08021
-arxiv: https://arxiv.org/abs/1611.08588
-github: https://github.com/sanghoon/pva-faster-rcnn
-leaderboard(PVANet 9.0): http://host.robots.ox.ac.uk:8080/leaderboard/displaylb.php?challengeid=11&compid=4
-GBD-Net
-Gated Bi-directional CNN for Object Detection
++ intro: WACV 2017. SubCNN
++ arxiv: http://arxiv.org/abs/1604.04693
++ github: https://github.com/tanshen/SubCNN
 
-intro: The Chinese University of Hong Kong & Sensetime Group Limited
-paper: http://link.springer.com/chapter/10.1007/978-3-319-46478-7_22
-mirror: https://pan.baidu.com/s/1dFohO7v
-Crafting GBD-Net for Object Detection
+**PVANET**
+**PVANet: Lightweight Deep Neural Networks for Real-time Object Detection**
 
-intro: winner of the ImageNet object detection challenge of 2016. CUImage and CUVideo
-intro: gated bi-directional CNN (GBD-Net)
-arxiv: https://arxiv.org/abs/1610.02579
-github: https://github.com/craftGBD/craftGBD
-StuffNet: Using ‘Stuff’ to Improve Object Detection
++ intro: Presented at NIPS 2016 Workshop on Efficient Methods for Deep Neural Networks (EMDNN). 
++ Continuation of arXiv:1608.08021
++ arxiv: https://arxiv.org/abs/1611.08588
++ github: https://github.com/sanghoon/pva-faster-rcnn
++ leaderboard(PVANet 9.0): http://host.robots.ox.ac.uk:8080/leaderboard/displaylb.php?challengeid=11&compid=4
 
-arxiv: https://arxiv.org/abs/1610.05861
-Generalized Haar Filter based Deep Networks for Real-Time Object Detection in Traffic Scene
+**GBD-Net**
+**Gated Bi-directional CNN for Object Detection**
 
-arxiv: https://arxiv.org/abs/1610.09609
-Hierarchical Object Detection with Deep Reinforcement Learning
++ intro: The Chinese University of Hong Kong & Sensetime Group Limited
++ paper: http://link.springer.com/chapter/10.1007/978-3-319-46478-7_22
++ mirror: https://pan.baidu.com/s/1dFohO7v
 
-intro: Deep Reinforcement Learning Workshop (NIPS 2016)
-project page: https://imatge-upc.github.io/detection-2016-nipsws/
-arxiv: https://arxiv.org/abs/1611.03718
-slides: http://www.slideshare.net/xavigiro/hierarchical-object-detection-with-deep-reinforcement-learning
-github: https://github.com/imatge-upc/detection-2016-nipsws
-blog: http://jorditorres.org/nips/
-Learning to detect and localize many objects from few examples
+**Crafting GBD-Net for Object Detection**
 
-arxiv: https://arxiv.org/abs/1611.05664
-Speed/accuracy trade-offs for modern convolutional object detectors
++ intro: winner of the ImageNet object detection challenge of 2016. CUImage and CUVideo
++ intro: gated bi-directional CNN (GBD-Net)
++ arxiv: https://arxiv.org/abs/1610.02579
++ github: https://github.com/craftGBD/craftGBD
 
-intro: CVPR 2017. Google Research
-arxiv: https://arxiv.org/abs/1611.10012
-SqueezeDet: Unified, Small, Low Power Fully Convolutional Neural Networks for Real-Time Object Detection for Autonomous Driving
+**StuffNet: Using ‘Stuff’ to Improve Object Detection**
 
-arxiv: https://arxiv.org/abs/1612.01051
-github: https://github.com/BichenWuUCB/squeezeDet
-github: https://github.com/fregu856/2D_detection
-Feature Pyramid Network (FPN)
-Feature Pyramid Networks for Object Detection
++ arxiv: https://arxiv.org/abs/1610.05861
 
-intro: Facebook AI Research
-arxiv: https://arxiv.org/abs/1612.03144
-Action-Driven Object Detection with Top-Down Visual Attentions
+**Generalized Haar Filter based Deep Networks for Real-Time Object Detection in Traffic Scene**
 
-arxiv: https://arxiv.org/abs/1612.06704
-Beyond Skip Connections: Top-Down Modulation for Object Detection
++ arxiv: https://arxiv.org/abs/1610.09609
+
+**Hierarchical Object Detection with Deep Reinforcement Learning**
+
++ intro: Deep Reinforcement Learning Workshop (NIPS 2016)
++ project page: https://imatge-upc.github.io/detection-2016-nipsws/
++ arxiv: https://arxiv.org/abs/1611.03718
++ slides: http://www.slideshare.net/xavigiro/
+
+**hierarchical-object-detection-with-deep-reinforcement-learning**
+
++ github: https://github.com/imatge-upc/detection-2016-nipsws
++ blog: http://jorditorres.org/nips/
+
+
+**Learning to detect and localize many objects from few examples**
+
++ arxiv: https://arxiv.org/abs/1611.05664
+
+**Speed/accuracy trade-offs for modern convolutional object detectors**
+
++ intro: CVPR 2017. Google Research
++ arxiv: https://arxiv.org/abs/1611.10012
+
+**SqueezeDet: Unified, Small, Low Power Fully Convolutional Neural Networks for Real-Time Object Detection for Autonomous Driving**
+
++ arxiv: https://arxiv.org/abs/1612.01051
++ github: https://github.com/BichenWuUCB/squeezeDet
++ github: https://github.com/fregu856/2D_detection
+
+**Feature Pyramid Network (FPN)**
+**Feature Pyramid Networks for Object Detection**
+
++ intro: Facebook AI Research
++ arxiv: https://arxiv.org/abs/1612.03144
+
+**Action-Driven Object Detection with Top-Down Visual Attentions**
+
++ arxiv: https://arxiv.org/abs/1612.06704
+
+**Beyond Skip Connections: Top-Down Modulation for Object Detection**
 
 intro: CMU & UC Berkeley & Google Research
 arxiv: https://arxiv.org/abs/1612.06851
