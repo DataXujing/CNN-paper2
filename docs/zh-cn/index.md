@@ -38,6 +38,7 @@ More learning: XuJing'Home [https://dataxujing.github.io/](https://dataxujing.gi
 + 人脸识别
 + 图像分割
 + N种卷积
++ GANs
 
 ### 常用图像分类CNN结构
 
@@ -986,146 +987,164 @@ from: <https://github.com/weiaicunzai/awesome-image-classification>
 
 **Beyond Skip Connections: Top-Down Modulation for Object Detection**
 
-intro: CMU & UC Berkeley & Google Research
-arxiv: https://arxiv.org/abs/1612.06851
-Wide-Residual-Inception Networks for Real-time Object Detection
++ intro: CMU & UC Berkeley & Google Research
++ arxiv: https://arxiv.org/abs/1612.06851
 
-intro: Inha University
-arxiv: https://arxiv.org/abs/1702.01243
-Attentional Network for Visual Object Detection
+**Wide-Residual-Inception Networks for Real-time Object Detection**
 
-intro: University of Maryland & Mitsubishi Electric Research Laboratories
-arxiv: https://arxiv.org/abs/1702.01478
-Learning Chained Deep Features and Classifiers for Cascade in Object Detection
++ intro: Inha University
++ arxiv: https://arxiv.org/abs/1702.01243
 
-keykwords: CC-Net
-intro: chained cascade network (CC-Net). 81.1% mAP on PASCAL VOC 2007
-arxiv: https://arxiv.org/abs/1702.07054
-DeNet: Scalable Real-time Object Detection with Directed Sparse Sampling
+**Attentional Network for Visual Object Detection**
 
-intro: ICCV 2017 (poster)
-arxiv: https://arxiv.org/abs/1703.10295
-Discriminative Bimodal Networks for Visual Localization and Detection with Natural Language Queries
++ intro: University of Maryland & Mitsubishi Electric Research Laboratories
++ arxiv: https://arxiv.org/abs/1702.01478
 
-intro: CVPR 2017
-arxiv: https://arxiv.org/abs/1704.03944
-Spatial Memory for Context Reasoning in Object Detection
+**Learning Chained Deep Features and Classifiers for Cascade in Object Detection**
 
-arxiv: https://arxiv.org/abs/1704.04224
-Accurate Single Stage Detector Using Recurrent Rolling Convolution
++ keykwords: CC-Net
++ intro: chained cascade network (CC-Net). 81.1% mAP on PASCAL VOC 2007
++ arxiv: https://arxiv.org/abs/1702.07054
 
-intro: CVPR 2017. SenseTime
-keywords: Recurrent Rolling Convolution (RRC)
-arxiv: https://arxiv.org/abs/1704.05776
-github: https://github.com/xiaohaoChen/rrc_detection
-Deep Occlusion Reasoning for Multi-Camera Multi-Target Detection
+**DeNet: Scalable Real-time Object Detection with Directed Sparse Sampling**
 
-https://arxiv.org/abs/1704.05775
++ intro: ICCV 2017 (poster)
++ arxiv: https://arxiv.org/abs/1703.10295
 
-LCDet: Low-Complexity Fully-Convolutional Neural Networks for Object Detection in Embedded Systems
+**Discriminative Bimodal Networks for Visual Localization and Detection with Natural Language Queries**
 
-intro: Embedded Vision Workshop in CVPR. UC San Diego & Qualcomm Inc
-arxiv: https://arxiv.org/abs/1705.05922
-Point Linking Network for Object Detection
++ intro: CVPR 2017
++ arxiv: https://arxiv.org/abs/1704.03944
 
-intro: Point Linking Network (PLN)
-arxiv: https://arxiv.org/abs/1706.03646
-Perceptual Generative Adversarial Networks for Small Object Detection
+**Spatial Memory for Context Reasoning in Object Detection**
 
-https://arxiv.org/abs/1706.05274
++ arxiv: https://arxiv.org/abs/1704.04224
 
-Few-shot Object Detection
+**Accurate Single Stage Detector Using Recurrent Rolling Convolution**
 
-https://arxiv.org/abs/1706.08249
++ intro: CVPR 2017. SenseTime
++ keywords: Recurrent Rolling Convolution (RRC)
++ arxiv: https://arxiv.org/abs/1704.05776
++ github: https://github.com/xiaohaoChen/rrc_detection
 
-Yes-Net: An effective Detector Based on Global Information
+**Deep Occlusion Reasoning for Multi-Camera Multi-Target Detection**
 
-https://arxiv.org/abs/1706.09180
++ https://arxiv.org/abs/1704.05775
 
-SMC Faster R-CNN: Toward a scene-specialized multi-object detector
+**LCDet: Low-Complexity Fully-Convolutional Neural Networks for Object Detection in Embedded Systems**
 
-https://arxiv.org/abs/1706.10217
++ intro: Embedded Vision Workshop in CVPR. UC San Diego & Qualcomm Inc
++ arxiv: https://arxiv.org/abs/1705.05922
 
-Towards lightweight convolutional neural networks for object detection
+**Point Linking Network for Object Detection**
 
-https://arxiv.org/abs/1707.01395
++ intro: Point Linking Network (PLN)
++ arxiv: https://arxiv.org/abs/1706.03646
 
-RON: Reverse Connection with Objectness Prior Networks for Object Detection
+**Perceptual Generative Adversarial Networks for Small Object Detection**
 
-intro: CVPR 2017
-arxiv: https://arxiv.org/abs/1707.01691
-github: https://github.com/taokong/RON
-Mimicking Very Efficient Network for Object Detection
++ https://arxiv.org/abs/1706.05274
 
-intro: CVPR 2017. SenseTime & Beihang University
-paper: http://openaccess.thecvf.com/content_cvpr_2017/papers/Li_Mimicking_Very_Efficient_CVPR_2017_paper.pdf
-Residual Features and Unified Prediction Network for Single Stage Detection
+**Few-shot Object Detection**
 
-https://arxiv.org/abs/1707.05031
++ https://arxiv.org/abs/1706.08249
 
-Deformable Part-based Fully Convolutional Network for Object Detection
+**Yes-Net: An effective Detector Based on Global Information**
 
-intro: BMVC 2017 (oral). Sorbonne Universités & CEDRIC
-arxiv: https://arxiv.org/abs/1707.06175
-Adaptive Feeding: Achieving Fast and Accurate Detections by Adaptively Combining Object Detectors
++ https://arxiv.org/abs/1706.09180
 
-intro: ICCV 2017
-arxiv: https://arxiv.org/abs/1707.06399
-Recurrent Scale Approximation for Object Detection in CNN
+**SMC Faster R-CNN: Toward a scene-specialized multi-object detector**
 
-intro: ICCV 2017
-keywords: Recurrent Scale Approximation (RSA)
-arxiv: https://arxiv.org/abs/1707.09531
-github: https://github.com/sciencefans/RSA-for-object-detection
-DSOD
-DSOD: Learning Deeply Supervised Object Detectors from Scratch
++ https://arxiv.org/abs/1706.10217
 
+**Towards lightweight convolutional neural networks for object detection**
 
++ https://arxiv.org/abs/1707.01395
 
-intro: ICCV 2017. Fudan University & Tsinghua University & Intel Labs China
-arxiv: https://arxiv.org/abs/1708.01241
-github: https://github.com/szq0214/DSOD
-Object Detection from Scratch with Deep Supervision
+**RON: Reverse Connection with Objectness Prior Networks for Object Detection**
 
-https://arxiv.org/abs/1809.09294
++ intro: CVPR 2017
++ arxiv: https://arxiv.org/abs/1707.01691
++ github: https://github.com/taokong/RON
 
-RetinaNet
-Focal Loss for Dense Object Detection
+**Mimicking Very Efficient Network for Object Detection**
 
-intro: ICCV 2017 Best student paper award. Facebook AI Research
-keywords: RetinaNet
-arxiv: https://arxiv.org/abs/1708.02002
-Focal Loss Dense Detector for Vehicle Surveillance
++ intro: CVPR 2017. SenseTime & Beihang University
++ paper: http://openaccess.thecvf.com/content_cvpr_2017/papers/Li_Mimicking_Very_Efficient_CVPR_2017_paper.pdf
 
-https://arxiv.org/abs/1803.01114
+**Residual Features and Unified Prediction Network for Single Stage Detection**
 
-CoupleNet: Coupling Global Structure with Local Parts for Object Detection
++ https://arxiv.org/abs/1707.05031
 
-intro: ICCV 2017
-arxiv: https://arxiv.org/abs/1708.02863
-Incremental Learning of Object Detectors without Catastrophic Forgetting
+**Deformable Part-based Fully Convolutional Network for Object Detection**
 
-intro: ICCV 2017. Inria
-arxiv: https://arxiv.org/abs/1708.06977
-Zoom Out-and-In Network with Map Attention Decision for Region Proposal and Object Detection
++ intro: BMVC 2017 (oral). Sorbonne Universités & CEDRIC
++ arxiv: https://arxiv.org/abs/1707.06175
 
-https://arxiv.org/abs/1709.04347
+**Adaptive Feeding: Achieving Fast and Accurate Detections by Adaptively Combining Object Detectors**
 
-StairNet: Top-Down Semantic Aggregation for Accurate One Shot Detection
++ intro: ICCV 2017
++ arxiv: https://arxiv.org/abs/1707.06399
 
-https://arxiv.org/abs/1709.05788
+**Recurrent Scale Approximation for Object Detection in CNN**
 
-Dynamic Zoom-in Network for Fast Object Detection in Large Images
++ intro: ICCV 2017
++ keywords: Recurrent Scale Approximation (RSA)
++ arxiv: https://arxiv.org/abs/1707.09531
++ github: https://github.com/sciencefans/RSA-for-object-detection
 
-https://arxiv.org/abs/1711.05187
+**DSOD**
+**DSOD: Learning Deeply Supervised Object Detectors from Scratch**
 
-Zero-Annotation Object Detection with Web Knowledge Transfer
++ intro: ICCV 2017. Fudan University & Tsinghua University & Intel Labs China
++ arxiv: https://arxiv.org/abs/1708.01241
++ github: https://github.com/szq0214/DSOD
 
-intro: NTU, Singapore & Amazon
-keywords: multi-instance multi-label domain adaption learning framework
-arxiv: https://arxiv.org/abs/1711.05954
-MegDet
-MegDet: A Large Mini-Batch Object Detector
+**Object Detection from Scratch with Deep Supervision**
+
++ https://arxiv.org/abs/1809.09294
+
+**RetinaNet**
+**Focal Loss for Dense Object Detection**
+
++ intro: ICCV 2017 Best student paper award. Facebook AI Research
++ keywords: RetinaNet
++ arxiv: https://arxiv.org/abs/1708.02002
+
+**Focal Loss Dense Detector for Vehicle Surveillance**
+
++ https://arxiv.org/abs/1803.01114
+
+**CoupleNet: Coupling Global Structure with Local Parts for Object Detection**
+
++ intro: ICCV 2017
++ arxiv: https://arxiv.org/abs/1708.02863
+
+**Incremental Learning of Object Detectors without Catastrophic Forgetting**
+
++ intro: ICCV 2017. Inria
++ arxiv: https://arxiv.org/abs/1708.06977
+
+**Zoom Out-and-In Network with Map Attention Decision for Region Proposal and Object Detection**
+
++ https://arxiv.org/abs/1709.04347
+
+**StairNet: Top-Down Semantic Aggregation for Accurate One Shot Detection**
+
++ https://arxiv.org/abs/1709.05788
+
+**Dynamic Zoom-in Network for Fast Object Detection in Large Images**
+
++ https://arxiv.org/abs/1711.05187
+
+**Zero-Annotation Object Detection with Web Knowledge Transfer**
+
++ intro: NTU, Singapore & Amazon
++ keywords: multi-instance multi-label domain adaption learning framework
++ arxiv: https://arxiv.org/abs/1711.05954
+
+**MegDet**
+**MegDet: A Large Mini-Batch Object Detector**
 
 intro: Peking University & Tsinghua University & Megvii Inc
 arxiv: https://arxiv.org/abs/1711.07240
@@ -2782,18 +2801,18 @@ Understanding SSD MultiBox — Real-Time Object Detection In Deep Learning
 
 https://towardsdatascience.com/understanding-ssd-multibox-real-time-object-detection-in-deep-learning-495ef744fab
 
-One-shot object detection
+**One-shot object detection**
 
-http://machinethink.net/blog/object-detection/
++ http://machinethink.net/blog/object-detection/
 
-An overview of object detection: one-stage methods
+**An overview of object detection: one-stage methods**
 
-https://www.jeremyjordan.me/object-detection-one-stage/
++ https://www.jeremyjordan.me/object-detection-one-stage/
 
-deep learning object detection
+**deep learning object detection**
 
-intro: A paper list of object detection using deep learning.
-arxiv: https://github.com/hoya012/deep_learning_object_detection
++ intro: A paper list of object detection using deep learning.
++ arxiv: https://github.com/hoya012/deep_learning_object_detection
 
 
 

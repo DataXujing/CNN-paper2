@@ -693,3 +693,414 @@ YOLO9000是一个通过联合优化检测和分类来检测9000多个目标类�
 ------
 
 ### 3.YOLO V3： An Incremental Improvement
+
+**一篇‘不正经’的技术报告**
+
+#### 0.摘要
+
+YOLO3为YOLO提供了一系列更新！它包含一堆小设计，可以使系统的性能得到更新；也包含一个新训练的、非常棒的神经网络，虽然比上一版YOLO V2更大一些，但精度也提高了。不用担心，虽然体量大了点，它的速度还是有保障的。在输入320×320的图片后，YOLOv3能在22毫秒内完成处理，并取得28.2mAP的成绩。它的精度和SSD相当，但速度要快上3倍。和旧版数据相比，v3版进步明显。在Titan X环境下，YOLOv3的检测精度为57.9 AP50，用时51ms；而RetinaNet的精度只有57.5 AP50，但却需要198ms，相当于YOLOv3的3.8倍。
+
+代码地址：https://pjreddie.com/darknet/yolo/
+
+#### 1.引言
+
+有时候啊，其实有些人一年的时间就那么蹉跎了，你懂的。所以去年我也没做什么研究，就是在玩Twitter上花了点时间，在GAN上花了点时间，然后回头一看，好像自己还空了一点精力出来[10][1]，于是就想，要不更新下YOLO算了。说实在的，这只是一系列很小的、让YOLO变得更完善的更新，也不是多么有趣的事。另外，我还帮别人做了一点研究。
+
+事实上这也是我今天要讲的内容。我们有一篇论文快截稿了，但还缺一篇关于YOLO更新内容的文章作为引用来源，我们没写，所以以下就是我们的技术报告！
+
+技术报告的伟大之处在于它不需要“引言”，你们都知道我们写这个的目的对吧，所以这段“引言”可以作为你阅读的一个指引。首先我们会告诉你YOLOv3的更新情况，其次我们会展示更新的方法以及一些失败的尝试，最后就是对这轮更新的意义的总结。
+
+#### 2.更新
+
+谈到YOLOv3的更新情况，其实大多数时候我们就是直接把别人的好点子拿来用了。我们还训练了一个全新的、比其他网络更好的分类网络。为了方便你理解，让我们从头开始慢慢介绍。
+
+<div align=center>
+<img src="zh-cn/img/yolov3/p3.png" />
+</div>
+
+
+**2.1边界框预测**
+
+bounding box预测手段是YOLO v3论文中提到的又一个亮点。先回忆一下YOLO v2的bounding box预测：想借鉴Faster R-CNN RPN中的anchor机制，但不屑于手动设定anchor prior(模板框)，于是用维度聚类的方法来确定anchor box prior(模板框)，最后发现聚类之后确定的prior在k=5也能够有不错的表现，于是就选用k=5。后来呢，YOLO v2又嫌弃anchor机制线性回归的不稳定性(因为回归的offset可以使box偏移到图片的任何地方)，所以YOLO v2最后选用了自己的方法：直接预测相对位置。预测出bounding box中心点相对于网格单元左上角的相对坐标。
+
+
+<div align=center>
+<img src="zh-cn/img/yolov3/p4.jpg" />
+</div>
+
+*公式1**
+
+<div align=center>
+<img src="zh-cn/img/yolov3/p5.png" />
+</div>
+
+<div align=center>
+<img src="zh-cn/img/yolov3/p6.png" />
+</div>
+
+
+```shell
+10,13,  16,30,  33,23,  30,61,  62,45,  59,119,  116,90,  156,198,  373,326
+```
+<div align=center>
+<img src="zh-cn/img/yolov3/p7.png" />
+</div>
+
+如果模板框不是最佳的即使它超过我们设定的阈值，我们还是不会对它进行predict。
+不同于faster R-CNN的是，yolo_v3只会对1个prior进行操作，也就是那个最佳prior。而logistic回归就是用来从9个anchor priors中找到objectness score(目标存在可能性得分)最高的那一个。logistic回归就是用曲线对prior相对于 objectness score映射关系的线性建模。
+
+
+注：
+
++ 第一点， 9个anchor会被三个输出张量平分的。根据大中小三种size各自取自己的anchor。
+
++ 第二点，每个输出y在每个自己的网格都会输出3个预测框，这3个框是9除以3得到的，这是作者设置
+的，我们可以从输出张量的维度来看，13x13x255。255是怎么来的呢，3*(5+80)。80表示80个种类，5表
+示位置信息和置信度，3表示要输出3个prediction。在代码上来看，3*(5+80)中的3是直接由
+num_anchors//3得到的。
+
++ 第三点，作者使用了logistic回归来对每个anchor包围的内容进行了一个目标性评分(objectness score)。
+根据目标性评分来选择anchor prior进行predict，而不是所有anchor prior都会有输出。
+
+
+**2.2分类预测**
+
+每个边界框都会使用多标记分类来预测框中可能包含的类。我们不用softmax，而是用单独的逻辑分类器，因为我们发现前者对于提升网络性能没什么用。在训练过程中，我们用二元交叉熵损失来预测类别。
+
+这个选择有助于我们把YOLO用于更复杂的领域，如开放的图像数据集[5]。这个数据集中包含了大量重叠的标签（如女性和人）。如果我们用的是softmax，它会强加一个假设，使得每个框只包含一个类别。但通常情况下这样做是不妥的，相比之下，多标记的分类方法能更好地模拟数据。
+
+
+**2.3跨尺寸预测**
+
+YOLOv3提供了3种尺寸不一的边界框。我们的系统用相似的概念提取这些尺寸的特征，以形成金字塔形网络[6]。我们在基本特征提取器中增加了几个卷积层，并用最后的卷积层预测一个三维张量编码：边界框、框中目标和分类预测。在COCO数据集实验中，我们的神经网络分别为每种尺寸各预测了3个边界框，所以得到的张量是N ×N ×[3∗(4+ 1+ 80)]，其中包含4个边界框offset、1个目标预测以及80种分类预测。
+
+接着，我们从前两个图层中得到特征图，并对它进行2次上采样。再从网络更早的图层中获得特征图，用element-wise把高低两种分辨率的特征图连接到一起。这样做能使我们找到早期特征映射中的上采样特征和细粒度特征，并获得更有意义的语义信息。之后，我们添加几个卷积层来处理这个特征映射组合，并最终预测出一个相似的、大小是原先两倍的张量。
+
+我们用同样的网络设计来预测边界框的最终尺寸，这个过程其实也有助于分类预测，因为我们可以从早期图像中筛选出更精细的特征。
+
+和上一版一样，YOLOv3使用的聚类方法还是K-Means，它能用来确定边界框的先验。在实验中，我们选择了9个聚类和3个尺寸，然后在不同尺寸的边界框上均匀分割维度聚类。在COCO数据集上，这9个聚类分别是：(10×13)、(16×30)、(33×23)、(30×61)、(62×45)、(59×119)、(116 × 90)、(156 × 198)、(373 × 326)。
+
+**2.4特征提取器**
+
+
+这次我们用了一个新的网络来提取特征，它融合了YOLOv2、Darknet-19以及其他新型残差网络，由连续的3×3和1×1卷积层组合而成，当然，其中也添加了一些shortcut connection，整体体量也更大。因为一共有53个卷积层，所以我们称它为……别急哦…… **Darknet-53**！
+
+<div align=center>
+<img src="zh-cn/img/yolov3/p8.jpg" />
+</div>
+
+YOLO系列里面，作者只在v1的论文里给出了结构图，而v2和v3的论文里都没有结构图，这使得读者对后两代YOLO结构的理解变得比较难。对于YOLO学习者来说，脑子里没有一个清晰的结构图，就别说自己懂UOLO了。上图是[某大神](https://blog.csdn.net/leviopku/article/details/82660381)根据官方代码和官方论文以及模型结构可视化工具等经过好几个小时画出来的，修订过几个版本。所以，上图的准确性是可以保证的。
+
+这里推荐的模型结构可视化工具是：[Netron](https://blog.csdn.net/leviopku/article/details/81980249)
+Netron方便好用，可以直观看到YOLO v3的实际计算结构，精细到卷积层。要进一步在人性化的角度分析v3的结构图，还需要结合论文和代码。
+
+上图表示了YOLO v3整个YOLO_body的结构，没有包括把输出解析整理成咱要的[box, class, score]。对于把输出张量包装成[box, class, score]那种形式，还需要写一些脚本，但这已经在神经网络结构之外了(我后面会详细解释这波操作)。
+
+为了让YOLO v3结构图更好理解，对上图做一些补充解释：
+
++ **DBL**: 如上图左下角所示，也就是代码中的Darknetconv2d_BN_Leaky，是YOLO v3的基本组件。就是卷积+BN+Leaky relu。对于v3来说，BN和leaky relu已经是和卷积层不可分离的部分了(最后一层卷积除外)，共同构成了最小组件。
+
++ **resn**：n代表数字，有res1，res2, … ,res8等等，表示这个res_block里含有多少个res_unit。这是YOLO v3的大组件，YOLO v3开始借鉴了ResNet的残差结构，使用这种结构可以让网络结构更深(从v2的darknet-19上升到v3的darknet-53，前者没有残差结构)。对于res_block的解释，可以在上图的右下角直观看到，其基本组件也是DBL。
+concat：张量拼接。将darknet中间层和后面的某一层的上采样进行拼接。拼接的操作和残差层add的操作是不一样的，拼接会扩充张量的维度，而add只是直接相加不会导致张量维度的改变。
+
+我们可以借鉴Netron来分析网络层，整个yolo_v3_body包含252层，组成如下：
+
+<div align=center>
+<img src="zh-cn/img/yolov3/p9.jpg" />
+</div>
+
+根据上图可以得出，对于代码层面的layers数量一共有252层，包括add层23层(主要用于res_block的构成，每个res_unit需要一个add层，一共有1+2+8+8+4=23层)。除此之外，BN层和LeakyReLU层数量完全一样(72层)，在网络结构中的表现为：每一层BN后面都会接一层LeakyReLU。卷积层一共有75层，其中有72层后面都会接BN+LeakyReLU的组合构成基本组件DBL。看结构图，可以发现上采样和concat都有2次，和表格分析中对应上。每个res_block都会用上一个零填充，一共有5个res_block。
+
+**1.backbone**
+
+整个v3结构里面，是没有池化层和全连接层的。前向传播过程中，张量的尺寸变换是通过改变卷积核的步长来实现的，比如stride=(2, 2)，这就等于将图像边长缩小了一半(即面积缩小到原来的1/4)。在yolo_v2中，要经历5次缩小，会将特征图缩小到原输入尺寸的1/25 1/2^51/2 
+5
+ ，即1/32。输入为416x416，则输出为13x13(416/32=13)。
+yolo_v3也和v2一样，backbone都会将输出特征图缩小到输入的1/32。所以，通常都要求输入图片是32的倍数。可以对比v2和v3的backbone看看：（DarkNet-19 与 DarkNet-53）
+
+<div align=center>
+<img src="zh-cn/img/yolov3/p10.jpg" />
+</div>
+
+<div align=center>
+<img src="zh-cn/img/yolov3/p11.png" />
+</div>
+
+
+YOLO v2中对于前向过程中张量尺寸变换，都是通过最大池化来进行，一共有5次。而v3是通过卷积核增大步长来进行，也是5次。(darknet-53最后面有一个全局平均池化，在YOLO v3里面没有这一层，所以张量维度变化只考虑前面那5次)。
+这也是416x416输入得到13x13输出的原因。从上图可以看出，darknet-19是不存在残差结构(resblock，从resnet上借鉴过来)的，和VGG是同类型的backbone(属于上一代CNN结构)，而darknet-53是可以和resnet-152正面刚的backbone，看下表：
+
+<div align=center>
+<img src="zh-cn/img/yolov3/p12.png" />
+</div>
+
+从上表也可以看出，darknet-19在速度上仍然占据很大的优势。其实在其他细节也可以看出(比如bounding box prior采用k=9)，YOLO v3并没有那么追求速度，而是在保证实时性(fps>60)的基础上追求performance。不过前面也说了，你要想更快，还有一个tiny-darknet作为backbone可以替代darknet-53，在官方代码里用一行代码就可以实现切换backbone。搭用tiny-darknet的yolo，也就是tiny-yolo在轻量和高速两个特点上，显然是state of the art级别，tiny-darknet是和squeezeNet正面刚的网络，详情可以看下表： 
+
+<div align=center>
+<img src="zh-cn/img/yolov3/p13.png" />
+</div>
+
+所以，有了YOLO v3，就真的用不着YOLO v2了，更用不着YOLO v1了。这也是[YOLO官方网站](https://pjreddie.com/darknet/)，在v3出来以后，就没提供v1和v2代码下载链接的原因了。
+
+
+**2.Output**
+
+对于上图而言，更值得关注的是输出张量：
+
+<div align=center>
+<img src="zh-cn/img/yolov3/p14.png" />
+</div>
+
+
+YOLO v3输出了3个不同尺度的feature map，如上图所示的y1, y2, y3。这也是v3论文中提到的为数不多的改进点：predictions across scales
+这个借鉴了FPN(feature pyramid networks)，采用多尺度来对不同size的目标进行检测，越精细的grid cell就可以检测出越精细的物体。
+y1,y2和y3的深度都是255，边长的规律是`13:26:52`
+对于COCO类别而言，有80个种类，所以每个box应该对每个种类都输出一个概率。
+
+YOLO v3设定的是每个网格单元预测3个box，所以每个box需要有`(x, y, w, h, confidence)`五个基本参数，然后还要有80个类别的概率。所以3*(5 + 80) = 255。这个255就是这么来的。（还记得yolo v1的输出张量吗？ 
+7x7x30，只能识别20类物体，而且每个cell只能预测2个box，和v3比起来就像老人机和iphoneX一样）
+v3用上采样的方法来实现这种多尺度的feature map，可以结合上面的一些图，图中concat连接的两个张量是具有一样尺度的(两处拼接分别是26x26尺度拼接和52x52尺度拼接，通过(2, 2)上采样来保证concat拼接的张量尺度相同)。作者并没有像SSD那样直接采用backbone中间层的处理结果作为feature map的输出，而是和后面网络层的上采样结果进行一个拼接之后的处理结果作为feature map。为什么这么做呢？ 我感觉是有点玄学在里面，一方面避免和其他算法做法重合，另一方面这也许是试验之后并且结果证明更好的选择，再者有可能就是因为这么做比较节省模型size的。这点的数学原理不用去管，知道作者是这么做的就对了。
+
+
+**2.5训练**
+
+我们只是输入完整的图像，并没有做其他处理。实验过程中涉及的多尺寸训练、大量数据增强和batch normalization等操作均符合标准。模型训练和测试的框架是Darknet神经网络。
+
+** Loss Function**
+
+对掌握YOLO来讲，loss function不可谓不重要。在v3的论文里没有明确提所用的损失函数，确切地说，YOLO系列论文里面只有YOLO v1明确提了损失函数的公式。对于YOLO这样一种讨喜的目标检测算法，就连损失函数都非常讨喜。在v1中使用了一种叫sum-square error的损失计算方法，就是简单的差方相加而已。想详细了解的可以看YOLO v1部分。我们知道，在目标检测任务里，有几个关键信息是需要确定的:
+
+<div align="center">
+(x,y),(w,h),class,confidence
+</div> 
+
+根据关键信息的特点可以分为上述四类，损失函数应该由各自特点确定。最后加到一起就可以组成最终的loss_function了，也就是一个loss_function搞定端到端的训练。可以从代码分析出v3的损失函数，同样也是对以上四类，不过相比于v1中简单的总方误差，还是有一些调整的：
+
+```python
+xy_loss = object_mask * box_loss_scale * K.binary_crossentropy(raw_true_xy, raw_pred[..., 0:2],
+                                                                       from_logits=True)
+wh_loss = object_mask * box_loss_scale * 0.5 * K.square(raw_true_wh - raw_pred[..., 2:4])
+confidence_loss = object_mask * K.binary_crossentropy(object_mask, raw_pred[..., 4:5], from_logits=True) + \
+                          (1 - object_mask) * K.binary_crossentropy(object_mask, raw_pred[..., 4:5],
+                                                                    from_logits=True) * ignore_mask
+class_loss = object_mask * K.binary_crossentropy(true_class_probs, raw_pred[..., 5:], from_logits=True)
+
+xy_loss = K.sum(xy_loss) / mf
+wh_loss = K.sum(wh_loss) / mf
+confidence_loss = K.sum(confidence_loss) / mf
+class_loss = K.sum(class_loss) / mf
+loss += xy_loss + wh_loss + confidence_loss + class_loss
+
+```
+
+以上是一段keras框架描述的YOLO v3 的loss_function代码。忽略恒定系数不看，可以从上述代码看出：除了w, h的损失函数依然采用总方误差之外，其他部分的损失函数用的是二值交叉熵。最后加到一起。那么这个binary_crossentropy又是个什么玩意儿呢？就是一个最简单的交叉熵而已，一般用于二分类，这里的两种二分类类别可以理解为"对和不对"这两种。关于binary_crossentropy的公式详情可参考博文:[常见的损失函数](https://blog.csdn.net/legalhighhigh/article/details/81409551)。
+
+
+#### 3.我们做了什么
+
+YOLOv3的表现非常好！请参见表3，就COCO奇怪的平均mAP成绩而言，它与SSD变体相当，但速度提高了3倍。尽管如此，它仍然比像RetinaNet这样的模型要差一点。
+
+<div align=center>
+<img src="zh-cn/img/yolov3/p15.png" />
+</div>
+
+如果仔细看这个表，我们可以发现在IOU=.5（即表中的AP50）时，YOLO v3非常强大。它几乎与RetinaNet相当，并且远高于SSD变体。这就证明了它其实是一款非常灵活的检测器，擅长为检测对象生成合适的边界框。然而，随着IOU阈值增加，YOLO v3的性能开始同步下降，这时它预测的边界框就不能做到完美对齐了。
+
+在过去，YOLO一直被用于小型对象检测。但现在我们可以预见其中的演变趋势，随着新的多尺寸预测功能上线，YOLO v3将具备更高的APS性能。但是它目前在中等尺寸或大尺寸物体上的表现还相对较差，仍需进一步的完善。
+
+当我们基于AP50指标绘制精度和速度时，我们发现YOLO v3与其他检测系统相比具有显着优势。也就是说，它的速度正在越来越快。
+
+
+#### 4.失败的尝试
+
+我们在研究YOLO v3时尝试了很多东西，以下是我们还记得的一些失败案例。
+
+**Anchor box坐标的偏移预测**。我们尝试了常规的Anchor box预测方法，比如利用线性激活将坐标x、y的偏移程度预测为边界框宽度或高度的倍数。但我们发现这种做法降低了模型的稳定性，且效果不佳。
+
+**用线性方法预测x,y，而不是使用logistic方法**。我们尝试使用线性激活来直接预测x，y的offset，而不是sigmoid激活。这降低了mAP成绩。
+
+**Focal loss**。我们尝试使用Focal loss，但它使我们的mAP降低了2点。 对于Focal loss函数试图解决的问题，YOLO v3从理论上来说已经很强大了，因为它具有单独的对象预测和条件类别预测。因此，对于大多数例子来说，类别预测没有损失？或者其他的东西？我们并不完全确定。(关于Focal Loss详见本章附录部分)
+
+**双IOU阈值和真值分配**。在训练期间，Faster RCNN用了两个IOU阈值，如果预测的边框与.7的ground truth重合，那它是个正面的结果；如果在[.3—.7]之间，则忽略；如果和.3的ground truth重合，那它就是个负面的结果。我们尝试了这种思路，但效果并不好。
+
+我们对现在的更新状况很满意，它看起来已经是最佳状态。有些技术可能会产生更好的结果，但我们还需要对它们做一些调整来稳定训练。
+
+#### 5.更新的意义
+
+YOLO v3是一个很好的检测器，它速度快，精度又高。虽然基于.3和.95的新指标，它在COCO上的成绩不如人意，但对于旧的检测指标.5 IOU，它还是非常不错的。
+
+所以为什么我们要改变指标呢？最初的COCO论文里只有这样一句含糊其词的话：一旦评估完成，就会生成评估指标结果。Russakovsky等人曾经有一份报告，说人类很难区分.3与.5的IOU：“训练人们用肉眼区别IOU值为0.3的边界框和0.5的边界框是一件非常困难的事”。[16]如果人类都难以区分这种差异，那这个指标有多重要？
+
+但也许更好的一个问题是：现在我们有了这些检测器，我们能用它们来干嘛？很多从事这方面研究的人都受雇于Google和Facebook，我想至少我们知道如果这项技术发展得完善，那他们绝对不会把它用来收集你的个人信息然后卖给……等等，你把事实说出来了！！哦哦。
+
+那么其他巨资资助计算机视觉研究的人还有军方，他们从来没有做过任何可怕的事情，比如用新技术杀死很多人……呸呸呸
+
+我有很多希望！我希望大多数人会把计算机视觉技术用于快乐的、幸福的事情上，比如计算国家公园里斑马的数量[11]，或者追踪小区附近到底有多少猫[17]。但是计算机视觉技术的应用已经步入歧途了，作为研究人员，我们有责任思考自己的工作可能带给社会的危害，并考虑怎么减轻这种危害。我们非常珍惜这个世界。
+
+最后，不要在Twitter上@我，我已经弃坑了！！！！
+
+
+**创新点**
+
++ 使用金字塔网络
++ 用逻辑回归替代softmax作为分类器
++ Darknet-53
+
+**不足**
+
++ 速度确实快了，但mAP没有明显提升，特别是IOU > 0.5时。
+
+**彩蛋**
+
+偷偷告诉你哦，那个一作Joseph Redmon，他的简历长这样~
+
+<div align=center>
+<img src="zh-cn/img/yolov3/p1.jpg" />
+</div>
+
+但他本人实际上长这样哦~
+
+<div align=center>
+<img src="zh-cn/img/yolov3/p2.jpg" />
+</div>
+
+**代码实现汇总**
+
++ 汇总
+
+	- https://github.com/amusi/YOLO-Reproduce-Summary
+
++ Tensorflow
+
+	- https://github.com/YunYang1994/tensorflow-yolov3 支持训练(514 star)
+
+	- https://github.com/mystic123/tensorflow-yolo-v3 不支持训练(446 star)
+
+	- https://github.com/maiminh1996/YOLOv3-tensorflow 支持训练(246 star)
+
++ PyTorch
+
+	- https://github.com/ayooshkathuria/pytorch-yolo-v3 不支持训练(1.5k star)
+
+	- https://github.com/eriklindernoren/PyTorch-YOLOv3 支持训练(1.3k star)
+
+	- https://github.com/ayooshkathuria/YOLO_v3_tutorial_from_scratch 不支持训练(1k star)
+
+	- https://github.com/TencentYoutuResearch/ObjectDetectionOneStageDet/tree/master/yolo 支持训练(976 star)
+
+	- https://github.com/BobLiu20/YOLOv3_PyTorch 支持训练(341 star)
+
+	- https://github.com/DeNA/PyTorch_YOLOv3 支持训练(179 star)
+
+	- https://github.com/ultralytics/yolov3 支持训练(971 star)
+
++ Keras
+
+	- https://github.com/qqwweee/keras-yolo3 支持训练(2.8k star)
+
+	- https://github.com/xiaochus/YOLOv3 不支持训练(418 star)
+
+	- https://github.com/Adamdad/keras-YOLOv3-mobilenet 支持训练(191 star)
+
++ Caffe
+
+	- https://github.com/eric612/MobileNet-YOLO 支持训练(301 star)
+
+	- https://github.com/ChenYingpeng/caffe-yolov3 不支持训练(150 star)
+
+	- https://github.com/eric612/Caffe-YOLOv3-Windows 支持训练(97 star)
+
++ MXNet
+
+	- https://github.com/dmlc/gluon-cv/tree/master/gluoncv/model_zoo/yolo 支持训练(2072 star)
+
+
+
+#### Reference
+
+[1] Analogy. Wikipedia, Mar 2018. 1
+
+[2] C.-Y. Fu, W. Liu, A. Ranga, A. Tyagi, and A. C. Berg. Dssd: Deconvolutional single shot detector
+
+[3] K. He, X. Zhang, S. Ren, and J. Sun. Deep residual learning for image recognition.
+
+[4] J. Huang, V. Rathod, C. Sun, M. Zhu, A. Korattikara, A. Fathi, I. Fischer, Z. Wojna, Y. Song, S. Guadarrama, et al. Speed/accuracy trade-offs for modern convolutional object
+
+[5] I. Krasin, T. Duerig, N. Alldrin, V. Ferrari, S. Abu-El-Haija, A. Kuznetsova, H. Rom, J. Uijlings, S. Popov, A. Veit, S. Belongie, V. Gomes, A. Gupta, C. Sun, G. Chechik, D. Cai, Z. Feng, D. Narayanan, and K. Murphy. Openimages: A public dataset for large-scale multi-label and multi-class image classification.
+
+[6] T.-Y. Lin, P. Dollar, R. Girshick, K. He, B. Hariharan, and S. Belongie. Feature pyramid networks for object detection. In Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition, pages 2117–2125, 2017. 2, 3
+
+[7] T.-Y. Lin, P. Goyal, R. Girshick, K. He, and P. Dollar. ´Focal loss for dense object detection.
+
+[8] T.-Y. Lin, M. Maire, S. Belongie, J. Hays, P. Perona, D. Ramanan, P. Dollar, and C. L. Zitnick. Microsoft coco: Common objects in context. In European conference on computer vision, pages 740–755. Springer, 2014.
+
+[9] W. Liu, D. Anguelov, D. Erhan, C. Szegedy, S. Reed, C.Y. Fu, and A. C. Berg. Ssd: Single shot multibox detector. In European conference on computer vision, pages 21–37. Springer, 2016.
+
+[10] I. Newton. Philosophiae naturalis principia mathematica. William Dawson & Sons Ltd., London, 1687.
+
+[11] J. Parham, J. Crall, C. Stewart, T. Berger-Wolf, and D. Rubenstein. Animal population censusing at scale with citizen science and photographic identification. 2017.
+
+[12] J. Redmon. Darknet: Open source neural networks in c
+
+[13] J. Redmon and A. Farhadi. Yolo9000: Better, faster, stronger. In Computer Vision and Pattern Recognition (CVPR), 2017 IEEE Conference on, pages 6517–6525. IEEE, 2017. 1, 2, 3
+
+[14] J. Redmon and A. Farhadi. Yolov3: An incremental improvement. arXiv, 2018.
+
+[15] S. Ren, K. He, R. Girshick, and J. Sun. Faster r-cnn: Towards real-time object detection with region proposal networks.
+
+[16] O. Russakovsky, L.-J. Li, and L. Fei-Fei. Best of both worlds: human-machine collaboration for object annotation. In Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition, pages 2121–2131, 2015.
+
+[17] M. Scott. Smart camera gimbal bot scanlime:027, Dec 2017.
+
+[18] A. Shrivastava, R. Sukthankar, J. Malik, and A. Gupta. Beyond skip connections: Top-down modulation for object detection.
+
+[19] C. Szegedy, S. Ioffe, V. Vanhoucke, and A. A. Alemi. Inception-v4, inception-resnet and the impact of residual connections on learning. 2017.
+
+
+### 附录： Focal Loss
+
+Focal loss主要是为了解决one-stage目标检测中正负样本比例严重失衡的问题。该损失函数降低了大量简单负样本在训练中所占的权重，也可理解为一种困难样本挖掘。
+
+**损失函数形式**
+
+Focal Loss是在交叉熵损失函数基础上进行的修改，首先回顾二分类交叉上损失：
+
+<div align=center>
+<img src="zh-cn/img/yolov3/p16.png" />
+</div>
+
+`y'`是经过激活函数的输出，所以在0-1之间。可见普通的交叉熵对于正样本而言，输出概率越大损失越小。对于负样本而言，输出概率越小则损失越小。此时的损失函数在大量简单样本的迭代过程中比较缓慢且可能无法优化至最优。那么Focal loss是怎么改进的呢？
+
+<div align=center>
+<img src="zh-cn/img/yolov3/p17.png" />
+</div>
+
+
+<div align=center>
+<img src="zh-cn/img/yolov3/p18.png" />
+</div>
+
+首先在原有的基础上加了一个因子，其中gamma>0使得减少易分类样本的损失。使得更关注于困难的、错分的样本。
+
+例如gamma为2，对于正类样本而言，预测结果为0.95肯定是简单样本，所以（1-0.95）的gamma次方就会很小，这时损失函数值就变得更小。而预测概率为0.3的样本其损失相对很大。对于负类样本而言同样，预测0.1的结果应当远比预测0.7的样本损失值要小得多。对于预测概率为0.5时，损失只减少了0.25倍，所以更加关注于这种难以区分的样本。这样减少了简单样本的影响，大量预测概率很小的样本叠加起来后的效应才可能比较有效。
+
+此外，加入平衡因子alpha，用来平衡正负样本本身的比例不均：
+
+<div align=center>
+<img src="zh-cn/img/yolov3/p19.png" />
+</div>
+
+只添加alpha虽然可以平衡正负样本的重要性，但是无法解决简单与困难样本的问题。
+
+lambda调节简单样本权重降低的速率，当lambda为0时即为交叉熵损失函数，当lambda增加时，调整因子的影响也在增加。实验发现lambda为2是最优。
+
+作者认为one-stage和two-stage的表现差异主要原因是大量前景背景类别不平衡导致。作者设计了一个简单密集型网络RetinaNet来训练在保证速度的同时达到了精度最优。在双阶段算法中，在候选框阶段，通过得分和nms筛选过滤掉了大量的负样本，然后在分类回归阶段又固定了正负样本比例，或者通过OHEM在线困难挖掘使得前景和背景相对平衡。而one-stage阶段需要产生约100k的候选位置，虽然有类似的采样，但是训练仍然被大量负样本所主导。
+
+**详细的我们将在RetinaNet中讲解**
+
+
+**Reference**
+
+[Focal Loss理解](https://www.cnblogs.com/king-lps/p/9497836.html)
+
+[Focal Loss for Dense Object Detection](https://arxiv.org/abs/1708.02002)
