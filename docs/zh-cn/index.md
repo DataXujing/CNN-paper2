@@ -1146,303 +1146,361 @@ from: <https://github.com/weiaicunzai/awesome-image-classification>
 **MegDet**
 **MegDet: A Large Mini-Batch Object Detector**
 
-intro: Peking University & Tsinghua University & Megvii Inc
-arxiv: https://arxiv.org/abs/1711.07240
-Single-Shot Refinement Neural Network for Object Detection
++ intro: Peking University & Tsinghua University & Megvii Inc
++ arxiv: https://arxiv.org/abs/1711.07240
 
-arxiv: https://arxiv.org/abs/1711.06897
-github: https://github.com/sfzhang15/RefineDet
-github: https://github.com/MTCloudVision/RefineDet-Mxnet
-Receptive Field Block Net for Accurate and Fast Object Detection
+**Single-Shot Refinement Neural Network for Object Detection**
 
-intro: RFBNet
-arxiv: https://arxiv.org/abs/1711.07767
-github: https://github.com//ruinmessi/RFBNet
-An Analysis of Scale Invariance in Object Detection - SNIP
++ arxiv: https://arxiv.org/abs/1711.06897
++ github: https://github.com/sfzhang15/RefineDet
++ github: https://github.com/MTCloudVision/RefineDet-Mxnet
 
-intro: CVPR 2018
-arxiv: https://arxiv.org/abs/1711.08189
-github: https://github.com/bharatsingh430/snip
-Feature Selective Networks for Object Detection
+**Receptive Field Block Net for Accurate and Fast Object Detection**
 
-https://arxiv.org/abs/1711.08879
++ intro: RFBNet
++ arxiv: https://arxiv.org/abs/1711.07767
++ github: https://github.com//ruinmessi/RFBNet
 
-Learning a Rotation Invariant Detector with Rotatable Bounding Box
+**An Analysis of Scale Invariance in Object Detection - SNIP**
 
-arxiv: https://arxiv.org/abs/1711.09405
-github(official, Caffe): https://github.com/liulei01/DRBox
-Scalable Object Detection for Stylized Objects
++ intro: CVPR 2018
++ arxiv: https://arxiv.org/abs/1711.08189
++ github: https://github.com/bharatsingh430/snip
 
-intro: Microsoft AI & Research Munich
-arxiv: https://arxiv.org/abs/1711.09822
-Learning Object Detectors from Scratch with Gated Recurrent Feature Pyramids
+**Feature Selective Networks for Object Detection**
 
-arxiv: https://arxiv.org/abs/1712.00886
-github: https://github.com/szq0214/GRP-DSOD
-Deep Regionlets for Object Detection
++ https://arxiv.org/abs/1711.08879
 
-keywords: region selection network, gating network
-arxiv: https://arxiv.org/abs/1712.02408
-Training and Testing Object Detectors with Virtual Images
+**Learning a Rotation Invariant Detector with Rotatable Bounding Box**
 
-intro: IEEE/CAA Journal of Automatica Sinica
-arxiv: https://arxiv.org/abs/1712.08470
-Large-Scale Object Discovery and Detector Adaptation from Unlabeled Video
++ arxiv: https://arxiv.org/abs/1711.09405
++ github(official, Caffe): https://github.com/liulei01/DRBox
 
-keywords: object mining, object tracking, unsupervised object discovery by appearance-based clustering, self-supervised detector adaptation
-arxiv: https://arxiv.org/abs/1712.08832
-Spot the Difference by Object Detection
+**Scalable Object Detection for Stylized Objects**
 
-intro: Tsinghua University & JD Group
-arxiv: https://arxiv.org/abs/1801.01051
-Localization-Aware Active Learning for Object Detection
++ intro: Microsoft AI & Research Munich
++ arxiv: https://arxiv.org/abs/1711.09822
 
-arxiv: https://arxiv.org/abs/1801.05124
-Object Detection with Mask-based Feature Encoding
+**Learning Object Detectors from Scratch with Gated Recurrent Feature Pyramids**
 
-https://arxiv.org/abs/1802.03934
++ arxiv: https://arxiv.org/abs/1712.00886
++ github: https://github.com/szq0214/GRP-DSOD
 
-LSTD: A Low-Shot Transfer Detector for Object Detection
+**Deep Regionlets for Object Detection**
 
-intro: AAAI 2018
-arxiv: https://arxiv.org/abs/1803.01529
-Domain Adaptive Faster R-CNN for Object Detection in the Wild
++ keywords: region selection network, gating network
++ arxiv: https://arxiv.org/abs/1712.02408
 
-intro: CVPR 2018. ETH Zurich & ESAT/PSI
-arxiv: https://arxiv.org/abs/1803.03243
-github(official. Caffe): https://github.com/yuhuayc/da-faster-rcnn
-Pseudo Mask Augmented Object Detection
+**Training and Testing Object Detectors with Virtual Images**
 
-https://arxiv.org/abs/1803.05858
++ intro: IEEE/CAA Journal of Automatica Sinica
++ arxiv: https://arxiv.org/abs/1712.08470
 
-Revisiting RCNN: On Awakening the Classification Power of Faster RCNN
+**Large-Scale Object Discovery and Detector Adaptation from Unlabeled Video**
 
-intro: ECCV 2018
-keywords: DCR V1
-arxiv: https://arxiv.org/abs/1803.06799
-github(official, MXNet): https://github.com/bowenc0221/Decoupled-Classification-Refinement
-Decoupled Classification Refinement: Hard False Positive Suppression for Object Detection
++ keywords: object mining, object tracking, unsupervised object discovery by appearance-based clustering, self-supervised detector adaptation
++ arxiv: https://arxiv.org/abs/1712.08832
 
-keywords: DCR V2
-arxiv: https://arxiv.org/abs/1810.04002
-github(official, MXNet): https://github.com/bowenc0221/Decoupled-Classification-Refinement
-Learning Region Features for Object Detection
+**Spot the Difference by Object Detection**
 
-intro: Peking University & MSRA
-arxiv: https://arxiv.org/abs/1803.07066
-Single-Shot Bidirectional Pyramid Networks for High-Quality Object Detection
++ intro: Tsinghua University & JD Group
++ arxiv: https://arxiv.org/abs/1801.01051
 
-intro: Singapore Management University & Zhejiang University
-arxiv: https://arxiv.org/abs/1803.08208
-Object Detection for Comics using Manga109 Annotations
 
-intro: University of Tokyo & National Institute of Informatics, Japan
-arxiv: https://arxiv.org/abs/1803.08670
-Task-Driven Super Resolution: Object Detection in Low-resolution Images
+**Localization-Aware Active Learning for Object Detection**
 
-https://arxiv.org/abs/1803.11316
++ arxiv: https://arxiv.org/abs/1801.05124
 
-Transferring Common-Sense Knowledge for Object Detection
+**Object Detection with Mask-based Feature Encoding**
 
-https://arxiv.org/abs/1804.01077
++ https://arxiv.org/abs/1802.03934
 
-Multi-scale Location-aware Kernel Representation for Object Detection
+**LSTD: A Low-Shot Transfer Detector for Object Detection**
 
-intro: CVPR 2018
-arxiv: https://arxiv.org/abs/1804.00428
-github: https://github.com/Hwang64/MLKP
-Loss Rank Mining: A General Hard Example Mining Method for Real-time Detectors
++ intro: AAAI 2018
++ arxiv: https://arxiv.org/abs/1803.01529
 
-intro: National University of Defense Technology
-arxiv: https://arxiv.org/abs/1804.04606
-DetNet: A Backbone network for Object Detection
+**Domain Adaptive Faster R-CNN for Object Detection in the Wild**
 
-intro: Tsinghua University & Megvii Inc
-arxiv: https://arxiv.org/abs/1804.06215
-Robust Physical Adversarial Attack on Faster R-CNN Object Detector
++ intro: CVPR 2018. ETH Zurich & ESAT/PSI
++ arxiv: https://arxiv.org/abs/1803.03243
++ github(official. Caffe): https://github.com/yuhuayc/da-faster-rcnn
 
-https://arxiv.org/abs/1804.05810
+**Pseudo Mask Augmented Object Detection**
 
-AdvDetPatch: Attacking Object Detectors with Adversarial Patches
++ https://arxiv.org/abs/1803.05858
 
-https://arxiv.org/abs/1806.02299
+**Revisiting RCNN: On Awakening the Classification Power of Faster RCNN**
 
-Attacking Object Detectors via Imperceptible Patches on Background
++ intro: ECCV 2018
++ keywords: DCR V1
++ arxiv: https://arxiv.org/abs/1803.06799
++ github(official, MXNet): https://github.com/bowenc0221/
 
-https://arxiv.org/abs/1809.05966
+**Decoupled-Classification-Refinement**
 
-Physical Adversarial Examples for Object Detectors
+**Decoupled Classification Refinement: Hard False Positive Suppression for Object Detection**
 
-intro: WOOT 2018
-arxiv: https://arxiv.org/abs/1807.07769
-Quantization Mimic: Towards Very Tiny CNN for Object Detection
++ keywords: DCR V2
++ arxiv: https://arxiv.org/abs/1810.04002
++ github(official, MXNet): https://github.com/bowenc0221/Decoupled-Classification-Refinement
 
-https://arxiv.org/abs/1805.02152
+**Learning Region Features for Object Detection**
 
-Object detection at 200 Frames Per Second
++ intro: Peking University & MSRA
++ arxiv: https://arxiv.org/abs/1803.07066
 
-intro: United Technologies Research Center-Ireland
-arxiv: https://arxiv.org/abs/1805.06361
-Object Detection using Domain Randomization and Generative Adversarial Refinement of Synthetic Images
+**Single-Shot Bidirectional Pyramid Networks for High-Quality Object Detection**
 
-intro: CVPR 2018 Deep Vision Workshop
-arxiv: https://arxiv.org/abs/1805.11778
-SNIPER: Efficient Multi-Scale Training
++ intro: Singapore Management University & Zhejiang University
++ arxiv: https://arxiv.org/abs/1803.08208
 
-intro: University of Maryland
-keywords: SNIPER (Scale Normalization for Image Pyramid with Efficient Resampling)
-arxiv: https://arxiv.org/abs/1805.09300
-github: https://github.com/mahyarnajibi/SNIPER
-Soft Sampling for Robust Object Detection
+**Object Detection for Comics using Manga109 Annotations**
 
-https://arxiv.org/abs/1806.06986
++ intro: University of Tokyo & National Institute of Informatics, Japan
++ arxiv: https://arxiv.org/abs/1803.08670
 
-MetaAnchor: Learning to Detect Objects with Customized Anchors
+**Task-Driven Super Resolution: Object Detection in Low-resolution Images**
 
-intro: Megvii Inc (Face++) & Fudan University
-arxiv: https://arxiv.org/abs/1807.00980
-Localization Recall Precision (LRP): A New Performance Metric for Object Detection
++ https://arxiv.org/abs/1803.11316
 
-intro: ECCV 2018. Middle East Technical University
-arxiv: https://arxiv.org/abs/1807.01696
-github: https://github.com/cancam/LRP
-Auto-Context R-CNN
+**Transferring Common-Sense Knowledge for Object Detection**
 
-intro: Rejected by ECCV18
-arxiv: https://arxiv.org/abs/1807.02842
-Pooling Pyramid Network for Object Detection
++ https://arxiv.org/abs/1804.01077
 
-intro: Google AI Perception
-arxiv: https://arxiv.org/abs/1807.03284
-Modeling Visual Context is Key to Augmenting Object Detection Datasets
+**Multi-scale Location-aware Kernel Representation for Object Detection**
 
-intro: ECCV 2018
-arxiv: https://arxiv.org/abs/1807.07428
-Dual Refinement Network for Single-Shot Object Detection
++ intro: CVPR 2018
++ arxiv: https://arxiv.org/abs/1804.00428
++ github: https://github.com/Hwang64/MLKP
 
-https://arxiv.org/abs/1807.08638
+**Loss Rank Mining: A General Hard Example Mining Method for Real-time Detectors**
 
-Acquisition of Localization Confidence for Accurate Object Detection
++ intro: National University of Defense Technology
++ arxiv: https://arxiv.org/abs/1804.04606
 
-intro: ECCV 2018
-arxiv: https://arxiv.org/abs/1807.11590
-gihtub: https://github.com/vacancy/PreciseRoIPooling
-CornerNet: Detecting Objects as Paired Keypoints
+**DetNet: A Backbone network for Object Detection**
 
-intro: ECCV 2018
-keywords: IoU-Net, PreciseRoIPooling
-arxiv: https://arxiv.org/abs/1808.01244
-github: https://github.com/umich-vl/CornerNet
-Unsupervised Hard Example Mining from Videos for Improved Object Detection
++ intro: Tsinghua University & Megvii Inc
++ arxiv: https://arxiv.org/abs/1804.06215
 
-intro: ECCV 2018
-arxiv: https://arxiv.org/abs/1808.04285
-SAN: Learning Relationship between Convolutional Features for Multi-Scale Object Detection
 
-https://arxiv.org/abs/1808.04974
+**Robust Physical Adversarial Attack on Faster R-CNN Object Detector**
 
-A Survey of Modern Object Detection Literature using Deep Learning
++ https://arxiv.org/abs/1804.05810
 
-https://arxiv.org/abs/1808.07256
+**AdvDetPatch: Attacking Object Detectors with Adversarial Patches**
 
-Tiny-DSOD: Lightweight Object Detection for Resource-Restricted Usages
++ https://arxiv.org/abs/1806.02299
 
-intro: BMVC 2018
-arxiv: https://arxiv.org/abs/1807.11013
-github: https://github.com/lyxok1/Tiny-DSOD
-Deep Feature Pyramid Reconfiguration for Object Detection
+**Attacking Object Detectors via Imperceptible Patches on Background**
 
-intro: ECCV 2018
-arxiv: https://arxiv.org/abs/1808.07993
-MDCN: Multi-Scale, Deep Inception Convolutional Neural Networks for Efficient Object Detection
++ https://arxiv.org/abs/1809.05966
 
-intro: ICPR 2018
-arxiv: https://arxiv.org/abs/1809.01791
-Recent Advances in Object Detection in the Age of Deep Convolutional Neural Networks
+**Physical Adversarial Examples for Object Detectors**
 
-https://arxiv.org/abs/1809.03193
++ intro: WOOT 2018
++ arxiv: https://arxiv.org/abs/1807.07769
 
-Deep Learning for Generic Object Detection: A Survey
+**Quantization Mimic: Towards Very Tiny CNN for Object Detection**
 
-https://arxiv.org/abs/1809.02165
++ https://arxiv.org/abs/1805.02152
 
-Training Confidence-Calibrated Classifier for Detecting Out-of-Distribution Samples
+**Object detection at 200 Frames Per Second**
 
-intro: ICLR 2018
-arxiv: https://github.com/alinlab/Confident_classifier
-ScratchDet:Exploring to Train Single-Shot Object Detectors from Scratch
++ intro: United Technologies Research Center-Ireland
++ arxiv: https://arxiv.org/abs/1805.06361
 
-arxiv: https://arxiv.org/abs/1810.08425
-github: https://github.com/KimSoybean/ScratchDet
-Fast and accurate object detection in high resolution 4K and 8K video using GPUs
+**Object Detection using Domain Randomization and Generative Adversarial Refinement of Synthetic Images**
 
-intro: Best Paper Finalist at IEEE High Performance Extreme Computing Conference (HPEC) 2018
-intro: Carnegie Mellon University
-arxiv: https://arxiv.org/abs/1810.10551
-Hybrid Knowledge Routed Modules for Large-scale Object Detection
++ intro: CVPR 2018 Deep Vision Workshop
++ arxiv: https://arxiv.org/abs/1805.11778
 
-intro: NIPS 2018
-arxiv: https://arxiv.org/abs/1810.12681
-github(official, PyTorch): https://github.com/chanyn/HKRM
-Gradient Harmonized Single-stage Detector
+**SNIPER: Efficient Multi-Scale Training**
 
-intro: AAAI 2019
-arxiv: https://arxiv.org/abs/1811.05181
-M2Det: A Single-Shot Object Detector based on Multi-Level Feature Pyramid Network
++ intro: University of Maryland
++ keywords: SNIPER (Scale Normalization for Image Pyramid with Efficient Resampling)
++ arxiv: https://arxiv.org/abs/1805.09300
++ github: https://github.com/mahyarnajibi/SNIPER
 
-intro: AAAI 2019
-arxiv: https://arxiv.org/abs/1811.04533
-github: https://github.com/qijiezhao/M2Det
-BAN: Focusing on Boundary Context for Object Detection
 
-https://arxiv.org/abs/1811.05243
+**Soft Sampling for Robust Object Detection**
 
-Multi-layer Pruning Framework for Compressing Single Shot MultiBox Detector
++ https://arxiv.org/abs/1806.06986
 
-intro: WACV 2019
-arxiv: https://arxiv.org/abs/1811.08342
-R2CNN++: Multi-Dimensional Attention Based Rotation Invariant Detector with Robust Anchor Strategy
+**MetaAnchor: Learning to Detect Objects with Customized Anchors**
 
-arxiv: https://arxiv.org/abs/1811.07126
-github: https://github.com/DetectionTeamUCAS/R2CNN-Plus-Plus_Tensorflow
-DeRPN: Taking a further step toward more general object detection
++ intro: Megvii Inc (Face++) & Fudan University
++ arxiv: https://arxiv.org/abs/1807.00980
 
-intro: AAAI 2019
-intro: South China University of Technology
-ariv: https://arxiv.org/abs/1811.06700
-github: https://github.com/HCIILAB/DeRPN
-Fast Efficient Object Detection Using Selective Attention
 
-https://arxiv.org/abs/1811.07502
+**Localization Recall Precision (LRP): A New Performance Metric for Object Detection**
 
-Sampling Techniques for Large-Scale Object Detection from Sparsely Annotated Objects
++ intro: ECCV 2018. Middle East Technical University
++ arxiv: https://arxiv.org/abs/1807.01696
++ github: https://github.com/cancam/LRP
 
-https://arxiv.org/abs/1811.10862
 
-Efficient Coarse-to-Fine Non-Local Module for the Detection of Small Objects
+**Auto-Context R-CNN**
 
-https://arxiv.org/abs/1811.12152
++ intro: Rejected by ECCV18
++ arxiv: https://arxiv.org/abs/1807.02842
 
-Deep Regionlets: Blended Representation and Deep Learning for Generic Object Detection
+**Pooling Pyramid Network for Object Detection**
 
-https://arxiv.org/abs/1811.11318
++ intro: Google AI Perception
++ arxiv: https://arxiv.org/abs/1807.03284
 
-Grid R-CNN
+**Modeling Visual Context is Key to Augmenting Object Detection Datasets**
 
-intro: SenseTime
-arxiv: https://arxiv.org/abs/1811.12030
-Transferable Adversarial Attacks for Image and Video Object Detection
++ intro: ECCV 2018
++ arxiv: https://arxiv.org/abs/1807.07428
 
-https://arxiv.org/abs/1811.12641
+**Dual Refinement Network for Single-Shot Object Detection**
 
-Anchor Box Optimization for Object Detection
++ https://arxiv.org/abs/1807.08638
 
-intro: University of Illinois at Urbana-Champaign & Microsoft Research
-arxiv: https://arxiv.org/abs/1812.00469
-AutoFocus: Efficient Multi-Scale Inference
+**Acquisition of Localization Confidence for Accurate Object Detection**
 
-intro: University of Maryland
-arxiv: https://arxiv.org/abs/1812.01600
++ intro: ECCV 2018
++ arxiv: https://arxiv.org/abs/1807.11590
++ gihtub: https://github.com/vacancy/PreciseRoIPooling
+
+**CornerNet: Detecting Objects as Paired Keypoints**
+
++ intro: ECCV 2018
++ keywords: IoU-Net, PreciseRoIPooling
++ arxiv: https://arxiv.org/abs/1808.01244
++ github: https://github.com/umich-vl/CornerNet
+
+
+**Unsupervised Hard Example Mining from Videos for Improved Object Detection**
+
++ intro: ECCV 2018
++ arxiv: https://arxiv.org/abs/1808.04285
+
+**SAN: Learning Relationship between Convolutional Features for Multi-Scale Object Detection**
+
++ https://arxiv.org/abs/1808.04974
+
+**A Survey of Modern Object Detection Literature using Deep Learning**
+
++ https://arxiv.org/abs/1808.07256
+
+**Tiny-DSOD: Lightweight Object Detection for Resource-Restricted Usages**
+
++ intro: BMVC 2018
++ arxiv: https://arxiv.org/abs/1807.11013
++ github: https://github.com/lyxok1/Tiny-DSOD
+
+**Deep Feature Pyramid Reconfiguration for Object Detection**
+
++ intro: ECCV 2018
++ arxiv: https://arxiv.org/abs/1808.07993
+
+**MDCN: Multi-Scale, Deep Inception Convolutional Neural Networks for Efficient Object Detection**
+
++ intro: ICPR 2018
++ arxiv: https://arxiv.org/abs/1809.01791
+
+**Recent Advances in Object Detection in the Age of Deep Convolutional Neural Networks**
+
++ https://arxiv.org/abs/1809.03193
+
+**Deep Learning for Generic Object Detection: A Survey**
+
++ https://arxiv.org/abs/1809.02165
+
+**Training Confidence-Calibrated Classifier for Detecting Out-of-Distribution Samples**
+
++ intro: ICLR 2018
++ arxiv: https://github.com/alinlab/Confident_classifier
+
+**ScratchDet:Exploring to Train Single-Shot Object Detectors from Scratch**
+
++ arxiv: https://arxiv.org/abs/1810.08425
++ github: https://github.com/KimSoybean/ScratchDet
+
+**Fast and accurate object detection in high resolution 4K and 8K video using GPUs**
+
++ intro: Best Paper Finalist at IEEE High Performance Extreme Computing Conference (HPEC) 2018
++ intro: Carnegie Mellon University
++ arxiv: https://arxiv.org/abs/1810.10551
+
+**Hybrid Knowledge Routed Modules for Large-scale Object Detection**
+
++ intro: NIPS 2018
++ arxiv: https://arxiv.org/abs/1810.12681
++ github(official, PyTorch): https://github.com/chanyn/HKRM
+
+**Gradient Harmonized Single-stage Detector**
+
++ intro: AAAI 2019
++ arxiv: https://arxiv.org/abs/1811.05181
+
+**M2Det: A Single-Shot Object Detector based on Multi-Level Feature Pyramid Network**
+
++ intro: AAAI 2019
++ arxiv: https://arxiv.org/abs/1811.04533
++ github: https://github.com/qijiezhao/M2Det
+
+**BAN: Focusing on Boundary Context for Object Detection**
+
++ https://arxiv.org/abs/1811.05243
+
+**Multi-layer Pruning Framework for Compressing Single Shot MultiBox Detector**
+
++ intro: WACV 2019
++ arxiv: https://arxiv.org/abs/1811.08342
+
+**R2CNN++: Multi-Dimensional Attention Based Rotation Invariant Detector with Robust Anchor Strategy**
+
++ arxiv: https://arxiv.org/abs/1811.07126
++ github: https://github.com/DetectionTeamUCAS/R2CNN-Plus-Plus_Tensorflow
+
+**DeRPN: Taking a further step toward more general object detection**
+
++ intro: AAAI 2019
++ intro: South China University of Technology
++ ariv: https://arxiv.org/abs/1811.06700
++ github: https://github.com/HCIILAB/DeRPN
+
+**Fast Efficient Object Detection Using Selective Attention**
+
++ https://arxiv.org/abs/1811.07502
+
+**Sampling Techniques for Large-Scale Object Detection from Sparsely Annotated Objects**
+
++ https://arxiv.org/abs/1811.10862
+
+**Efficient Coarse-to-Fine Non-Local Module for the Detection of Small Objects**
+
++ https://arxiv.org/abs/1811.12152
+
+**Deep Regionlets: Blended Representation and Deep Learning for Generic Object Detection**
+
++ https://arxiv.org/abs/1811.11318
+
+**Grid R-CNN**
+
++ intro: SenseTime
++ arxiv: https://arxiv.org/abs/1811.12030
+
+**Transferable Adversarial Attacks for Image and Video Object Detection**
+
++ https://arxiv.org/abs/1811.12641
+
+**Anchor Box Optimization for Object Detection**
+
++ intro: University of Illinois at Urbana-Champaign & Microsoft Research
++ arxiv: https://arxiv.org/abs/1812.00469
+
+**AutoFocus: Efficient Multi-Scale Inference**
+
++ intro: University of Maryland
++ arxiv: https://arxiv.org/abs/1812.01600
+
+
 Few-shot Object Detection via Feature Reweighting
 
 https://arxiv.org/abs/1812.01866

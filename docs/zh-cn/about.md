@@ -25,6 +25,6 @@
 |2019-03-21            |SENet,ResNeXt,目标检测资源 |
 |2019-03-22            |YOLO V2, YOLO9000         |
 |2019-03-23            |YOLO V3                   | 
-|2019-03-24            |MobileNet V1,V2,Xception  |
-
-
+|2019-03-30            |MobileNet V1,V2,Xception  |
+|2019-03-31            |MobileNet V1,V2           |
+|2019-04-01(暂)        |Mask R-CNN                |
