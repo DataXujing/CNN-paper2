@@ -8,10 +8,11 @@
 
 + 全景分割（panoptic segmentation）
 
+Reference:
 
-<https://mp.weixin.qq.com/s/PQaB72lkcM-GT9c2VpjboQ>
+[1] <https://mp.weixin.qq.com/s/PQaB72lkcM-GT9c2VpjboQ>
 
-<https://github.com/mrgloom/awesome-semantic-segmentation>
+[2] <https://github.com/mrgloom/awesome-semantic-segmentation>
 
 ------
 
@@ -19,6 +20,14 @@
 
 
 主要有：U-Net、SegNet、DeepLab系列、FCN、ENet、ICNet、ShelfNet、BiseNet、DFN和CCNet等网络
+
+#### FCN:Fully Convolutional Networks for Semantic Segmentation
+
+
+
+
+
+
 
 ------
 

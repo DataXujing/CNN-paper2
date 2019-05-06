@@ -1,6 +1,6 @@
 ## 神经风格转换
 
-### 1.Visualizing and Understanding Convolutional NetWorks
+### 1.Visualizing and Understanding Convolutional NetWorks(ZFNet)
 
 ------
 

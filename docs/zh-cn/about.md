@@ -27,4 +27,6 @@
 |2019-03-23            |YOLO V3                   | 
 |2019-03-30            |MobileNet V1,V2,Xception  |
 |2019-03-31            |MobileNet V1,V2           |
-|2019-04-01(暂)        |Mask R-CNN                |
+|2019-05-01            |ShuffleNet V1,v2          |
+|2019-05-05            |SqueezeNet                |
+|2019-05-06            |EffNet                    |
