@@ -1501,248 +1501,289 @@ from: <https://github.com/weiaicunzai/awesome-image-classification>
 + arxiv: https://arxiv.org/abs/1812.01600
 
 
-Few-shot Object Detection via Feature Reweighting
+**Few-shot Object Detection via Feature Reweighting**
 
-https://arxiv.org/abs/1812.01866
++ https://arxiv.org/abs/1812.01866
 
-Practical Adversarial Attack Against Object Detector
++ Practical Adversarial Attack Against Object Detector
 
-https://arxiv.org/abs/1812.10217
++ https://arxiv.org/abs/1812.10217
 
-Learning Efficient Detector with Semi-supervised Adaptive Distillation
+**Learning Efficient Detector with Semi-supervised Adaptive Distillation**
 
-intro: SenseTime Research
-arxiv: https://arxiv.org/abs/1901.00366
-github: https://github.com/Tangshitao/Semi-supervised-Adaptive-Distillation
-Scale-Aware Trident Networks for Object Detection
++ intro: SenseTime Research
++ arxiv: https://arxiv.org/abs/1901.00366
++ github: https://github.com/Tangshitao/Semi-supervised-Adaptive-Distillation
 
-intro: University of Chinese Academy of Sciences & TuSimple
-arxiv: https://arxiv.org/abs/1901.01892
-github: https://github.com/TuSimple/simpledet
-Region Proposal by Guided Anchoring
+**Scale-Aware Trident Networks for Object Detection**
 
-intro: CUHK - SenseTime Joint Lab & Amazon Rekognition & Nanyang Technological University
-arxiv: https://arxiv.org/abs/1901.03278
-Consistent Optimization for Single-Shot Object Detection
++ intro: University of Chinese Academy of Sciences & TuSimple
++ arxiv: https://arxiv.org/abs/1901.01892
++ github: https://github.com/TuSimple/simpledet
 
-arxiv: https://arxiv.org/abs/1901.06563
-blog: https://zhuanlan.zhihu.com/p/55416312
-Bottom-up Object Detection by Grouping Extreme and Center Points
+**Region Proposal by Guided Anchoring**
 
-keywords: ExtremeNet
-arxiv: https://arxiv.org/abs/1901.08043
-github: https://github.com/xingyizhou/ExtremeNet
-A Single-shot Object Detector with Feature Aggragation and Enhancement
++ intro: CUHK - SenseTime Joint Lab & Amazon Rekognition & Nanyang Technological University
++ arxiv: https://arxiv.org/abs/1901.03278
 
-https://arxiv.org/abs/1902.02923
 
-Bag of Freebies for Training Object Detection Neural Networks
+**Consistent Optimization for Single-Shot Object Detection**
 
-intro: Amazon Web Services
-arxiv: https://arxiv.org/abs/1902.04103
-Non-Maximum Suppression (NMS)
-End-to-End Integration of a Convolutional Network, Deformable Parts Model and Non-Maximum Suppression
++ arxiv: https://arxiv.org/abs/1901.06563
++ blog: https://zhuanlan.zhihu.com/p/55416312
 
-intro: CVPR 2015
-arxiv: http://arxiv.org/abs/1411.5309
-paper: http://www.cv-foundation.org/openaccess/content_cvpr_2015/papers/Wan_End-to-End_Integration_of_2015_CVPR_paper.pdf
-A convnet for non-maximum suppression
+**Bottom-up Object Detection by Grouping Extreme and Center Points**
 
-arxiv: http://arxiv.org/abs/1511.06437
-Improving Object Detection With One Line of Code
-
-Soft-NMS – Improving Object Detection With One Line of Code
++ keywords: ExtremeNet
++ arxiv: https://arxiv.org/abs/1901.08043
++ github: https://github.com/xingyizhou/ExtremeNet
 
-intro: ICCV 2017. University of Maryland
-keywords: Soft-NMS
-arxiv: https://arxiv.org/abs/1704.04503
-github: https://github.com/bharatsingh430/soft-nms
-Softer-NMS: Rethinking Bounding Box Regression for Accurate Object Detection
-
-intro: CMU & Megvii Inc. (Face++)
-arxiv: https://arxiv.org/abs/1809.08545
-github: https://github.com/yihui-he/softer-NMS
-Learning non-maximum suppression
+**A Single-shot Object Detector with Feature Aggragation and Enhancement**
 
-intro: CVPR 2017
-project page: https://www.mpi-inf.mpg.de/departments/computer-vision-and-multimodal-computing/research/object-recognition-and-scene-understanding/learning-nms/
-arxiv: https://arxiv.org/abs/1705.02950
-github: https://github.com/hosang/gossipnet
-Relation Networks for Object Detection
++ https://arxiv.org/abs/1902.02923
 
-intro: CVPR 2018 oral
-arxiv: https://arxiv.org/abs/1711.11575
-github(official, MXNet): https://github.com/msracver/Relation-Networks-for-Object-Detection
-Learning Pairwise Relationship for Multi-object Detection in Crowded Scenes
+**Bag of Freebies for Training Object Detection Neural Networks**
 
-keywords: Pairwise-NMS
-arxiv: https://arxiv.org/abs/1901.03796
-Daedalus: Breaking Non-Maximum Suppression in Object Detection via Adversarial Examples
++ intro: Amazon Web Services
++ arxiv: https://arxiv.org/abs/1902.04103
 
-https://arxiv.org/abs/1902.02067
+**Non-Maximum Suppression (NMS)
+End-to-End Integration of a Convolutional Network, Deformable Parts Model and Non-Maximum Suppression**
 
-Adversarial Examples
-Adversarial Examples that Fool Detectors
++ intro: CVPR 2015
++ arxiv: http://arxiv.org/abs/1411.5309
++ paper: http://www.cv-foundation.org/openaccess/content_cvpr_2015/papers/Wan_End-to-End_Integration_of_2015_CVPR_paper.pdf
 
-intro: University of Illinois
-arxiv: https://arxiv.org/abs/1712.02494
-Adversarial Examples Are Not Easily Detected: Bypassing Ten Detection Methods
+**A convnet for non-maximum suppression**
 
-project page: http://nicholas.carlini.com/code/nn_breaking_detection/
-arxiv: https://arxiv.org/abs/1705.07263
-github: https://github.com/carlini/nn_breaking_detection
-Weakly Supervised Object Detection
-Track and Transfer: Watching Videos to Simulate Strong Human Supervision for Weakly-Supervised Object Detection
++ arxiv: http://arxiv.org/abs/1511.06437
 
-intro: CVPR 2016
-arxiv: http://arxiv.org/abs/1604.05766
-Weakly supervised object detection using pseudo-strong labels
+**Soft-NMS – Improving Object Detection With One Line of Code**
 
-arxiv: http://arxiv.org/abs/1607.04731
-Saliency Guided End-to-End Learning for Weakly Supervised Object Detection
++ intro: ICCV 2017. University of Maryland
++ keywords: Soft-NMS
++ arxiv: https://arxiv.org/abs/1704.04503
++ github: https://github.com/bharatsingh430/soft-nms
 
-intro: IJCAI 2017
-arxiv: https://arxiv.org/abs/1706.06768
-Visual and Semantic Knowledge Transfer for Large Scale Semi-supervised Object Detection
+**Softer-NMS: Rethinking Bounding Box Regression for Accurate Object Detection**
 
-intro: TPAMI 2017. National Institutes of Health (NIH) Clinical Center
-arxiv: https://arxiv.org/abs/1801.03145
-Video Object Detection
-Learning Object Class Detectors from Weakly Annotated Video
++ intro: CMU & Megvii Inc. (Face++)
++ arxiv: https://arxiv.org/abs/1809.08545
++ github: https://github.com/yihui-he/softer-NMS
 
-intro: CVPR 2012
-paper: https://www.vision.ee.ethz.ch/publications/papers/proceedings/eth_biwi_00905.pdf
-Analysing domain shift factors between videos and images for object detection
 
-arxiv: https://arxiv.org/abs/1501.01186
-Video Object Recognition
+**Learning non-maximum suppression**
 
-slides: http://vision.princeton.edu/courses/COS598/2015sp/slides/VideoRecog/Video%20Object%20Recognition.pptx
-Deep Learning for Saliency Prediction in Natural Video
++ intro: CVPR 2017
++ project page: https://www.mpi-inf.mpg.de/departments/computer-vision-and-multimodal-computing/research/object-recognition-and-scene-understanding/learning-nms/
++ arxiv: https://arxiv.org/abs/1705.02950
++ github: https://github.com/hosang/gossipnet
 
-intro: Submitted on 12 Jan 2016
-keywords: Deep learning, saliency map, optical flow, convolution network, contrast features
-paper: https://hal.archives-ouvertes.fr/hal-01251614/document
-T-CNN: Tubelets with Convolutional Neural Networks for Object Detection from Videos
 
-intro: Winning solution in ILSVRC2015 Object Detection from Video(VID) Task
-arxiv: http://arxiv.org/abs/1604.02532
-github: https://github.com/myfavouritekk/T-CNN
-Object Detection from Video Tubelets with Convolutional Neural Networks
+**Relation Networks for Object Detection**
 
-intro: CVPR 2016 Spotlight paper
-arxiv: https://arxiv.org/abs/1604.04053
-paper: http://www.ee.cuhk.edu.hk/~wlouyang/Papers/KangVideoDet_CVPR16.pdf
-gihtub: https://github.com/myfavouritekk/vdetlib
-Object Detection in Videos with Tubelets and Multi-context Cues
++ intro: CVPR 2018 oral
++ arxiv: https://arxiv.org/abs/1711.11575
++ github(official, MXNet): https://github.com/msracver/Relation-Networks-for-Object-Detection
 
-intro: SenseTime Group
-slides: http://www.ee.cuhk.edu.hk/~xgwang/CUvideo.pdf
-slides: http://image-net.org/challenges/talks/Object%20Detection%20in%20Videos%20with%20Tubelets%20and%20Multi-context%20Cues%20-%20Final.pdf
-Context Matters: Refining Object Detection in Video with Recurrent Neural Networks
+**Learning Pairwise Relationship for Multi-object Detection in Crowded Scenes**
 
-intro: BMVC 2016
-keywords: pseudo-labeler
-arxiv: http://arxiv.org/abs/1607.04648
-paper: http://vision.cornell.edu/se3/wp-content/uploads/2016/07/video_object_detection_BMVC.pdf
-CNN Based Object Detection in Large Video Images
++ keywords: Pairwise-NMS
++ arxiv: https://arxiv.org/abs/1901.03796
 
-intro: WangTao @ 爱奇艺
-keywords: object retrieval, object detection, scene classification
-slides: http://on-demand.gputechconf.com/gtc/2016/presentation/s6362-wang-tao-cnn-based-object-detection-large-video-images.pdf
-Object Detection in Videos with Tubelet Proposal Networks
+**Daedalus: Breaking Non-Maximum Suppression in Object Detection via Adversarial Examples**
 
-arxiv: https://arxiv.org/abs/1702.06355
-Flow-Guided Feature Aggregation for Video Object Detection
++ https://arxiv.org/abs/1902.02067
 
-intro: MSRA
-arxiv: https://arxiv.org/abs/1703.10025
-Video Object Detection using Faster R-CNN
+**Adversarial Examples that Fool Detectors**
 
-blog: http://andrewliao11.github.io/object_detection/faster_rcnn/
-github: https://github.com/andrewliao11/py-faster-rcnn-imagenet
-Improving Context Modeling for Video Object Detection and Tracking
++ intro: University of Illinois
++ arxiv: https://arxiv.org/abs/1712.02494
 
-http://image-net.org/challenges/talks_2017/ilsvrc2017_short(poster).pdf
+**Adversarial Examples Are Not Easily Detected: Bypassing Ten Detection Methods**
 
-Temporal Dynamic Graph LSTM for Action-driven Video Object Detection
++ project page: http://nicholas.carlini.com/code/nn_breaking_detection/
++ arxiv: https://arxiv.org/abs/1705.07263
++ github: https://github.com/carlini/nn_breaking_detection
 
-intro: ICCV 2017
-arxiv: https://arxiv.org/abs/1708.00666
-Mobile Video Object Detection with Temporally-Aware Feature Maps
+**Weakly Supervised Object Detection
+Track and Transfer: Watching Videos to Simulate Strong Human Supervision for Weakly-Supervised Object Detection**
 
-https://arxiv.org/abs/1711.06368
++ intro: CVPR 2016
++ arxiv: http://arxiv.org/abs/1604.05766
 
-Towards High Performance Video Object Detection
+**Weakly supervised object detection using pseudo-strong labels**
 
-https://arxiv.org/abs/1711.11577
++ arxiv: http://arxiv.org/abs/1607.04731
 
-Impression Network for Video Object Detection
+**Saliency Guided End-to-End Learning for Weakly Supervised Object Detection**
 
-https://arxiv.org/abs/1712.05896
++ intro: IJCAI 2017
++ arxiv: https://arxiv.org/abs/1706.06768
 
-Spatial-Temporal Memory Networks for Video Object Detection
+**Visual and Semantic Knowledge Transfer for Large Scale Semi-supervised Object Detection**
 
-https://arxiv.org/abs/1712.06317
++ intro: TPAMI 2017. National Institutes of Health (NIH) Clinical Center
++ arxiv: https://arxiv.org/abs/1801.03145
 
-3D-DETNet: a Single Stage Video-Based Vehicle Detector
+**Video Object Detection
+Learning Object Class Detectors from Weakly Annotated Video**
 
-https://arxiv.org/abs/1801.01769
++ intro: CVPR 2012
++ paper: https://www.vision.ee.ethz.ch/publications/papers/proceedings/eth_biwi_00905.pdf
 
-Object Detection in Videos by Short and Long Range Object Linking
+**Analysing domain shift factors between videos and images for object detection**
 
-https://arxiv.org/abs/1801.09823
++ arxiv: https://arxiv.org/abs/1501.01186
 
-Object Detection in Video with Spatiotemporal Sampling Networks
+**Video Object Recognition**
 
-intro: University of Pennsylvania, 2Dartmouth College
-arxiv: https://arxiv.org/abs/1803.05549
-Towards High Performance Video Object Detection for Mobiles
++ slides: http://vision.princeton.edu/courses/COS598/2015sp/slides/VideoRecog/Video%20Object%20Recognition.pptx
 
-intro: Microsoft Research Asia
-arxiv: https://arxiv.org/abs/1804.05830
-Optimizing Video Object Detection via a Scale-Time Lattice
+**Deep Learning for Saliency Prediction in Natural Video**
 
-intro: CVPR 2018
-project page: http://mmlab.ie.cuhk.edu.hk/projects/ST-Lattice/
-arxiv: https://arxiv.org/abs/1804.05472
-github: https://github.com/hellock/scale-time-lattice
-Pack and Detect: Fast Object Detection in Videos Using Region-of-Interest Packing
++ intro: Submitted on 12 Jan 2016
++ keywords: Deep learning, saliency map, optical flow, convolution network, contrast features
++ paper: https://hal.archives-ouvertes.fr/hal-01251614/document
 
-https://arxiv.org/abs/1809.01701
+**T-CNN: Tubelets with Convolutional Neural Networks for Object Detection from Videos**
 
-Fast Object Detection in Compressed Video
++ intro: Winning solution in ILSVRC2015 Object Detection from Video(VID) Task
++ arxiv: http://arxiv.org/abs/1604.02532
++ github: https://github.com/myfavouritekk/T-CNN
 
-https://arxiv.org/abs/1811.11057
+**Object Detection from Video Tubelets with Convolutional Neural Networks**
 
-Tube-CNN: Modeling temporal evolution of appearance for object detection in video
++ intro: CVPR 2016 Spotlight paper
++ arxiv: https://arxiv.org/abs/1604.04053
++ paper: http://www.ee.cuhk.edu.hk/~wlouyang/Papers/KangVideoDet_CVPR16.pdf
++ gihtub: https://github.com/myfavouritekk/vdetlib
 
-intro: INRIA/ENS
-arxiv: https://arxiv.org/abs/1812.02619
-AdaScale: Towards Real-time Video Object Detection Using Adaptive Scaling
+**Object Detection in Videos with Tubelets and Multi-context Cues**
 
-intro: SysML 2019 oral
-arxiv: https://arxiv.org/abs/1902.02910
-Object Detection on Mobile Devices
-Pelee: A Real-Time Object Detection System on Mobile Devices
++ intro: SenseTime Group
++ slides: http://www.ee.cuhk.edu.hk/~xgwang/CUvideo.pdf
++ slides: http://image-net.org/challenges/talks/Object%20Detection%20in%20Videos%20with%20Tubelets%20and%20Multi-context%20Cues%20-%20Final.pdf
 
-intro: ICLR 2018 workshop track
-intro: based on the SSD
-arxiv: https://arxiv.org/abs/1804.06882
-github: https://github.com/Robert-JunWang/Pelee
-Object Detection in 3D
-Vote3Deep: Fast Object Detection in 3D Point Clouds Using Efficient Convolutional Neural Networks
+**Context Matters: Refining Object Detection in Video with Recurrent Neural Networks**
 
-arxiv: https://arxiv.org/abs/1609.06666
-Complex-YOLO: Real-time 3D Object Detection on Point Clouds
++ intro: BMVC 2016
++ keywords: pseudo-labeler
++ arxiv: http://arxiv.org/abs/1607.04648
++ paper: http://vision.cornell.edu/se3/wp-content/uploads/2016/07/video_object_detection_BMVC.pdf
 
-intro: Valeo Schalter und Sensoren GmbH & Ilmenau University of Technology
-arxiv: https://arxiv.org/abs/1803.06199
-Focal Loss in 3D Object Detection
+**CNN Based Object Detection in Large Video Images**
 
-arxiv: https://arxiv.org/abs/1809.06065
-github: https://github.com/pyun-ram/FL3D
-3D Object Detection Using Scale Invariant and Feature Reweighting Networks
++ intro: WangTao @ 爱奇艺
++ keywords: object retrieval, object detection, scene classification
++ slides: http://on-demand.gputechconf.com/gtc/2016/presentation/s6362-wang-tao-cnn-based-object-detection-large-video-images.pdf
+
+**Object Detection in Videos with Tubelet Proposal Networks**
+
++ arxiv: https://arxiv.org/abs/1702.06355
+
+**Flow-Guided Feature Aggregation for Video Object Detection**
+
++ intro: MSRA
++ arxiv: https://arxiv.org/abs/1703.10025
+
+**Video Object Detection using Faster R-CNN**
+
++ blog: http://andrewliao11.github.io/object_detection/faster_rcnn/
++ github: https://github.com/andrewliao11/py-faster-rcnn-imagenet
+
+**Improving Context Modeling for Video Object Detection and Tracking**
+
++ http://image-net.org/challenges/talks_2017/ilsvrc2017_short(poster).pdf
+
+**Temporal Dynamic Graph LSTM for Action-driven Video Object Detection**
+
++ intro: ICCV 2017
++ arxiv: https://arxiv.org/abs/1708.00666
+
+**Mobile Video Object Detection with Temporally-Aware Feature Maps**
+
++ https://arxiv.org/abs/1711.06368
+
+**Towards High Performance Video Object Detection**
+
++ https://arxiv.org/abs/1711.11577
+
+**Impression Network for Video Object Detection**
+
++ https://arxiv.org/abs/1712.05896
+
+**Spatial-Temporal Memory Networks for Video Object Detection**
+
++ https://arxiv.org/abs/1712.06317
+
+**3D-DETNet: a Single Stage Video-Based Vehicle Detector**
+
++ https://arxiv.org/abs/1801.01769
+
+**Object Detection in Videos by Short and Long Range Object Linking**
+
++ https://arxiv.org/abs/1801.09823
+
+**Object Detection in Video with Spatiotemporal Sampling Networks**
+
++ intro: University of Pennsylvania, 2Dartmouth College
++ arxiv: https://arxiv.org/abs/1803.05549
+
+**Towards High Performance Video Object Detection for Mobiles**
+
++ intro: Microsoft Research Asia
++ arxiv: https://arxiv.org/abs/1804.05830
+
+**Optimizing Video Object Detection via a Scale-Time Lattice**
+
++ intro: CVPR 2018
++ project page: http://mmlab.ie.cuhk.edu.hk/projects/ST-Lattice/
++ arxiv: https://arxiv.org/abs/1804.05472
++ github: https://github.com/hellock/scale-time-lattice
+
+**Pack and Detect: Fast Object Detection in Videos Using Region-of-Interest Packing**
+
++ https://arxiv.org/abs/1809.01701
+
+**Fast Object Detection in Compressed Video**
+
++ https://arxiv.org/abs/1811.11057
+
+**Tube-CNN: Modeling temporal evolution of appearance for object detection in video**
+
++ intro: INRIA/ENS
++ arxiv: https://arxiv.org/abs/1812.02619
+
+**AdaScale: Towards Real-time Video Object Detection Using Adaptive Scaling**
+
++ intro: SysML 2019 oral
++ arxiv: https://arxiv.org/abs/1902.02910
+
+**Object Detection on Mobile Devices
+Pelee: A Real-Time Object Detection System on Mobile Devices**
+
++ intro: ICLR 2018 workshop track
++ intro: based on the SSD
++ arxiv: https://arxiv.org/abs/1804.06882
++ github: https://github.com/Robert-JunWang/Pelee
+
+**Object Detection in 3D
+Vote3Deep: Fast Object Detection in 3D Point Clouds Using Efficient Convolutional Neural Networks**
+
++ arxiv: https://arxiv.org/abs/1609.06666
+
+**Complex-YOLO: Real-time 3D Object Detection on Point Clouds**
+
++ intro: Valeo Schalter und Sensoren GmbH & Ilmenau University of Technology
++ arxiv: https://arxiv.org/abs/1803.06199
+
+**Focal Loss in 3D Object Detection**
+
++ arxiv: https://arxiv.org/abs/1809.06065
++ github: https://github.com/pyun-ram/FL3D
+
+**3D Object Detection Using Scale Invariant and Feature Reweighting Networks**
 
 intro: AAAI 2019
 arxiv: https://arxiv.org/abs/1901.02237
