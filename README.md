@@ -9,7 +9,7 @@ HomePage: [https://dataxujing.github.io/](https://dataxujing.github.io/)
 关于CNN的基础知识及相关理论推导可以参考：<https://dataxujing.github.io/深度学习之CNN/>
 
 <div align=center>
-<img src="zh-cn/img/index/cnn_hist.png" />
+<img src="./zh-cn/img/index/cnn_hist.png" />
 </div>
 
 ### 目录
