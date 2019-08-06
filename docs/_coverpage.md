@@ -1,6 +1,7 @@
 ![logo](_media/icon.svg)
 
 # 深度卷积神经网络教程
+<!-- ## DeepLearning-CNN -->
 
 > 详细的深度卷积网络及其应用的教程
 

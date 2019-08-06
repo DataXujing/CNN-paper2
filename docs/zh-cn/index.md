@@ -1785,225 +1785,260 @@ Vote3Deep: Fast Object Detection in 3D Point Clouds Using Efficient Convolutiona
 
 **3D Object Detection Using Scale Invariant and Feature Reweighting Networks**
 
-intro: AAAI 2019
-arxiv: https://arxiv.org/abs/1901.02237
-** 3D Backbone Network for 3D Object Detection**
++ intro: AAAI 2019
++ arxiv: https://arxiv.org/abs/1901.02237
 
-https://arxiv.org/abs/1901.08373
+**3D Backbone Network for 3D Object Detection**
 
-Object Detection on RGB-D
-Learning Rich Features from RGB-D Images for Object Detection and Segmentation
++ https://arxiv.org/abs/1901.08373
 
-arxiv: http://arxiv.org/abs/1407.5736
-Differential Geometry Boosts Convolutional Neural Networks for Object Detection
+**Object Detection on RGB-D
+Learning Rich Features from RGB-D Images for Object Detection and Segmentation**
 
-intro: CVPR 2016
-paper: http://www.cv-foundation.org/openaccess/content_cvpr_2016_workshops/w23/html/Wang_Differential_Geometry_Boosts_CVPR_2016_paper.html
-A Self-supervised Learning System for Object Detection using Physics Simulation and Multi-view Pose Estimation
++ arxiv: http://arxiv.org/abs/1407.5736
 
-https://arxiv.org/abs/1703.03347
+**Differential Geometry Boosts Convolutional Neural Networks for Object Detection**
 
-Cross-Modal Attentional Context Learning for RGB-D Object Detection
++ intro: CVPR 2016
++ paper: http://www.cv-foundation.org/openaccess/content_cvpr_2016_workshops/w23/html/Wang_Differential_Geometry_Boosts_CVPR_2016_paper.html
 
-intro: IEEE Transactions on Image Processing
-arxiv: https://arxiv.org/abs/1810.12829
-Zero-Shot Object Detection
-Zero-Shot Detection
+**A Self-supervised Learning System for Object Detection using Physics Simulation and Multi-view Pose Estimation**
 
-intro: Australian National University
-keywords: YOLO
-arxiv: https://arxiv.org/abs/1803.07113
-Zero-Shot Object Detection
++ https://arxiv.org/abs/1703.03347
 
-https://arxiv.org/abs/1804.04340
+**Cross-Modal Attentional Context Learning for RGB-D Object Detection**
 
-Zero-Shot Object Detection: Learning to Simultaneously Recognize and Localize Novel Concepts
++ intro: IEEE Transactions on Image Processing
++ arxiv: https://arxiv.org/abs/1810.12829
 
-intro: Australian National University
-arxiv: https://arxiv.org/abs/1803.06049
-Zero-Shot Object Detection by Hybrid Region Embedding
+**Zero-Shot Object Detection**
+**Zero-Shot Detection**
 
-intro: Middle East Technical University & Hacettepe University
-arxiv: https://arxiv.org/abs/1805.06157
-Salient Object Detection
-This task involves predicting the salient regions of an image given by human eye fixations.
++ intro: Australian National University
++ keywords: YOLO
++ arxiv: https://arxiv.org/abs/1803.07113
 
-Best Deep Saliency Detection Models (CVPR 2016 & 2015)
+**Zero-Shot Object Detection**
 
-http://i.cs.hku.hk/~yzyu/vision.html
++ https://arxiv.org/abs/1804.04340
 
-Large-scale optimization of hierarchical features for saliency prediction in natural images
+**Zero-Shot Object Detection: Learning to Simultaneously Recognize and Localize Novel Concepts**
 
-paper: http://coxlab.org/pdfs/cvpr2014_vig_saliency.pdf
-Predicting Eye Fixations using Convolutional Neural Networks
++ intro: Australian National University
++ arxiv: https://arxiv.org/abs/1803.06049
 
-paper: http://www.escience.cn/system/file?fileId=72648
-Saliency Detection by Multi-Context Deep Learning
+**Zero-Shot Object Detection by Hybrid Region Embedding**
 
-paper: http://www.cv-foundation.org/openaccess/content_cvpr_2015/papers/Zhao_Saliency_Detection_by_2015_CVPR_paper.pdf
-DeepSaliency: Multi-Task Deep Neural Network Model for Salient Object Detection
++ intro: Middle East Technical University & Hacettepe University
++ arxiv: https://arxiv.org/abs/1805.06157
 
-arxiv: http://arxiv.org/abs/1510.05484
-SuperCNN: A Superpixelwise Convolutional Neural Network for Salient Object Detection
+**Salient Object Detection
+This task involves predicting the salient regions of an image given by human eye fixations.**
 
-paper: www.shengfenghe.com/supercnn-a-superpixelwise-convolutional-neural-network-for-salient-object-detection.html
-Shallow and Deep Convolutional Networks for Saliency Prediction
++ Best Deep Saliency Detection Models (CVPR 2016 & 2015)
 
-intro: CVPR 2016
-arxiv: http://arxiv.org/abs/1603.00845
-github: https://github.com/imatge-upc/saliency-2016-cvpr
-Recurrent Attentional Networks for Saliency Detection
++ http://i.cs.hku.hk/~yzyu/vision.html
 
-intro: CVPR 2016. recurrent attentional convolutional-deconvolution network (RACDNN)
-arxiv: http://arxiv.org/abs/1604.03227
-Two-Stream Convolutional Networks for Dynamic Saliency Prediction
+**Large-scale optimization of hierarchical features for saliency prediction in natural images**
 
-arxiv: http://arxiv.org/abs/1607.04730
-Unconstrained Salient Object Detection
++ paper: http://coxlab.org/pdfs/cvpr2014_vig_saliency.pdf
 
-Unconstrained Salient Object Detection via Proposal Subset Optimization
+**Predicting Eye Fixations using Convolutional Neural Networks**
 
++ paper: http://www.escience.cn/system/file?fileId=72648
 
+**Saliency Detection by Multi-Context Deep Learning**
 
-intro: CVPR 2016
-project page: http://cs-people.bu.edu/jmzhang/sod.html
-paper: http://cs-people.bu.edu/jmzhang/SOD/CVPR16SOD_camera_ready.pdf
-github: https://github.com/jimmie33/SOD
-caffe model zoo: https://github.com/BVLC/caffe/wiki/Model-Zoo#cnn-object-proposal-models-for-salient-object-detection
-DHSNet: Deep Hierarchical Saliency Network for Salient Object Detection
++ paper: http://www.cv-foundation.org/openaccess/content_cvpr_2015/papers/Zhao_Saliency_Detection_by_2015_CVPR_paper.pdf
 
-paper: http://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/Liu_DHSNet_Deep_Hierarchical_CVPR_2016_paper.pdf
-Salient Object Subitizing
+**DeepSaliency: Multi-Task Deep Neural Network Model for Salient Object Detection**
 
++ arxiv: http://arxiv.org/abs/1510.05484
 
+**SuperCNN: A Superpixelwise Convolutional Neural Network for Salient Object Detection**
 
-intro: CVPR 2015
-intro: predicting the existence and the number of salient objects in an image using holistic cues
-project page: http://cs-people.bu.edu/jmzhang/sos.html
-arxiv: http://arxiv.org/abs/1607.07525
-paper: http://cs-people.bu.edu/jmzhang/SOS/SOS_preprint.pdf
-caffe model zoo: https://github.com/BVLC/caffe/wiki/Model-Zoo#cnn-models-for-salient-object-subitizing
-Deeply-Supervised Recurrent Convolutional Neural Network for Saliency Detection
++ paper: www.shengfenghe.com/supercnn-a-superpixelwise-convolutional-neural-network-for-salient-object-detection.html
 
-intro: ACMMM 2016. deeply-supervised recurrent convolutional neural network (DSRCNN)
-arxiv: http://arxiv.org/abs/1608.05177
-Saliency Detection via Combining Region-Level and Pixel-Level Predictions with CNNs
+**Shallow and Deep Convolutional Networks for Saliency Prediction**
 
-intro: ECCV 2016
-arxiv: http://arxiv.org/abs/1608.05186
-Edge Preserving and Multi-Scale Contextual Neural Network for Salient Object Detection
++ intro: CVPR 2016
++ arxiv: http://arxiv.org/abs/1603.00845
++ github: https://github.com/imatge-upc/saliency-2016-cvpr
 
-arxiv: http://arxiv.org/abs/1608.08029
-A Deep Multi-Level Network for Saliency Prediction
+**Recurrent Attentional Networks for Saliency Detection**
 
-arxiv: http://arxiv.org/abs/1609.01064
-Visual Saliency Detection Based on Multiscale Deep CNN Features
++ intro: CVPR 2016. recurrent attentional convolutional-deconvolution network (RACDNN)
++ arxiv: http://arxiv.org/abs/1604.03227
 
-intro: IEEE Transactions on Image Processing
-arxiv: http://arxiv.org/abs/1609.02077
-A Deep Spatial Contextual Long-term Recurrent Convolutional Network for Saliency Detection
+**Two-Stream Convolutional Networks for Dynamic Saliency Prediction**
 
-intro: DSCLRCN
-arxiv: https://arxiv.org/abs/1610.01708
-Deeply supervised salient object detection with short connections
++ arxiv: http://arxiv.org/abs/1607.04730
 
-intro: IEEE TPAMI 2018 (IEEE CVPR 2017)
-arxiv: https://arxiv.org/abs/1611.04849
-github(official, Caffe): https://github.com/Andrew-Qibin/DSS
-github(Tensorflow): https://github.com/Joker316701882/Salient-Object-Detection
-Weakly Supervised Top-down Salient Object Detection
+**Unconstrained Salient Object Detection**
 
-intro: Nanyang Technological University
-arxiv: https://arxiv.org/abs/1611.05345
-SalGAN: Visual Saliency Prediction with Generative Adversarial Networks
+**Unconstrained Salient Object Detection via Proposal Subset Optimization**
 
-project page: https://imatge-upc.github.io/saliency-salgan-2017/
-arxiv: https://arxiv.org/abs/1701.01081
-Visual Saliency Prediction Using a Mixture of Deep Neural Networks
++ intro: CVPR 2016
++ project page: http://cs-people.bu.edu/jmzhang/sod.html
++ paper: http://cs-people.bu.edu/jmzhang/SOD/CVPR16SOD_camera_ready.pdf
++ github: https://github.com/jimmie33/SOD
++ caffe model zoo: https://github.com/BVLC/caffe/wiki/Model-Zoo#cnn-object-proposal-models-for-salient-object-detection
 
-arxiv: https://arxiv.org/abs/1702.00372
-A Fast and Compact Salient Score Regression Network Based on Fully Convolutional Network
+**DHSNet: Deep Hierarchical Saliency Network for Salient Object Detection**
 
-arxiv: https://arxiv.org/abs/1702.00615
-Saliency Detection by Forward and Backward Cues in Deep-CNNs
++ paper: http://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/Liu_DHSNet_Deep_Hierarchical_CVPR_2016_paper.pdf
 
-https://arxiv.org/abs/1703.00152
+**Salient Object Subitizing**
 
-Supervised Adversarial Networks for Image Saliency Detection
++ intro: CVPR 2015
++ intro: predicting the existence and the number of salient objects in an image using holistic cues
++ project page: http://cs-people.bu.edu/jmzhang/sos.html
++ arxiv: http://arxiv.org/abs/1607.07525
++ paper: http://cs-people.bu.edu/jmzhang/SOS/SOS_preprint.pdf
++ caffe model zoo: https://github.com/BVLC/caffe/wiki/Model-Zoo#cnn-models-for-salient-object-subitizing
 
-https://arxiv.org/abs/1704.07242
+**Deeply-Supervised Recurrent Convolutional Neural Network for Saliency Detection**
 
-Group-wise Deep Co-saliency Detection
++ intro: ACMMM 2016. deeply-supervised recurrent convolutional neural network (DSRCNN)
++ arxiv: http://arxiv.org/abs/1608.05177
 
-https://arxiv.org/abs/1707.07381
+**Saliency Detection via Combining Region-Level and Pixel-Level Predictions with CNNs**
 
-Towards the Success Rate of One: Real-time Unconstrained Salient Object Detection
++ intro: ECCV 2016
++ arxiv: http://arxiv.org/abs/1608.05186
 
-intro: University of Maryland College Park & eBay Inc
-arxiv: https://arxiv.org/abs/1708.00079
-Amulet: Aggregating Multi-level Convolutional Features for Salient Object Detection
+**Edge Preserving and Multi-Scale Contextual Neural Network for Salient Object Detection**
 
-intro: ICCV 2017
-arixv: https://arxiv.org/abs/1708.02001
-Learning Uncertain Convolutional Features for Accurate Saliency Detection
++ arxiv: http://arxiv.org/abs/1608.08029
 
-intro: Accepted as a poster in ICCV 2017
-arxiv: https://arxiv.org/abs/1708.02031
-Deep Edge-Aware Saliency Detection
+**A Deep Multi-Level Network for Saliency Prediction**
 
-https://arxiv.org/abs/1708.04366
++ arxiv: http://arxiv.org/abs/1609.01064
 
-Self-explanatory Deep Salient Object Detection
+**Visual Saliency Detection Based on Multiscale Deep CNN Features**
 
-intro: National University of Defense Technology, China & National University of Singapore
-arxiv: https://arxiv.org/abs/1708.05595
-PiCANet: Learning Pixel-wise Contextual Attention in ConvNets and Its Application in Saliency Detection
++ intro: IEEE Transactions on Image Processing
++ arxiv: http://arxiv.org/abs/1609.02077
 
-https://arxiv.org/abs/1708.06433
+**A Deep Spatial Contextual Long-term Recurrent Convolutional Network for Saliency Detection**
 
-DeepFeat: A Bottom Up and Top Down Saliency Model Based on Deep Features of Convolutional Neural Nets
++ intro: DSCLRCN
++ arxiv: https://arxiv.org/abs/1610.01708
 
-https://arxiv.org/abs/1709.02495
+**Deeply supervised salient object detection with short connections**
 
-Recurrently Aggregating Deep Features for Salient Object Detection
++ intro: IEEE TPAMI 2018 (IEEE CVPR 2017)
++ arxiv: https://arxiv.org/abs/1611.04849
++ github(official, Caffe): https://github.com/Andrew-Qibin/DSS
++ github(Tensorflow): https://github.com/Joker316701882/Salient-Object-Detection
 
-intro: AAAI 2018
-paper: https://www.aaai.org/ocs/index.php/AAAI/AAAI18/paper/view/16775/16281
-Deep saliency: What is learnt by a deep network about saliency?
+**Weakly Supervised Top-down Salient Object Detection**
 
-intro: 2nd Workshop on Visualisation for Deep Learning in the 34th International Conference On Machine Learning
-arxiv: https://arxiv.org/abs/1801.04261
-Contrast-Oriented Deep Neural Networks for Salient Object Detection
++ intro: Nanyang Technological University
++ arxiv: https://arxiv.org/abs/1611.05345
 
-intro: TNNLS
-arxiv: https://arxiv.org/abs/1803.11395
-Salient Object Detection by Lossless Feature Reflection
+**SalGAN: Visual Saliency Prediction with Generative Adversarial Networks**
 
-intro: IJCAI 2018
-arxiv: https://arxiv.org/abs/1802.06527
-HyperFusion-Net: Densely Reflective Fusion for Salient Object Detection
++ project page: https://imatge-upc.github.io/saliency-salgan-2017/
++ arxiv: https://arxiv.org/abs/1701.01081
 
-https://arxiv.org/abs/1804.05142
+**Visual Saliency Prediction Using a Mixture of Deep Neural Networks**
 
-Video Saliency Detection
-Deep Learning For Video Saliency Detection
++ arxiv: https://arxiv.org/abs/1702.00372
 
-arxiv: https://arxiv.org/abs/1702.00871
-Video Salient Object Detection Using Spatiotemporal Deep Features
+**A Fast and Compact Salient Score Regression Network Based on Fully Convolutional Network**
 
-https://arxiv.org/abs/1708.01447
++ arxiv: https://arxiv.org/abs/1702.00615
 
-Predicting Video Saliency with Object-to-Motion CNN and Two-layer Convolutional LSTM
+**Saliency Detection by Forward and Backward Cues in Deep-CNNs**
 
-https://arxiv.org/abs/1709.06316
++ https://arxiv.org/abs/1703.00152
 
-Visual Relationship Detection
-Visual Relationship Detection with Language Priors
+**Supervised Adversarial Networks for Image Saliency Detection**
 
-intro: ECCV 2016 oral
-paper: https://cs.stanford.edu/people/ranjaykrishna/vrd/vrd.pdf
-github: https://github.com/Prof-Lu-Cewu/Visual-Relationship-Detection
-ViP-CNN: A Visual Phrase Reasoning Convolutional Neural Network for Visual Relationship Detection
++ https://arxiv.org/abs/1704.07242
+
+**Group-wise Deep Co-saliency Detection**
+
++ https://arxiv.org/abs/1707.07381
+
+**Towards the Success Rate of One: Real-time Unconstrained Salient Object Detection**
+
++ intro: University of Maryland College Park & eBay Inc
++ arxiv: https://arxiv.org/abs/1708.00079
+
+**Amulet: Aggregating Multi-level Convolutional Features for Salient Object Detection**
+
++ intro: ICCV 2017
++ arixv: https://arxiv.org/abs/1708.02001
+
+**Learning Uncertain Convolutional Features for Accurate Saliency Detection**
+
++ intro: Accepted as a poster in ICCV 2017
++ arxiv: https://arxiv.org/abs/1708.02031
+
+**Deep Edge-Aware Saliency Detection**
+
++ https://arxiv.org/abs/1708.04366
+
+**Self-explanatory Deep Salient Object Detection**
+
++ intro: National University of Defense Technology, China & National University of Singapore
++ arxiv: https://arxiv.org/abs/1708.05595
+
+**PiCANet: Learning Pixel-wise Contextual Attention in ConvNets and Its Application in Saliency Detection**
+
++ https://arxiv.org/abs/1708.06433
+
+**DeepFeat: A Bottom Up and Top Down Saliency Model Based on Deep Features of Convolutional Neural Nets**
+
++ https://arxiv.org/abs/1709.02495
+
+**Recurrently Aggregating Deep Features for Salient Object Detection**
+
++ intro: AAAI 2018
++ paper: https://www.aaai.org/ocs/index.php/AAAI/AAAI18/paper/view/16775/16281
+
+**Deep saliency: What is learnt by a deep network about saliency?**
+
++ intro: 2nd Workshop on Visualisation for Deep Learning in the 34th International Conference On Machine Learning
++ arxiv: https://arxiv.org/abs/1801.04261
+
+**Contrast-Oriented Deep Neural Networks for Salient Object Detection**
+
++ intro: TNNLS
++ arxiv: https://arxiv.org/abs/1803.11395
+
+**Salient Object Detection by Lossless Feature Reflection**
+
++ intro: IJCAI 2018
++ arxiv: https://arxiv.org/abs/1802.06527
+
+**HyperFusion-Net: Densely Reflective Fusion for Salient Object Detection**
+
++ https://arxiv.org/abs/1804.05142
+
+**Video Saliency Detection
+Deep Learning For Video Saliency Detection**
+
++ arxiv: https://arxiv.org/abs/1702.00871
+
+**Video Salient Object Detection Using Spatiotemporal Deep Features**
+
++ https://arxiv.org/abs/1708.01447
+
+**Predicting Video Saliency with Object-to-Motion CNN and Two-layer Convolutional LSTM**
+
++ https://arxiv.org/abs/1709.06316
+
+**Visual Relationship Detection**
+**Visual Relationship Detection with Language Priors**
+
++ intro: ECCV 2016 oral
++ paper: https://cs.stanford.edu/people/ranjaykrishna/vrd/vrd.pdf
++ github: https://github.com/Prof-Lu-Cewu/Visual-Relationship-Detection
+
+**ViP-CNN: A Visual Phrase Reasoning Convolutional Neural Network for Visual Relationship Detection**
 
 intro: Visual Phrase reasoning Convolutional Neural Network (ViP-CNN), Visual Phrase Reasoning Structure (VPRS)
 arxiv: https://arxiv.org/abs/1702.07191
@@ -2860,45 +2895,55 @@ review: https://news.developer.nvidia.com/pinterest-introduces-the-future-of-vis
 Deep Learning for Object Detection with DIGITS
 
 blog: https://devblogs.nvidia.com/parallelforall/deep-learning-object-detection-digits/
-Analyzing The Papers Behind Facebook’s Computer Vision Approach
 
-keywords: DeepMask, SharpMask, MultiPathNet
-blog: https://adeshpande3.github.io/adeshpande3.github.io/Analyzing-the-Papers-Behind-Facebook’s-Computer-Vision-Approach/
-Easily Create High Quality Object Detectors with Deep Learning
+**Analyzing The Papers Behind Facebook’s Computer Vision Approach**
 
-intro: dlib v19.2
-blog: http://blog.dlib.net/2016/10/easily-create-high-quality-object.html
-How to Train a Deep-Learned Object Detection Model in the Microsoft Cognitive Toolkit
++ keywords: DeepMask, SharpMask, MultiPathNet
++ blog: https://adeshpande3.github.io/adeshpande3.github.io/Analyzing-the-Papers-Behind-Facebook’s-Computer-Vision-Approach/
 
-blog: https://blogs.technet.microsoft.com/machinelearning/2016/10/25/how-to-train-a-deep-learned-object-detection-model-in-cntk/
-github: https://github.com/Microsoft/CNTK/tree/master/Examples/Image/Detection/FastRCNN
-Object Detection in Satellite Imagery, a Low Overhead Approach
+**Easily Create High Quality Object Detectors with Deep Learning**
 
-part 1: https://medium.com/the-downlinq/object-detection-in-satellite-imagery-a-low-overhead-approach-part-i-cbd96154a1b7#.2csh4iwx9
-part 2: https://medium.com/the-downlinq/object-detection-in-satellite-imagery-a-low-overhead-approach-part-ii-893f40122f92#.f9b7dgf64
-You Only Look Twice — Multi-Scale Object Detection in Satellite Imagery With Convolutional Neural Networks
++ intro: dlib v19.2
++ blog: http://blog.dlib.net/2016/10/easily-create-high-quality-object.html
 
-part 1: https://medium.com/the-downlinq/you-only-look-twice-multi-scale-object-detection-in-satellite-imagery-with-convolutional-neural-38dad1cf7571#.fmmi2o3of
-part 2: https://medium.com/the-downlinq/you-only-look-twice-multi-scale-object-detection-in-satellite-imagery-with-convolutional-neural-34f72f659588#.nwzarsz1t
-Faster R-CNN Pedestrian and Car Detection
+**How to Train a Deep-Learned Object Detection Model in the Microsoft Cognitive Toolkit**
 
-blog: https://bigsnarf.wordpress.com/2016/11/07/faster-r-cnn-pedestrian-and-car-detection/
-ipn: https://gist.github.com/bigsnarfdude/2f7b2144065f6056892a98495644d3e0#file-demo_faster_rcnn_notebook-ipynb
-github: https://github.com/bigsnarfdude/Faster-RCNN_TF
-Small U-Net for vehicle detection
++ blog: https://blogs.technet.microsoft.com/machinelearning/2016/10/25/how-to-train-a-deep-learned-object-detection-model-in-cntk/
++ github: https://github.com/Microsoft/CNTK/tree/master/Examples/Image/Detection/FastRCNN
 
-blog: https://medium.com/@vivek.yadav/small-u-net-for-vehicle-detection-9eec216f9fd6#.md4u80kad
-Region of interest pooling explained
+**Object Detection in Satellite Imagery, a Low Overhead Approach**
 
-blog: https://deepsense.io/region-of-interest-pooling-explained/
-github: https://github.com/deepsense-io/roi-pooling
-Supercharge your Computer Vision models with the TensorFlow Object Detection API
++ part 1: https://medium.com/the-downlinq/object-detection-in-satellite-imagery-a-low-overhead-approach-part-i-cbd96154a1b7#.2csh4iwx9
++ part 2: https://medium.com/the-downlinq/object-detection-in-satellite-imagery-a-low-overhead-approach-part-ii-893f40122f92#.f9b7dgf64
 
-blog: https://research.googleblog.com/2017/06/supercharge-your-computer-vision-models.html
-github: https://github.com/tensorflow/models/tree/master/object_detection
-Understanding SSD MultiBox — Real-Time Object Detection In Deep Learning
+**You Only Look Twice — Multi-Scale Object Detection in Satellite Imagery With Convolutional Neural Networks**
 
-https://towardsdatascience.com/understanding-ssd-multibox-real-time-object-detection-in-deep-learning-495ef744fab
++ part 1: https://medium.com/the-downlinq/you-only-look-twice-multi-scale-object-detection-in-satellite-imagery-with-convolutional-neural-38dad1cf7571#.fmmi2o3of
++ part 2: https://medium.com/the-downlinq/you-only-look-twice-multi-scale-object-detection-in-satellite-imagery-with-convolutional-neural-34f72f659588#.nwzarsz1t
+
+**Faster R-CNN Pedestrian and Car Detection**
+
++ blog: https://bigsnarf.wordpress.com/2016/11/07/faster-r-cnn-pedestrian-and-car-detection/
++ ipn: https://gist.github.com/bigsnarfdude/2f7b2144065f6056892a98495644d3e0#file-demo_faster_rcnn_notebook-ipynb
++ github: https://github.com/bigsnarfdude/Faster-RCNN_TF
+
+**Small U-Net for vehicle detection**
+
++ blog: https://medium.com/@vivek.yadav/small-u-net-for-vehicle-detection-9eec216f9fd6#.md4u80kad
+
+**Region of interest pooling explained**
+
++ blog: https://deepsense.io/region-of-interest-pooling-explained/
++ github: https://github.com/deepsense-io/roi-pooling
+
+**Supercharge your Computer Vision models with the TensorFlow Object Detection API**
+
++ blog: https://research.googleblog.com/2017/06/supercharge-your-computer-vision-models.html
++ github: https://github.com/tensorflow/models/tree/master/object_detection
+
+**Understanding SSD MultiBox — Real-Time Object Detection In Deep Learning**
+
++ https://towardsdatascience.com/understanding-ssd-multibox-real-time-object-detection-in-deep-learning-495ef744fab
 
 **One-shot object detection**
 
