@@ -320,7 +320,7 @@ Mask-RCNN 大体框架还是 Faster-RCNN 的框架，可以说在基础特征网
 </div>
 
 <div align=center>
-<img src="zh-cn/img/maskrcnn/26.png" />
+<img src="zh-cn/img/maskrcnn/26.PNG" />
 </div>
 
 *这个图示Mask R-CNN项目的结构图：*
