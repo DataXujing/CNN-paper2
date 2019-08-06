@@ -348,6 +348,13 @@ arXiv:1408.5093, 2014. 7
 
 !> 请移驾到 [Mask R-CNN章节](/zh-cn/mask-r-cnn)
 
+#### Mask Scoring R-CNN
+
+!> 期待更新
+
+#### YOLACT: Real-time Instance Segmentation
+
+> 期待更新
 
 ------
 
