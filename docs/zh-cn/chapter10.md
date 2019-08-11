@@ -354,7 +354,7 @@ arXiv:1408.5093, 2014. 7
 
 #### YOLACT: Real-time Instance Segmentation
 
-> 期待更新
+!> 期待更新
 
 ------
 

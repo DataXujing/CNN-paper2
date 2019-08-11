@@ -34,6 +34,7 @@ HomePage: [https://dataxujing.github.io/](https://dataxujing.github.io/)
 + DetNet
 + ZSD
 + RFBNet
++ DeNet
 + 从MobileNet到ShuffleNet
 + 神经风格转换
 + 人脸识别
