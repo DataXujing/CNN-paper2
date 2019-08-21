@@ -1,8 +1,14 @@
  
-## 生成对抗网络GAN论文TOP 10
+## 生成对抗网络GAN论文
+
+!> 参考地址：https://github.com/hindupuravinash/the-gan-zoo
+
+<div align=center>
+<img src="zh-cn/img/gans/cumulative_gans.jpg" /> 
+</div>
 
 
-+ DCGANs
+<!-- + DCGANs
 
 + Improved Techniques for Training GANs
 
@@ -20,4 +26,4 @@
 
 + StackGAN
 
-+ Generative Adversarial Networks
++ Generative Adversarial Networks -->

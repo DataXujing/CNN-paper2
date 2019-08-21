@@ -38,3 +38,4 @@
 |2019-08-06            |Mask R-CNN                |
 |2019-08-07            |Pelee                     |
 |2019-08-10            |Light-Head R-CNN          |
+|2019-08-21            |Cascade R-CNN             |

@@ -2596,185 +2596,212 @@ DAVE: A Unified Framework for Fast Vehicle Detection and Annotation**
 
 **SINet: A Scale-insensitive Convolutional Neural Network for Fast Vehicle Detection**
 
-intro: IEEE Transactions on Intelligent Transportation Systems (T-ITS)
-arxiv: https://arxiv.org/abs/1804.00433
-Label and Sample: Efficient Training of Vehicle Object Detector from Sparsely Labeled Data
++ intro: IEEE Transactions on Intelligent Transportation Systems (T-ITS)
++ arxiv: https://arxiv.org/abs/1804.00433
 
-intro: UC Berkeley
-arxiv: https://arxiv.org/abs/1808.08603
-Domain Randomization for Scene-Specific Car Detection and Pose Estimation
+**Label and Sample: Efficient Training of Vehicle Object Detector from Sparsely Labeled Data**
 
-https://arxiv.org/abs/1811.05939
++ intro: UC Berkeley
++ arxiv: https://arxiv.org/abs/1808.08603
 
-ShuffleDet: Real-Time Vehicle Detection Network in On-board Embedded UAV Imagery
+**Domain Randomization for Scene-Specific Car Detection and Pose Estimation**
 
-intro: ECCV 2018, UAVision 2018
-arxiv: https://arxiv.org/abs/1811.06318
-Traffic-Sign Detection
-Traffic-Sign Detection and Classification in the Wild
++ https://arxiv.org/abs/1811.05939
 
-intro: CVPR 2016
-project page(code+dataset): http://cg.cs.tsinghua.edu.cn/traffic-sign/
-paper: http://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/Zhu_Traffic-Sign_Detection_and_CVPR_2016_paper.pdf
-code & model: http://cg.cs.tsinghua.edu.cn/traffic-sign/data_model_code/newdata0411.zip
-Evaluating State-of-the-art Object Detector on Challenging Traffic Light Data
+**ShuffleDet: Real-Time Vehicle Detection Network in On-board Embedded UAV Imagery**
 
-intro: CVPR 2017 workshop
-paper: http://openaccess.thecvf.com/content_cvpr_2017_workshops/w9/papers/Jensen_Evaluating_State-Of-The-Art_Object_CVPR_2017_paper.pdf
-Detecting Small Signs from Large Images
++ intro: ECCV 2018, UAVision 2018
++ arxiv: https://arxiv.org/abs/1811.06318
 
-intro: IEEE Conference on Information Reuse and Integration (IRI) 2017 oral
-arxiv: https://arxiv.org/abs/1706.08574
-Localized Traffic Sign Detection with Multi-scale Deconvolution Networks
+**Traffic-Sign Detection
+Traffic-Sign Detection and Classification in the Wild**
 
-https://arxiv.org/abs/1804.10428
++ intro: CVPR 2016
++ project page(code+dataset): http://cg.cs.tsinghua.edu.cn/traffic-sign/
++ paper: http://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/Zhu_Traffic-Sign_Detection_and_CVPR_2016_paper.pdf
++ code & model: http://cg.cs.tsinghua.edu.cn/traffic-sign/data_model_code/newdata0411.zip
 
-Detecting Traffic Lights by Single Shot Detection
+**Evaluating State-of-the-art Object Detector on Challenging Traffic Light Data**
 
-intro: ITSC 2018
-arxiv: https://arxiv.org/abs/1805.02523
-A Hierarchical Deep Architecture and Mini-Batch Selection Method For Joint Traffic Sign and Light Detection
++ intro: CVPR 2017 workshop
++ paper: http://openaccess.thecvf.com/content_cvpr_2017_workshops/w9/papers/Jensen_Evaluating_State-Of-The-Art_Object_CVPR_2017_paper.pdf
 
-intro: IEEE 15th Conference on Computer and Robot Vision
-arxiv: https://arxiv.org/abs/1806.07987
-demo: https://www.youtube.com/watch?v=_YmogPzBXOw&feature=youtu.be
-Skeleton Detection
-Object Skeleton Extraction in Natural Images by Fusing Scale-associated Deep Side Outputs
+**Detecting Small Signs from Large Images**
 
++ intro: IEEE Conference on Information Reuse and Integration (IRI) 2017 oral
++ arxiv: https://arxiv.org/abs/1706.08574
 
+**Localized Traffic Sign Detection with Multi-scale Deconvolution Networks**
 
-arxiv: http://arxiv.org/abs/1603.09446
-github: https://github.com/zeakey/DeepSkeleton
-DeepSkeleton: Learning Multi-task Scale-associated Deep Side Outputs for Object Skeleton Extraction in Natural Images
++ https://arxiv.org/abs/1804.10428
 
-arxiv: http://arxiv.org/abs/1609.03659
-SRN: Side-output Residual Network for Object Symmetry Detection in the Wild
+**Detecting Traffic Lights by Single Shot Detection**
 
-intro: CVPR 2017
-arxiv: https://arxiv.org/abs/1703.02243
-github: https://github.com/KevinKecc/SRN
-Hi-Fi: Hierarchical Feature Integration for Skeleton Detection
++ intro: ITSC 2018
++ arxiv: https://arxiv.org/abs/1805.02523
 
-https://arxiv.org/abs/1801.01849
+**A Hierarchical Deep Architecture and Mini-Batch Selection Method For Joint Traffic Sign and Light Detection**
 
-Fruit Detection
-Deep Fruit Detection in Orchards
++ intro: IEEE 15th Conference on Computer and Robot Vision
++ arxiv: https://arxiv.org/abs/1806.07987
++ demo: https://www.youtube.com/watch?v=_YmogPzBXOw&feature=youtu.be
 
-arxiv: https://arxiv.org/abs/1610.03677
-Image Segmentation for Fruit Detection and Yield Estimation in Apple Orchards
+**Skeleton Detection
+Object Skeleton Extraction in Natural Images by Fusing Scale-associated Deep Side Outputs**
 
-intro: The Journal of Field Robotics in May 2016
-project page: http://confluence.acfr.usyd.edu.au/display/AGPub/
-arxiv: https://arxiv.org/abs/1610.08120
-Shadow Detection
-Fast Shadow Detection from a Single Image Using a Patched Convolutional Neural Network
++ arxiv: http://arxiv.org/abs/1603.09446
++ github: https://github.com/zeakey/DeepSkeleton
 
-https://arxiv.org/abs/1709.09283
+**DeepSkeleton: Learning Multi-task Scale-associated Deep Side Outputs for Object Skeleton Extraction in Natural Images**
 
-A+D-Net: Shadow Detection with Adversarial Shadow Attenuation
++ arxiv: http://arxiv.org/abs/1609.03659
 
-https://arxiv.org/abs/1712.01361
+**SRN: Side-output Residual Network for Object Symmetry Detection in the Wild**
 
-Stacked Conditional Generative Adversarial Networks for Jointly Learning Shadow Detection and Shadow Removal
++ intro: CVPR 2017
++ arxiv: https://arxiv.org/abs/1703.02243
++ github: https://github.com/KevinKecc/SRN
 
-https://arxiv.org/abs/1712.02478
+**Hi-Fi: Hierarchical Feature Integration for Skeleton Detection**
 
-Direction-aware Spatial Context Features for Shadow Detection
++ https://arxiv.org/abs/1801.01849
 
-intro: CVPR 2018
-arxiv: https://arxiv.org/abs/1712.04142
-Direction-aware Spatial Context Features for Shadow Detection and Removal
+**Fruit Detection
+Deep Fruit Detection in Orchards**
 
-intro: The Chinese University of Hong Kong & The Hong Kong Polytechnic University
-arxiv:- arxiv: https://arxiv.org/abs/1805.04635
-Others Detection
-Deep Deformation Network for Object Landmark Localization
++ arxiv: https://arxiv.org/abs/1610.03677
 
-arxiv: http://arxiv.org/abs/1605.01014
-Fashion Landmark Detection in the Wild
+**Image Segmentation for Fruit Detection and Yield Estimation in Apple Orchards**
 
-intro: ECCV 2016
-project page: http://personal.ie.cuhk.edu.hk/~lz013/projects/FashionLandmarks.html
-arxiv: http://arxiv.org/abs/1608.03049
-github(Caffe): https://github.com/liuziwei7/fashion-landmarks
-Deep Learning for Fast and Accurate Fashion Item Detection
++ intro: The Journal of Field Robotics in May 2016
++ project page: http://confluence.acfr.usyd.edu.au/display/AGPub/
++ arxiv: https://arxiv.org/abs/1610.08120
 
-intro: Kuznech Inc.
-intro: MultiBox and Fast R-CNN
-paper: https://kddfashion2016.mybluemix.net/kddfashion_finalSubmissions/Deep%20Learning%20for%20Fast%20and%20Accurate%20Fashion%20Item%20Detection.pdf
-OSMDeepOD - OSM and Deep Learning based Object Detection from Aerial Imagery (formerly known as “OSM-Crosswalk-Detection”)
+**Shadow Detection
+Fast Shadow Detection from a Single Image Using a Patched Convolutional Neural Network**
 
++ https://arxiv.org/abs/1709.09283
 
+**A+D-Net: Shadow Detection with Adversarial Shadow Attenuation**
 
-github: https://github.com/geometalab/OSMDeepOD
-Selfie Detection by Synergy-Constraint Based Convolutional Neural Network
++ https://arxiv.org/abs/1712.01361
 
-intro: IEEE SITIS 2016
-arxiv: https://arxiv.org/abs/1611.04357
-Associative Embedding:End-to-End Learning for Joint Detection and Grouping
+**Stacked Conditional Generative Adversarial Networks for Jointly Learning Shadow Detection and Shadow Removal**
 
-arxiv: https://arxiv.org/abs/1611.05424
-Deep Cuboid Detection: Beyond 2D Bounding Boxes
++ https://arxiv.org/abs/1712.02478
 
-intro: CMU & Magic Leap
-arxiv: https://arxiv.org/abs/1611.10010
-Automatic Model Based Dataset Generation for Fast and Accurate Crop and Weeds Detection
+**Direction-aware Spatial Context Features for Shadow Detection**
 
-arxiv: https://arxiv.org/abs/1612.03019
-Deep Learning Logo Detection with Data Expansion by Synthesising Context
++ intro: CVPR 2018
++ arxiv: https://arxiv.org/abs/1712.04142
 
-arxiv: https://arxiv.org/abs/1612.09322
-Scalable Deep Learning Logo Detection
+**Direction-aware Spatial Context Features for Shadow Detection and Removal**
 
-https://arxiv.org/abs/1803.11417
++ intro: The Chinese University of Hong Kong & The Hong Kong Polytechnic University
++ arxiv:- arxiv: https://arxiv.org/abs/1805.04635
 
-Pixel-wise Ear Detection with Convolutional Encoder-Decoder Networks
+**Others Detection
+Deep Deformation Network for Object Landmark Localization**
 
-arxiv: https://arxiv.org/abs/1702.00307
-Automatic Handgun Detection Alarm in Videos Using Deep Learning
++ arxiv: http://arxiv.org/abs/1605.01014
 
-arxiv: https://arxiv.org/abs/1702.05147
-results: https://github.com/SihamTabik/Pistol-Detection-in-Videos
-Objects as context for part detection
+**Fashion Landmark Detection in the Wild**
 
-https://arxiv.org/abs/1703.09529
++ intro: ECCV 2016
++ project page: http://personal.ie.cuhk.edu.hk/~lz013/projects/FashionLandmarks.html
++ arxiv: http://arxiv.org/abs/1608.03049
++ github(Caffe): https://github.com/liuziwei7/fashion-landmarks
 
-Using Deep Networks for Drone Detection
+**Deep Learning for Fast and Accurate Fashion Item Detection**
 
-intro: AVSS 2017
-arxiv: https://arxiv.org/abs/1706.05726
-Cut, Paste and Learn: Surprisingly Easy Synthesis for Instance Detection
++ intro: Kuznech Inc.
++ intro: MultiBox and Fast R-CNN
++ paper: https://kddfashion2016.mybluemix.net/kddfashion_finalSubmissions/Deep%20Learning%20for%20Fast%20and%20Accurate%20Fashion%20Item%20Detection.pdf
 
-intro: ICCV 2017
-arxiv: https://arxiv.org/abs/1708.01642
-Target Driven Instance Detection
+**OSMDeepOD - OSM and Deep Learning based Object Detection from Aerial Imagery (formerly known as “OSM-Crosswalk-Detection”)**
 
-https://arxiv.org/abs/1803.04610
++ github: https://github.com/geometalab/OSMDeepOD
 
-DeepVoting: An Explainable Framework for Semantic Part Detection under Partial Occlusion
+**Selfie Detection by Synergy-Constraint Based Convolutional Neural Network**
 
-https://arxiv.org/abs/1709.04577
++ intro: IEEE SITIS 2016
++ arxiv: https://arxiv.org/abs/1611.04357
 
-VPGNet: Vanishing Point Guided Network for Lane and Road Marking Detection and Recognition
+**Associative Embedding:End-to-End Learning for Joint Detection and Grouping**
 
-intro: ICCV 2017
-arxiv: https://arxiv.org/abs/1710.06288
-github: https://github.com/SeokjuLee/VPGNet
-Grab, Pay and Eat: Semantic Food Detection for Smart Restaurants
++ arxiv: https://arxiv.org/abs/1611.05424
 
-https://arxiv.org/abs/1711.05128
+**Deep Cuboid Detection: Beyond 2D Bounding Boxes**
 
-ReMotENet: Efficient Relevant Motion Event Detection for Large-scale Home Surveillance Videos
++ intro: CMU & Magic Leap
++ arxiv: https://arxiv.org/abs/1611.10010
 
-intro: WACV 2018
-arxiv: https://arxiv.org/abs/1801.02031
-Deep Learning Object Detection Methods for Ecological Camera Trap Data
+**Automatic Model Based Dataset Generation for Fast and Accurate Crop and Weeds Detection**
 
-intro: Conference of Computer and Robot Vision. University of Guelph
-arxiv: https://arxiv.org/abs/1803.10842
-EL-GAN: Embedding Loss Driven Generative Adversarial Networks for Lane Detection
++ arxiv: https://arxiv.org/abs/1612.03019
 
-https://arxiv.org/abs/1806.05525
+**Deep Learning Logo Detection with Data Expansion by Synthesising Context**
+
++ arxiv: https://arxiv.org/abs/1612.09322
+
+**Scalable Deep Learning Logo Detection**
+
++ https://arxiv.org/abs/1803.11417
+
+**Pixel-wise Ear Detection with Convolutional Encoder-Decoder Networks**
+
++ arxiv: https://arxiv.org/abs/1702.00307
+
+**Automatic Handgun Detection Alarm in Videos Using Deep Learning**
+
++ arxiv: https://arxiv.org/abs/1702.05147
++ results: https://github.com/SihamTabik/Pistol-Detection-in-Videos
+
+**Objects as context for part detection**
+
++ https://arxiv.org/abs/1703.09529
+
+**Using Deep Networks for Drone Detection**
+
++ intro: AVSS 2017
++ arxiv: https://arxiv.org/abs/1706.05726
+
+**Cut, Paste and Learn: Surprisingly Easy Synthesis for Instance Detection**
+
++ intro: ICCV 2017
++ arxiv: https://arxiv.org/abs/1708.01642
+
+**Target Driven Instance Detection**
+
++ https://arxiv.org/abs/1803.04610
+
+**DeepVoting: An Explainable Framework for Semantic Part Detection under Partial Occlusion**
+
++ https://arxiv.org/abs/1709.04577
+
+**VPGNet: Vanishing Point Guided Network for Lane and Road Marking Detection and Recognition**
+
++ intro: ICCV 2017
++ arxiv: https://arxiv.org/abs/1710.06288
++ github: https://github.com/SeokjuLee/VPGNet
+
+**Grab, Pay and Eat: Semantic Food Detection for Smart Restaurants**
+
++ https://arxiv.org/abs/1711.05128
+
+**ReMotENet: Efficient Relevant Motion Event Detection for Large-scale Home Surveillance Videos**
+
++ intro: WACV 2018
++ arxiv: https://arxiv.org/abs/1801.02031
+
+**Deep Learning Object Detection Methods for Ecological Camera Trap Data**
+
++ intro: Conference of Computer and Robot Vision. University of Guelph
++ arxiv: https://arxiv.org/abs/1803.10842
+
+**EL-GAN: Embedding Loss Driven Generative Adversarial Networks for Lane Detection**
+
++ https://arxiv.org/abs/1806.05525
 
 Towards End-to-End Lane Detection: an Instance Segmentation Approach
 
