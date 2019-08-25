@@ -40,3 +40,5 @@
 |2019-08-10            |Light-Head R-CNN          |
 |2019-08-21            |Cascade R-CNN             |
 |2019-08-21            |Mask scoring R-CNN        |
+|2019-08-23            |VGG 16-19，A Neural Algorithm of Artistic Style|
+|2019-08-25            |YOLACT                    |

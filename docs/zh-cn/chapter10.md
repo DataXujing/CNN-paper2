@@ -342,7 +342,7 @@ arXiv:1408.5093, 2014. 7
 
 ### 2.实例分割
 
-主要有：FCIS、DeepMask、Mask R-CNNC, Mask Scoring R-CNN 和 PANet,YOLACT 等网络，我们这里着重介绍**Mask R-CNN,Mask Scoring R-CNN和YOLACT**
+主要有：FCIS、DeepMask、Mask R-CNN, Mask Scoring R-CNN 和 PANet,YOLACT 等网络，我们这里着重介绍**Mask R-CNN,Mask Scoring R-CNN和YOLACT**
 
 #### Mask R-CNN
 
@@ -561,7 +561,355 @@ MS R-CNN在概念上很简单：使用MaskIoU head的 Mask R-CNN，它将实例�
 
 #### YOLACT: Real-time Instance Segmentation
 
-!> 期待更新
+!> 论文地址：https://arxiv.org/abs/1904.02689
+
+!> YOLACT: **Y**ou **O**nly **L**ook **A**t **C**oefficient**T**s
+
+##### 0.Abstract
+
+我们提出了一个简单的全卷积模型，用于实时实例分割，在单个Titan Xp上以33 FPS在MS COCO上实现29.8 mAP，这比以前的任何竞争方法都要快得多。此外，**我们只在一个GPU上训练后获得此结果**。我们通过将实例分割分成两个并行子任务来实现这一点：（1）生成一组原型掩码(prototype mask)和（2）预测每个实例的掩码系数(mask coefficients)。然后我们通过将原型与掩模系数线性组合来生成实例掩模。我们发现，因为这个过程不依赖于repooling，这种方法可以产生非常高质量的掩模，并且可以免费提供时间稳定性。此外，我们分析了原型的最新表现，发现他们学会以他们自有的一个translation variant manner定位实例，尽管是全卷积的。最后，我们还提出了**Fast NMS**，即以12毫秒的速度替代标准NMS，只有轻微的性能损失。
+
+
+##### 1.Introduction
+
+> “Boxes are stupid anyway though, I’m probably a true believer in masks except I can’t get YOLO to learn them.”
+
+>“无论如何，盒子都是愚蠢的，我可能更相信masks，除非我不能让YOLO学习它们。”  From Joseph Redmon, YOLOv3[34]
+
+创建实时实例分割算法需要什么？在过去的几年中，视觉领域在实例分割方面取得了巨大的进步，部分是借鉴了完善的目标检测领域的强大功能。最先进的实例分割方法，如MASK-RCNN和FCIS直接建立在先进的目标检测如Faster R-CNN和R-FCN。然而，这些方法主要关注性能而不是速度，让实例分割的场景缺乏类似于目标检检测器(如SSD,YOLO)实时性。在这项工作中，我们的目标填补快速，one-stage这一实例分割模型空白，就像SSD和YOLO填充目标检测的差距一样。
+
+然而，实例分割比目标检测困难得多。像SSD和YOLO这样的One-stage目标检测器能够通过简单地移除the second stage 并以其他方式弥补丢失的性能来加速现有的 second stage detectors，如Faster R-CNN。然而，相同的方法不容易扩展到实例分割。最先进的second stage实例分割方法在很大程度上依赖于特征定位来生成掩模。也就是说，“repool”这些方法是以一些边界框区域为特征（例如，通过RoIpool / align），然后将这些现在已定位的特征提供给它们的掩模预测器。这种方法本质上是按顺序进行的，因此很难加速。确实存在像FCIS那样并行执行这些步骤的 One-stage方法，但它们在定位后需要大量的后处理，因此仍然远非实时。
+
+为了解决这些问题，我们提出了YOLACT，这是一个舍弃明确定位步骤的实时实例分割框架。相反，YOLACT将实例分割分解为两个并行任务：（1）在整个图像上生成非局部原型掩模的字典，（2）预测每个实例的一组线性组合系数。然后从这两个组件生成全图像实例分割是很简单的：对于每个实例，使用相应的预测系数线性组合原型，然后使用预测的边界框进行裁剪。我们表明，通过以这种方式进行分割，网络学习如何自己定位实例掩码，其中在视觉上，空间上和语义上相似的实例在原型中看起来是不同的。
+
+此外，由于原型掩模的数量与类别的数量无关（例如，可能存在比原型更多的类别），因此YOLACT学习分布式表示，其中每个实例用跨类别共享的原型的组合来分段。这种分布式表示导致原型空间中有趣的紧急行为：一些原型在空间上对图像进行分区，一些本地化实例，一些检测实例轮廓，一些编码位置敏感的方向图（类似于通过对FCIS中的位置敏感模块进行硬编码而获得的那些），大多数都是这些任务的组合.(见图5)
+
+这种方法也有几个实际的优点。首先，它的速度很快：由于其并行结构和极轻的组装过程，YOLACT仅为one-stage backbone 探测器增加了少量的计算开销，即使使用ResNet-101也很容易达到30 FPS 。其次，masks是高质量的：由于masks使用图像空间的全部范围而不会因repooling而损失任何质量，因此我们用于大型物体的maska质量明显高于其他方法（见图7）。最后，不失一般性：生成原型和掩模系数的想法可以添加到几乎任何现代目标探测器。
+
+作为奖励，以这种方式分解实例分割也与假设在人类视觉中起重要作用的腹侧（“什么”）和背侧（“哪里”）流松散相关。线性系数和相应的检测分支可以被认为是识别单个实例（“什么”），而原型掩模可以被视为在空间中定位实例（“在哪里”）。与two-stage“局部化 - 分割”类型方法相比，这更接近人类视觉，尽管仍然远离人类视觉。（这段说的有点牵强，硬向人类视觉去靠）
+
+我们的主要贡献是第一个实时（> 30 FPS）实例分割算法，在具有挑战性的MS COCO数据集上具有竞争结果（见图1）。此外，我们分析了YOLACT原型的一些性质，并提供了实验来研究使用不同主干架构，原型数量和图像分辨率获得的速度与性能之间的权衡。我们还提供了一种新颖的 Fast NMS方法，比传统NMS快12ms，性能损失可以忽略不计。Pytorch源码已经公开，小编会在接下来的时间测试YOLACT在医疗领域实例分割的效果。
+
+<div align=center>
+<img src="zh-cn/img/yolact/p1.png" />
+</div>
+
+*图1：COCO上各种实例分割方法的速度 - 性能权衡。据我们所知，我们是第一个实时（超过30 FPS）方法在COCO test-dev上有大约30个 mask mAP。*
+
+YOLACT 主要特点与贡献点：
+
+
+[1] - 将实例分割划分为两个并行任务：
+
+(1)生成整张图片的非局部原型mask的字典 (generating a dictionary of non-local prototype masks over the entire image.)
+
+(2)预测每个实例的线性组合系数集合(predicting a set of linear combination mask coefficients per instance.)
+
+[2] - 建立 prototype masks 和 mask coefficients 之间的线性组合，以得到实例 masks.
+
+  - 由于不依赖于 repooling 操作，故可以得到高质量的 masks 以及较高的时序稳定性(temporal stability).
+  - 根据 prototype mask 和 mask coefficients 得到整张图片的实例分割的处理：对于每个实例，线性组合 prototypes 及对应的预测 coefficients，然后再根据预测的边界框裁剪实例 mask.
+  - 这种分割方式，网络自身会学习如何定位实例 masks(the network learns how to localize instance
+masks on its own)，视觉上、空间上以及语义上相似的实例可能在 prototypes 是不同的.
+  - prototype masks 的数量与物体类别无关(如，类别数量可能多于 prototypes 的数量)，YOLACT 实际上是学习了一种分布表示，每一个实例被分割为被多个类别共享的 prototypes 的组合(each instance is segmented with a combination of prototypes that are shared across categories.) 在 prototype 空间，某些 prototypes 对图片空间分块，某些 prototypes 定位实例，某些 prototypes 检测实例廓形，某些 prototypes 编码位置敏感的方向图(position-sensitive directional maps)，等等，这些 prototypes 的组合构成了最终的分割结果.
+
+[3] - 提出 Fast NMS，在仅很少损失精度，对比标准 NMS 处理，有 12-ms 的速率提升.
+
+YOLACT 的主要优势：
+
+[1] - Fast: 并行化网络任务分支以及及其少量的线性组合处理. 相对于 one-stage backbone 检测器，仅新增了很少的计算量，甚至在采用 ResNet-101 时也取得了 30 FPS.
+
+[2] - High-quality Masks: masks 是采用了全部的图片空间的信息，没有 repooling 的质量损失，对于大目标物体的 masks 明显高于其它方法.
+
+[3] - General: 生成 prototypes 和 mask coefficients 的思想几乎可以用于任何深度学习目标检测器.
+
+
+##### 2.Related Work
+
+实例分割鉴于其重要性，已经进行了大量研究工作以推动实例分割的准确性。Mask-RCNN 是一种代表性的 two-stage实例分割方法，首先生成候选感兴趣区域（ROI），然后分类并在第二阶段对这些ROI进行实例分割。后续工作试图通过例如丰富FPN特征或解决掩模的置信分数与其定位精度之间的不兼容性来提高其准确性。这些 two-stage方法需要为每个ROI重新汇集功能并使用后续计算对其进行处理，这使得即使在降低图像大小时也无法获得实时速度（30 FPS）（参见表2c）
+
+One-stage实例分割方法生成position sensitive maps，这些maps被组合成具有位置敏感池化的最终掩模，或者组合语义分段logits和方向预测logits 。虽然在概念上比Two-stage方法更快，但它们仍然需要重新计算或其他非平凡的计算（例如，掩模投票）。这严重限制了他们的速度，使他们远离实时。相比之下，我们的组装步骤更轻量级（只是线性组合），并且可以实现为一个GPU加速矩阵矩阵乘法，使我们的方法非常快。
+
+最后，一些方法首先执行语义分割，然后进行边界检测，像素聚类，或者学习嵌入以形成实例掩码。同样，这些方法具有多个阶段和/或涉及成本过大的聚类过程，这限制了它们对于实时应用的可行性。
+
+**实时实例分割**，虽然存在实时目标检测和语义分割方法，但很少有工作集中在实时实例分割上。Straight to Shapes[19] 可以用30 FPS的学习形状编码进行实例分割，但其准确性远远不如现代基线。Box2Pix[40] 依靠极轻量级骨干探测器（GoogLeNet v1 和SSD ）与手工设计算法相结合，在Cityscapes上获得10.9 FPS，在KITTI上获得35 FPS。然而，他们没有报告更具挑战性和语义丰富的COCO数据集的结果，该数据集与KITTI和Cityscapes中的8个相比有80个类别。此外，他们观察到从语义上简单的数据集（KITTI）到更复杂的数据集（城市景观）的相对性能大幅下降，因此更加困难的数据集（COCO）将构成挑战。事实上，Mask R-CNN [16]仍然是语义上具有挑战性的数据集的最快实例分割方法之一（5502像素图像上的13.5 FPS;参见表2c）。
+
+**Prototypes**: 
+Learning prototypes（又名词汇或码本）已经在计算机视觉中得到了广泛的探索。经典表征包括textons[21]和visual words[37]，通过稀疏性和位置先验进行。其他人设计了用于物体检测的原型。虽然相关，但这些工作使用Prototypes来表示特征，而我们使用它们来组装masks以进行实例分割。此外，我们学习了特定于每个图像的Prototypes，而不是整个数据集共享的全局Prototypes。
+
+YOLACT Prototypes 与 BoFs(BoW):
+
+在阅读 YOLACT 论文的时候，发现 prototypes 和 coefficients 与计算机视觉中的 BoF(Bag of Feature) 方法有很大的相关性.
+
++ Prototypes，也可以叫作词汇(vocabulary)、编码本(codebook).
+
++ BOF(BoW) 是一种图像特征提取方法，其实际上起源于文本领域的 BoW(Bag of Words) 模型. BoW 假定对于一个文本而言，忽略其词序、语法、句法等，仅看作是一个个词语的组合，每个词的出现都是相互独立的，不依赖于其它词的出现.
+
+BOF 假设图像相当于一个文本，图像中的不同局部区域或特征可以看作是构成图像的词汇(codebook). 如图：
+
+<div align=center>
+<img src="zh-cn/img/yolact/p2.png" />
+</div>
+
+根据得到的图像的词汇，统计每个单词的频次，即可得到图片的特征向量，如图：
+
+<div align=center>
+<img src="zh-cn/img/yolact/p3.png" />
+</div>
+
+YOLACT 中的 Prototypes 与 BOFs 类图像特征提取方法的区别是：
+
+[1] - BOFs 是特征提取方法，其采用 prototypes 来表示特征；而 YOLACT 将 prototypes 用于生成实例分割的 masks.
+
+[2] - YOLACT 是针对每张图片学习 prototypes，而 BOFs 是对整个数据集所学习的全局共享的 prototypes.
+
+
+##### 3.YOLACT
+
+类比Mask R-CNN之于Faster R-CNN，YOLACT旨在现有的one-stage型检测器上添加一个mask分支来达到实例分割的目的，但这一过程中不希望引入特征定位步骤。对已有 one-stage 目标检测模型添加一个 mask 分支. 所采用的方式即为，将复杂的实例分割任务分解为两个更简单的、并行化的任务，并可以组合为最终的 masks：
+
+[1] - 并行化分支一：采用 FCN 生成图像大小(image-sized)的 prototype masks 集合，其不依赖于任何一个实例.
+
+[2] - 并行化分支二：在目标检测分支添加一个额外的 head，用于预测每个 anchor 的 mask coefficients 向量，其编码了在 prototype 空间每个实例的表示.
+
+[3] - 最后，对于 NMS 处理后得到的每个实例，线性组合两个分支所输出的 prototypes masks 和 mask coefficients，即可生成实例的 mask 分割结果.
+
+YOLACT 结构如图：
+
+<div align=center>
+<img src="zh-cn/img/yolact/p4.png" />
+</div>
+
+*图2：YOLACT体系结构蓝色/黄色表示原型中的低/高值，灰色节点表示未训练的功能，本例中为。我们使用ResNet-101 + FPN将此架构基于RetinaNet 。*
+
+**可行性分析**: YOLACT 实例分割所基于的基本原理是，masks是空间语义连贯的(mask are spatially coherent)，如相互接近的像素更可能是相同实例的一部分.
+
+卷积层利用了 masks 的空间语义连贯性，但是全连接层却是无法学习该信息的. 这就遇到了一个问题：由于 one-stage 目标检测器是以全连接层的输出作为每个 anchor 的类别和边界框系数的；two-stage 的方法，如 Mask R-CNN 是通过一个定位处理，如 RoIAlign 层，以保持特征的空间连贯性，并采用卷积层输出实例 masks. 不过，这种方法需要模型里实例分割要等着 first-stage RPN 来生成候选边界框，导致速度明显受影响.
+
+YOLACT 将问题分解为两个并行化分支，使用全连接层来生成语义向量；使用卷积层来生成空间连贯的 masks，以分别得到 mask coefficients 和 prototype masks. 由于 prototypes 和 mask coefficients 可以分别独立进行计算，因此其新增的计算大部分来自于线性组合处理，其实现可以看作是矩阵相乘(matrix multiplication). 这样就实现了同时保持了在特征空间的空间连贯性和 one-stage 的快速.
+
+
+###### 3.1 Prototype 生成
+
+YOLACT 的 prototype 生成分支(protonet) 会输出整张图片的 k 个 prototype masks 集合.Protonet 是 `FCN` 网络，其输出层包含 `k 个通道(channels)`，每个通道分别表示一个 prototype. 如图3所示. Protonet 类似于语义分割任务，但其不同之处在于，其没有具体的关于 prototypes 的 loss；所有的监督都来自于线性组合后最终的 mask loss.
+
+<div align=center>
+<img src="zh-cn/img/yolact/p5.png" />
+</div>
+
+*图3：Protonet体系结构，标签表示图像大小为`550X550`的特征尺寸和通道。箭头表示`3X3`的卷积层，最后一层采用了`1X1`的卷积。尺寸的增加是一个上采样(upsample)，然后是卷积。灵感来自[16]中的掩模分支。*
+
+这里包含两个重要的网络设计选择：
+
+[1] - 采用 deeper backbone 特征的 Protonet 能够生成更鲁棒的 masks；
+
+[2] - 更高分辨率的 prototypes 能够得到更高质量的 masks 以及对于小目标物体具有更好的性能.
+
+因此，YOLACT 采用 FPN 网络，因为 FPN 的最大特征层(如图2中的$P_3$) 是最深的网络层. 因此，将$P_3$上采样到输入图片尺寸的四分之一大小，以增强对于小目标物体的效果.
+
+最后，Protonet 网络输出的无界性(unbounded) 也是非常重要的，因为其使得网络能够对于 prototypes 非常置信的地方，生成更大的、更强的激活值(如，明显是背景的区域). 因此，YOLACT 采用 `ReLU`激活函数以得到解释性更好的 prototypes.
+
+
+*解释*:
+
+橙色的 P3-P7 是 FPN 网络。这个网络的生成是由 C5 经过一个卷积层得到 P5 开始的。接下来，对 P5 进行一次双线性插值将其放大，与经过卷积的 C4 相加得到 P4，同样的方法得到 P3。此外，还对 P5 进行了卷积得到 P6，对 P6 进行卷积得到 P7。
+
+论文中解释了使用 FPN 的原因：作者注意到更深层的特征图能生成更鲁棒的 mask，而更大的 prototype mask 能确保最终的 mask 质量更高且更好地检测到小物体。又想特征深，又想特征图大，那就得使用 FPN 了。
+
+接下来是并行的操作。P3 被送入 Protonet，P3-P7 也被同时送到 Prediction Head 中。 Protonet 的设计是受到了 Mask R-CNN 的启发，它由若干卷积层组成。其输入是 P3，其输出的 mask 维度是 `138*138*32`，即 32 个 prototype mask，每个大小是 `138*138`。
+
+###### 3.2 Mask Coefficients
+
+一般来说，anchor-based 目标检测器包含两个预测输出分支：(1)分支一预测 `c` 个类别置信度；(2)分支二预测 `4`个边界框回归值. 对于 mask coefficients 预测，YOLACT 只需添加一个并行化分支，用于预测 `k` 个 mask coefficients，每个 coefficient 分别对应一个 prototype. 因此,对于每个 anchor 而言，其不是生成`c+4` 个 coefficients, 而是`c+4+k`个，额外k个值即为mask coefficients.
+
+<div align=center>
+<img src="zh-cn/img/yolact/p6.png" />
+</div>
+
+另外作者认为，为了能够通过线性组合来得到最终想要的mask，能够从最终的mask中减去原型mask是很重要的。换言之就是，mask系数必须有正有负。所以，在mask coefficients预测时使用了`tanh`函数进行非线性激活，因为`tanh`函数的值域是`(-1,1)`.
+
+*解释*：
+
+这个分支的输入是 `P3-P7` 共五个特征图，Prediction Head 也有五个共享参数的预测层与之一一对应。
+
+输入的特征图先生成 anchor。每个像素点生成 3 个 anchor，比例是` 1:1、1:2 和 2:1`。五个特征图的 anchor 基本边长分别是 `24、48、96、192 和 384`。基本边长根据不同比例进行调整，确保 anchor 的面积相等。
+
+为了便于理解，接下来以 `P3` 为例，标记它的维度为 `W3*H3*256`，那么它的 anchor 数就是 `a3 = W3*H3*3`。接下来 Prediction Head 为其生成三类输出：
+
++ 类别置信。因为 COCO 中共有 81 类（包括背景），所以其维度为 `a3*81`；
++ 位置偏移，维度为 `a3*4`；
++ mask coefficient，维度为 `a3*32`。
+
+对 `P4-P7` 进行的操作是相同的，最后将这些结果拼接起来，标记 `a = a3 + a4 + a5 + a6 + a7`，得到：
+
++ 全部类别置信。因为 COCO 中共有 81 类（包括背景），所以其维度为 `a*81`；
++ 全部位置偏移，维度为 `a*4`；
++ 全部 mask coefficient，维度为 `a*32`。
+
+###### 3.3 Mask组合(合成)
+
+在得到 mask prototypes 和 mask coefficients 后，采用线性组合处理，并再接 sigmoid 非线性函数，以生成最终的 masks. 该过程可以记为矩阵相乘与 sigmoid 的实现如下：
+
+$$M=\sigma(PC^{T})$$
+
+其中，`P`为`hxwxk`的 prototype masks 矩阵；`C`为`nxk`的 mask coefficients 矩阵；`n`为 NMS 和阈值处理后得到的`n`个实例数.
+
+**Losses**: YOLACT模型训练时，采用了三个losess函数：
+
+[1] - 分类loss$L_{cls}$, 使用smooth L1
+
+[2] - 边界框回归loss$L_{box}$, 使用 smooth L1
+
+[3] - mask loss$L_{mask}$,计算的是组合的mask M与GT mask $M_{gt}$之间的逐像素的二值交叉熵：$L_{mask}=BCE(M,M_{gt})$.
+
+
+其中 mask loss 在计算时，因为 mask 的大小是 `138*138`，需要先将原图的 mask 数据通过双线性插值缩小到这一尺寸。
+
+除了上面的三个 loss，源代码中还多了 `prototype loss`、`coefficient diversity loss`、`class existence loss` 和 `semantic segmentation loss`。
+
+
+**Masks裁剪**：
+
+为了改善小目标的分割效果，在inference时会首先根据检测框进行裁剪，再阈值化。而在训练时，会使用GT框来进行裁剪，并通过除以对应GT框面积来平衡loss尺度。
+
+*解释*: Crop 和 Threshold
+
+将 mask coefficient 和 prototype mask 做矩阵乘法，就得到了图像中的一个个 mask。Crop 指的是将边界外的 mask 清零，训练阶段的边界是 ground truth bounding box，评估阶段的边界是预测的 bounding box。
+
+Threshold 指的是在评估阶段，只将置信度大于一个阈值的结果输出，源代码中用的是 0.3
+
+
+###### 3.4 Emergent Behavior
+
+YOLACT取得的效果可能有点出人意料，因为围绕实例分割任务的一个共识是：因为FCNs是平移不变的，所以需要在模型中添加转移方差。因此，在Mask R-CNN和FCIS中，通过显式方法添加了转移方差：方向图、位置存档，或是把mask预测分支放在第二个stage，都使得它们不需要再处理定位问题。
+
+在YOLACT，唯一算是添加转移方差的地方是使用预测框裁剪feature map时。但其实这只是为了改善对小目标的分割效果，作者发现对大中型目标，不裁剪效果就很好了。所以，YOLACT似乎通过其原型的不同激活学习到了如何定位目标。
+
+怎么理解YOLACT隐式学习到了转移方差？
+
+<div align=center>
+<img src="zh-cn/img/yolact/p7.png" />
+</div>
+
+*图5. 不同图片的相同的六种 prototypes 的激活情况例示. Prototype 1,4和5 是在图片 a 中具有清晰便捷定义的分割图；prototype 2 是 bottom-left 方向图；prototype 3 分割出背景，并给出了实例的轮廓；prototype 6 分割出了地面 (ground).*
+
+在上图5中，红色方块图像(图像 a)的 prototype 激活值实际上是不能以 FCN without padding 操作来得到. 因为卷积输出单个像素，如果卷积的输入中图像中的各区域都是相同的，则，卷积的输出结果也应该是相同的. 另一方面，FCNs 网络中，如 ResNet，padding 操作使得网络能够知道某个像素距离图像边缘的距离. 从概念上来讲，其可以通过序列化的多个网络层，从边缘向中心逐步 padding 0 操作(如 kernel 为[1, 0]). 以ResNet 为例，其具有平移变化(inherently translation variant)，YOLACT 充分利用了该特点(如Fig 5 的图像 b 和图像 c 表现处理很明显的平移变化.)
+
+许多原型mask只在图像的某些部分上激活，即它们只激活位于隐式学习边界一侧的对象。例如，上图中原型6学习的是背景信息。通过对这些原型进行组合，网络可以区分同一语义的不同（甚至重叠）的实例，比如在图d中，原型4减去原型5，可以区分开红色伞和绿色伞。
+
+
+此外，原型学习是可压缩的。也就是说，如果protonet将多个原型的功能合并成一个，那么mask系数分支就会去对应学习相应的组合方法。例如，上图中，原型4具有分割的能力，但同时它又对左下角部分图像具有较高响应，原型5也类似，但它就对右下角部分响应更大。这也就解释了为什么可以根据实际情况调整原型数量（即protonet的输出通道数，默认为32），而又不会带来模型性能的下降。
+
+##### 4.Backbone Detector
+
+对于 backbone 检测器，YOLACT 同时关注速度与特征的信息丰富度，因为 prototypes 和 coefficients 的预测是比较困难的任务，需要利用较好特征. 因此，采用了类似于 RetinaNet 的网络.
+
+
+**YOLACT 检测器**: 采用 ResNet-101 with FPN 作为默认的特征 backbone 网络，输入图像尺寸为 `550x550`. 但没有保持长宽比(aspect ratio).
+
+类似于RetinaNet，YOLACT对FPN进行修改，不采用$P_2,P_6,P_7$的输入，从$P_5$开始采用连续的`3X3`，步长为2的卷积层，并分别放置长宽比为`[1,1/2,2]`的3个anchors, $P_3$的anchors的面积为24pixels方形，且其后的$P_4,P_5,P_6,P_7$的尺寸依次翻倍，即`[24,48,96,192,384]`.对于接每个$P_i$的预测head网络，采用被所有的3个分支共享的`3X3`卷积操作，然后每个分支并行的分别采用对应的`3X3`卷积操作。 对比于 RetinaNet，YOLACT 的 head 网络设计(图4所示) 更加轻量和快速。 YOLACT 采用 `smooth-L1 loss` 来训练 `box` 回归器，并采用与 SSD 相同的方式编码 box 回归坐标值。 YOLACT 采用 `softmax 交叉熵 loss` 来对 `c` 个类别标签(positive labels)和 `1`个背景类别(background label)进行处理. 采用 OHEM 选择训练样本,`neg:pos=3:1`。 与 RetinaNet 不同的是，YOLACT 未采用 focal loss。
+
+
+##### 5.其他改进：Fast NMS与语义分割loss
+
+**Fast NMS**: 在得到每个 anchor 的边界框回归系数和类别置信度后，类似于目标检测，YOLACT 也采用 NMS 去除重复的检测结果.
+
+通常情况下，NMS 是序列的处理的，即对于数据集中的`c`个类别中的每一个类别，首先根据置信度，对检测到的边界框降序排列；然后，对于每个检测结果，移除所有比其置信度小的以及与其IoU 的重叠程度大于设定阈值的检测结果, [传统NMS算法参考](https://www.aiuai.cn/aifarm189.html)。
+
+YOLACT 中 Fast NMS 可以并行地对每个实例进行判读是保留还是丢弃，主要思想是将传统NMS计算方法转为矩阵运算，从而受益于一些快速矢量运算库。
+
+算法流程：
+
+1）对每一个类别ci，取top-n个候选目标，并按得分降序排列；
+
+2）计算一个c×n×n的IOU矩阵，其中每个n×n矩阵表示对该类n个候选框，两两之间的IOU；
+
+3）因为自己与自己的IOU=1，IOU(A,B)=IOU(B,A)，所以对上一步得到的IOU矩阵进行一次处理。具体做法是将每一个通道，的对角线元素和下三角部分置为0；
+
+4）去除与得分高的候选框重叠比例较大的框，具体做法是对上一步得到的矩阵，按列取最大值，然后对取完最大值的矩阵按阈值划分，只留下小于指定阈值的部分，即为Fast NMS过滤的结果。
+
+为了便于理解，下面依旧举例说明:
+
+假设我们有 5 个 RoI，对于 person 这一类，按照置信度由高到低分别是 `b1、b2、b3、b4 和 b5`。接下来通过矩阵运算得出它们彼此之间的 IoU，假设结果如下：
+
+<div align=center>
+<img src="zh-cn/img/yolact/p8.png" />
+</div>
+
+接下来将这个矩阵的下三角和对角线元素删去，得到下面的结果：
+
+<div align=center>
+<img src="zh-cn/img/yolact/p9.png" />
+</div>
+
+这其中的每一个元素都满足行号小于列号。接下来对每一列取最大值，得到 `[-, 0.8, 0.6, 0.6, 0.4]`。假设阈值为 `0.5`，即 IoU 超过 `0.5` 的两个 RoI 需要舍弃掉置信度低的那一个。根据最大值，`b2、b3 和 b4` 对应的列都超出了阈值，所以这三个 RoI 会在这一步舍去。
+
+这样做的原因是，由于每一个元素都是行号小于列号，而序号又是按照置信度从高到低降序排列的，因此任一元素大于阈值，代表着这一列对应的 RoI 与一个比它置信度高的 RoI 过于重叠了，需要将它舍去。
+
+这里需要注意的是，b3 虽然和 b2 过于重叠（IoU 为 0.6），但 b3 与 b1 的 IoU 只有 0.1，而 b2 与 b1 的 IoU 为 0.8。按照传统 NMS 算法，b2 会在第一轮循环中被舍去，这样 b3 将会被保留。这也是 Fast NMS 与 NMS 不同的地方，即原文所述：
+
+> ..., we simply allow already-removed detections to suppress other detections, which is not possible in traditional NMS.
+
+
+**语义分割loss**: 在训练阶段添加辅助loss。具体做法是在最大的feature map后面接1×1卷积，输出一个通道数为`c`的feature map。它对应的ground truth从实例分割的标注中获得，因此没有强制要求每个像素只能属于单一类别。所以此处使用的loss计算方法是在`c`个通道上分别运行`sigmoid`，类似YOLO-v3多标签分类的loss设计。
+
+
+##### 6.Results
+
+###### 6.1实例分割
+
+在 COCO test-dev 数据集，基于单张 Titan Xp 显卡，不同方法的对比结果如下：
+
+<div align=center>
+<img src="zh-cn/img/yolact/p10.png" />
+</div>
+
+除了采用的 `550x550` 分辨率的输入，即 YOLACT-550 模型，还采用了 `400x400` 和 `700x700` 的输入图片尺寸分别训练了 YOLACT-400 和 YOLACT-700 模型，其中，anchor scales 采用等比例的调整($s_x=s_{550}/500x$).
+
+降低输入图片的尺寸会导致模型精度出现较大的衰退，说明实例分割需要较大尺寸的图片. 增大图片尺寸会导致速度明显降低，但可以增加模型精度.
+
+除了 ResNet-101 backbone 网络，还测试 ResNet-50 和 DarkNet-53，可以得到更快的速率. 如果需要更快的检测速度，建议采用 ResNet-50 或 DarkNet-53，而不是降低输入图片尺寸.
+
+<div align=center>
+<img src="zh-cn/img/yolact/p11.png" />
+</div>
+
+<div align=center>
+<img src="zh-cn/img/yolact/p12.png" />
+</div>
+
+###### 6.2Mask Quality
+
+由于 YOLACT 最终输出的 mask 尺寸为`138*138` ，且直接根据原始特征来生成的 masks(无需 repooling 变换以及没有特征 mis-align 问题)，因此，YOLACT 对于大目标的检测结果的 mask 质量是高于 Mask R-NN 和 FCIS 的(虽然mAP 略低). 如图7.
+
+<div align=center>
+<img src="zh-cn/img/yolact/p13.png" />
+</div>
+
+
+###### 6.3时间稳定性
+
+作者实验发现，YOLACT在连续帧（视频）上的分割效果更加稳定，一方面因为mask质量本身就比较高，另一方面，作者认为Two-stage方法过多地依赖于第一阶段的区域提议，对YOLACT来说，虽然检测框可能会有波动，但因为原型mask的预测比较稳定，所以产生的分割效果也会更稳定。
+
+
+##### 7.讨论
+
+通过实验分析，作者发现YOLACT的错误大多是由检测器引起的，比如错误分类或bounding box定位不准。
+
+**定位失败**
+当在画面某个位置存在多个重叠的实例时，则网络可能无法通过自身学习到的原型mask对其进行定位。在这种情况下，会输出更接近前景mask的内容，而不是某些实例的分割。如下图所示，红色飞机下面的两辆卡车没有被正确分开。
+
+<div align=center>
+<img src="zh-cn/img/yolact/p14.png" />
+</div>
+
+**泄露**
+因为YOLACT默认mask是在合成以后裁剪得到的，所以没有抑制框外部噪声的功能。如果检测框定位不准，那么就会导致mask泄露现象。另外，当多个同类实例相隔较远但大小又很大的时候，也可能发生这种现象。因为网络可能认为这几个实例已经离得很远了，自身不需要去分开定位它们，裁剪分支会负责处理这种情况。如下图所示，就属于这种情况。
+
+<div align=center>
+<img src="zh-cn/img/yolact/p15.png" />
+</div>
+
 
 ------
 
