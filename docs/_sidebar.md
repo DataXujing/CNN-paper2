@@ -27,3 +27,4 @@
 * [25.图像分割](zh-cn/chapter10.md)
 * [26.N种卷积](zh-cn/chapter11.md)
 * [27.GANs](zh-cn/gans.md)
+* [28.Anchor Free](zh-cn/anchorfree.md)

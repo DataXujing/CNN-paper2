@@ -42,3 +42,4 @@
 |2019-08-21            |Mask scoring R-CNN        |
 |2019-08-23            |VGG 16-19，A Neural Algorithm of Artistic Style|
 |2019-08-25            |YOLACT                    |
+|2019-08-29            |Fast Neural Style Transfer|
