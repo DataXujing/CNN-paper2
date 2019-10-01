@@ -40,6 +40,7 @@ More learning: XuJing'Home [https://dataxujing.github.io/](https://dataxujing.gi
 + 图像分割
 + N种卷积
 + GANs
++ anchor free
 
 ### 常用图像分类CNN结构
 
@@ -2803,183 +2804,215 @@ Deep Deformation Network for Object Landmark Localization**
 
 + https://arxiv.org/abs/1806.05525
 
-Towards End-to-End Lane Detection: an Instance Segmentation Approach
+**Towards End-to-End Lane Detection: an Instance Segmentation Approach**
 
-arxiv: https://arxiv.org/abs/1802.05591
-github: https://github.com/MaybeShewill-CV/lanenet-lane-detection
-iCAN: Instance-Centric Attention Network for Human-Object Interaction Detection
++ arxiv: https://arxiv.org/abs/1802.05591
++ github: https://github.com/MaybeShewill-CV/lanenet-lane-detection
 
-intro: BMVC 2018
-project page: https://gaochen315.github.io/iCAN/
-arxiv: https://arxiv.org/abs/1808.10437
-github: https://github.com/vt-vl-lab/iCAN
-Densely Supervised Grasp Detector (DSGD)
+**iCAN: Instance-Centric Attention Network for Human-Object Interaction Detection**
 
-https://arxiv.org/abs/1810.03962
++ intro: BMVC 2018
++ project page: https://gaochen315.github.io/iCAN/
++ arxiv: https://arxiv.org/abs/1808.10437
++ github: https://github.com/vt-vl-lab/iCAN
 
-Object Proposal
-DeepProposal: Hunting Objects by Cascading Deep Convolutional Layers
+**Densely Supervised Grasp Detector (DSGD)**
 
-arxiv: http://arxiv.org/abs/1510.04445
-github: https://github.com/aghodrati/deepproposal
-Scale-aware Pixel-wise Object Proposal Networks
++ https://arxiv.org/abs/1810.03962
 
-intro: IEEE Transactions on Image Processing
-arxiv: http://arxiv.org/abs/1601.04798
-Attend Refine Repeat: Active Box Proposal Generation via In-Out Localization
+**Object Proposal**
+**DeepProposal: Hunting Objects by Cascading Deep Convolutional Layers**
 
-intro: BMVC 2016. AttractioNet
-arxiv: https://arxiv.org/abs/1606.04446
-github: https://github.com/gidariss/AttractioNet
-Learning to Segment Object Proposals via Recursive Neural Networks
++ arxiv: http://arxiv.org/abs/1510.04445
++ github: https://github.com/aghodrati/deepproposal
 
-arxiv: https://arxiv.org/abs/1612.01057
-Learning Detection with Diverse Proposals
+**Scale-aware Pixel-wise Object Proposal Networks**
 
-intro: CVPR 2017
-keywords: differentiable Determinantal Point Process (DPP) layer, Learning Detection with Diverse Proposals (LDDP)
-arxiv: https://arxiv.org/abs/1704.03533
-ScaleNet: Guiding Object Proposal Generation in Supermarkets and Beyond
++ intro: IEEE Transactions on Image Processing
++ arxiv: http://arxiv.org/abs/1601.04798
 
-keywords: product detection
-arxiv: https://arxiv.org/abs/1704.06752
-Improving Small Object Proposals for Company Logo Detection
+**Attend Refine Repeat: Active Box Proposal Generation via In-Out Localization**
 
-intro: ICMR 2017
-arxiv: https://arxiv.org/abs/1704.08881
-Open Logo Detection Challenge
++ intro: BMVC 2016. AttractioNet
++ arxiv: https://arxiv.org/abs/1606.04446
++ github: https://github.com/gidariss/AttractioNet
 
-intro: BMVC 2018
-keywords: QMUL-OpenLogo
-project page: https://qmul-openlogo.github.io/
-arxiv: https://arxiv.org/abs/1807.01964
-AttentionMask: Attentive, Efficient Object Proposal Generation Focusing on Small Objects
+**Learning to Segment Object Proposals via Recursive Neural Networks**
 
-intro: ACCV 2018 oral
-arxiv: https://arxiv.org/abs/1811.08728
-github: https://github.com/chwilms/AttentionMask
-Localization
-Beyond Bounding Boxes: Precise Localization of Objects in Images
++ arxiv: https://arxiv.org/abs/1612.01057
 
-intro: PhD Thesis
-homepage: http://www.eecs.berkeley.edu/Pubs/TechRpts/2015/EECS-2015-193.html
-phd-thesis: http://www.eecs.berkeley.edu/Pubs/TechRpts/2015/EECS-2015-193.pdf
-github(“SDS using hypercolumns”): https://github.com/bharath272/sds
-Weakly Supervised Object Localization with Multi-fold Multiple Instance Learning
+**Learning Detection with Diverse Proposals**
 
-arxiv: http://arxiv.org/abs/1503.00949
-Weakly Supervised Object Localization Using Size Estimates
++ intro: CVPR 2017
 
-arxiv: http://arxiv.org/abs/1608.04314
-Active Object Localization with Deep Reinforcement Learning
+**keywords: differentiable Determinantal Point Process (DPP) layer, Learning Detection with Diverse P
+roposals (LDDP)**
 
-intro: ICCV 2015
-keywords: Markov Decision Process
-arxiv: https://arxiv.org/abs/1511.06015
-Localizing objects using referring expressions
++ arxiv: https://arxiv.org/abs/1704.03533
 
-intro: ECCV 2016
-keywords: LSTM, multiple instance learning (MIL)
-paper: http://www.umiacs.umd.edu/~varun/files/refexp-ECCV16.pdf
-github: https://github.com/varun-nagaraja/referring-expressions
-LocNet: Improving Localization Accuracy for Object Detection
+**ScaleNet: Guiding Object Proposal Generation in Supermarkets and Beyond**
 
-intro: CVPR 2016 oral
-arxiv: http://arxiv.org/abs/1511.07763
-github: https://github.com/gidariss/LocNet
-Learning Deep Features for Discriminative Localization
++ keywords: product detection
++ arxiv: https://arxiv.org/abs/1704.06752
 
+**Improving Small Object Proposals for Company Logo Detection**
 
++ intro: ICMR 2017
++ arxiv: https://arxiv.org/abs/1704.08881
 
-homepage: http://cnnlocalization.csail.mit.edu/
-arxiv: http://arxiv.org/abs/1512.04150
-github(Tensorflow): https://github.com/jazzsaxmafia/Weakly_detector
-github: https://github.com/metalbubble/CAM
-github: https://github.com/tdeboissiere/VGG16CAM-keras
-ContextLocNet: Context-Aware Deep Network Models for Weakly Supervised Localization
+**Open Logo Detection Challenge**
 
++ intro: BMVC 2018
++ keywords: QMUL-OpenLogo
++ project page: https://qmul-openlogo.github.io/
++ arxiv: https://arxiv.org/abs/1807.01964
 
+**AttentionMask: Attentive, Efficient Object Proposal Generation Focusing on Small Objects**
 
-intro: ECCV 2016
-project page: http://www.di.ens.fr/willow/research/contextlocnet/
-arxiv: http://arxiv.org/abs/1609.04331
-github: https://github.com/vadimkantorov/contextlocnet
-Ensemble of Part Detectors for Simultaneous Classification and Localization
++ intro: ACCV 2018 oral
++ arxiv: https://arxiv.org/abs/1811.08728
++ github: https://github.com/chwilms/AttentionMask
 
-https://arxiv.org/abs/1705.10034
+**Localization**
+**Beyond Bounding Boxes: Precise Localization of Objects in Images**
 
-STNet: Selective Tuning of Convolutional Networks for Object Localization
++ intro: PhD Thesis
++ homepage: http://www.eecs.berkeley.edu/Pubs/TechRpts/2015/EECS-2015-193.html
++ phd-thesis: http://www.eecs.berkeley.edu/Pubs/TechRpts/2015/EECS-2015-193.pdf
++ github(“SDS using hypercolumns”): https://github.com/bharath272/sds
 
-https://arxiv.org/abs/1708.06418
+**Weakly Supervised Object Localization with Multi-fold Multiple Instance Learning**
 
-Soft Proposal Networks for Weakly Supervised Object Localization
++ arxiv: http://arxiv.org/abs/1503.00949
 
-intro: ICCV 2017
-arxiv: https://arxiv.org/abs/1709.01829
-Fine-grained Discriminative Localization via Saliency-guided Faster R-CNN
+**Weakly Supervised Object Localization Using Size Estimates**
 
-intro: ACM MM 2017
-arxiv: https://arxiv.org/abs/1709.08295
-Tutorials / Talks
-Convolutional Feature Maps: Elements of efficient (and accurate) CNN-based object detection
++ arxiv: http://arxiv.org/abs/1608.04314
 
-slides: http://research.microsoft.com/en-us/um/people/kahe/iccv15tutorial/iccv2015_tutorial_convolutional_feature_maps_kaiminghe.pdf
-Towards Good Practices for Recognition & Detection
+**Active Object Localization with Deep Reinforcement Learning**
 
-intro: Hikvision Research Institute. Supervised Data Augmentation (SDA)
-slides: http://image-net.org/challenges/talks/2016/Hikvision_at_ImageNet_2016.pdf
-Work in progress: Improving object detection and instance segmentation for small objects
++ intro: ICCV 2015
++ keywords: Markov Decision Process
++ arxiv: https://arxiv.org/abs/1511.06015
 
-https://docs.google.com/presentation/d/1OTfGn6mLe1VWE8D0q6Tu_WwFTSoLGd4OF8WCYnOWcVo/edit#slide=id.g37418adc7a_0_229
+**Localizing objects using referring expressions**
 
-Object Detection with Deep Learning: A Review
++ intro: ECCV 2016
++ keywords: LSTM, multiple instance learning (MIL)
++ paper: http://www.umiacs.umd.edu/~varun/files/refexp-ECCV16.pdf
++ github: https://github.com/varun-nagaraja/referring-expressions
 
-https://arxiv.org/abs/1807.05511
+**LocNet: Improving Localization Accuracy for Object Detection**
 
-Projects
-Detectron
++ intro: CVPR 2016 oral
++ arxiv: http://arxiv.org/abs/1511.07763
++ github: https://github.com/gidariss/LocNet
 
-intro: FAIR’s research platform for object detection research, implementing popular algorithms like Mask R-CNN and RetinaNet.
-github: https://github.com/facebookresearch/Detectron
-TensorBox: a simple framework for training neural networks to detect objects in images
+**Learning Deep Features for Discriminative Localization**
 
-intro: “The basic model implements the simple and robust GoogLeNet-OverFeat algorithm. We additionally provide an implementation of the ReInspect algorithm”
-github: https://github.com/Russell91/TensorBox
-Object detection in torch: Implementation of some object detection frameworks in torch
++ homepage: http://cnnlocalization.csail.mit.edu/
++ arxiv: http://arxiv.org/abs/1512.04150
++ github(Tensorflow): https://github.com/jazzsaxmafia/Weakly_detector
++ github: https://github.com/metalbubble/CAM
++ github: https://github.com/tdeboissiere/VGG16CAM-keras
 
-github: https://github.com/fmassa/object-detection.torch
-Using DIGITS to train an Object Detection network
+**ContextLocNet: Context-Aware Deep Network Models for Weakly Supervised Localization**
 
-github: https://github.com/NVIDIA/DIGITS/blob/master/examples/object-detection/README.md
-FCN-MultiBox Detector
++ intro: ECCV 2016
++ project page: http://www.di.ens.fr/willow/research/contextlocnet/
++ arxiv: http://arxiv.org/abs/1609.04331
++ github: https://github.com/vadimkantorov/contextlocnet
 
-intro: Full convolution MultiBox Detector (like SSD) implemented in Torch.
-github: https://github.com/teaonly/FMD.torch
-KittiBox: A car detection model implemented in Tensorflow.
+**Ensemble of Part Detectors for Simultaneous Classification and Localization**
 
-keywords: MultiNet
-intro: KittiBox is a collection of scripts to train out model FastBox on the Kitti Object Detection Dataset
-github: https://github.com/MarvinTeichmann/KittiBox
-Deformable Convolutional Networks + MST + Soft-NMS
++ https://arxiv.org/abs/1705.10034
 
-github: https://github.com/bharatsingh430/Deformable-ConvNets
-How to Build a Real-time Hand-Detector using Neural Networks (SSD) on Tensorflow
+**STNet: Selective Tuning of Convolutional Networks for Object Localization**
 
-blog: https://towardsdatascience.com/how-to-build-a-real-time-hand-detector-using-neural-networks-ssd-on-tensorflow-d6bac0e4b2ce
-github: https://github.com//victordibia/handtracking
-Metrics for object detection
++ https://arxiv.org/abs/1708.06418
 
-intro: Most popular metrics used to evaluate object detection algorithms
-github: https://github.com/rafaelpadilla/Object-Detection-Metrics
-MobileNetv2-SSDLite
+**Soft Proposal Networks for Weakly Supervised Object Localization**
 
-intro: Caffe implementation of SSD and SSDLite detection on MobileNetv2, converted from tensorflow.
-github: https://github.com/chuanqi305/MobileNetv2-SSDLite
-Leaderboard
-Detection Results: VOC2012
++ intro: ICCV 2017
++ arxiv: https://arxiv.org/abs/1709.01829
 
-intro: Competition “comp4” (train on additional data)
-homepage: http://host.robots.ox.ac.uk:8080/leaderboard/displaylb.php?challengeid=11&compid=4
+**Fine-grained Discriminative Localization via Saliency-guided Faster R-CNN**
+
++ intro: ACM MM 2017
++ arxiv: https://arxiv.org/abs/1709.08295
+
+**Tutorials / Talks**
+**Convolutional Feature Maps: Elements of efficient (and accurate) CNN-based object detection**
+
++ slides: http://research.microsoft.com/en-us/um/people/kahe/iccv15tutorial/iccv2015_tutorial_convolutional_feature_maps_kaiminghe.pdf
+
+**Towards Good Practices for Recognition & Detection**
+
++ intro: Hikvision Research Institute. Supervised Data Augmentation (SDA)
++ slides: http://image-net.org/challenges/talks/2016/Hikvision_at_ImageNet_2016.pdf
+
+**Work in progress: Improving object detection and instance segmentation for small objects**
+
++ https://docs.google.com/presentation/d/1OTfGn6mLe1VWE8D0q6Tu_WwFTSoLGd4OF8WCYnOWcVo/edit#slide=id.g37418adc7a_0_229
+
+**Object Detection with Deep Learning: A Review**
+
++ https://arxiv.org/abs/1807.05511
+
+**Projects**
+**Detectron**
+
++ intro: FAIR’s research platform for object detection research, implementing popular algorithms like Mask R-CNN and RetinaNet.
++ github: https://github.com/facebookresearch/Detectron
+
+**TensorBox: a simple framework for training neural networks to detect objects in images**
+
++ intro: “The basic model implements the simple and robust GoogLeNet-OverFeat algorithm. We additionally provide an implementation of the ReInspect algorithm”
++ github: https://github.com/Russell91/TensorBox
+
+**Object detection in torch: Implementation of some object detection frameworks in torch**
+
++ github: https://github.com/fmassa/object-detection.torch
+
+**Using DIGITS to train an Object Detection network**
+
++ github: https://github.com/NVIDIA/DIGITS/blob/master/examples/object-detection/README.md
+
+**FCN-MultiBox Detector**
+
++ intro: Full convolution MultiBox Detector (like SSD) implemented in Torch.
++ github: https://github.com/teaonly/FMD.torch
+
+**KittiBox: A car detection model implemented in Tensorflow.**
+
++ keywords: MultiNet
++ intro: KittiBox is a collection of scripts to train out model FastBox on the Kitti Object Detection Dataset
++ github: https://github.com/MarvinTeichmann/KittiBox
+
+**Deformable Convolutional Networks + MST + Soft-NMS**
+
++ github: https://github.com/bharatsingh430/Deformable-ConvNets
+
+**How to Build a Real-time Hand-Detector using Neural Networks (SSD) on Tensorflow**
+
++ blog: https://towardsdatascience.com/how-to-build-a-real-time-hand-detector-using-neural-networks-ssd-on-tensorflow-d6bac0e4b2ce
++ github: https://github.com//victordibia/handtracking
+
+**Metrics for object detection**
+
++ intro: Most popular metrics used to evaluate object detection algorithms
++ github: https://github.com/rafaelpadilla/Object-Detection-Metrics
+
+**MobileNetv2-SSDLite**
+
++ intro: Caffe implementation of SSD and SSDLite detection on MobileNetv2, converted from tensorflow.
++ github: https://github.com/chuanqi305/MobileNetv2-SSDLite
+
+**Leaderboard**
+**Detection Results: VOC2012**
+
++ intro: Competition “comp4” (train on additional data)
++ homepage: http://host.robots.ox.ac.uk:8080/leaderboard/displaylb.php?challengeid=11&compid=4
 Tools
 
 **BeaverDam: Video annotation tool for deep learning training labels**

@@ -10,7 +10,9 @@
 * -语义分割
 * -实例分割
 * -人脸识别
+* -神经风格转换
 * -生成对抗
+
 
 
 [GitHub](https://github.com/DataXujing/CNN-paper2)

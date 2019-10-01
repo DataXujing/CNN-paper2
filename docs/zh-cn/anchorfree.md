@@ -375,3 +375,236 @@ $L_{det}$为角点损失，$L_{pull}$、$L_{push}$为embedding损失，$L_{off}$
 [4].https://arxiv.org/abs/1808.01244
 
 [5].https://github.com/princeton-vl/CornerNet
+
+
+## 3.CornerNet-Lite
+
+
+## 4.ExtremeNet: Bottom-up Object Detection by Grouping Extreme and Center Points
+
+!> 论文地址：https://arxiv.org/abs/1901.08043
+
+!> 项目地址：https://github.com/xingyizhou/ExtremeNet
+
+### 1.概述
+
+ExtremeNet是今年（2019）1月23号挂在arxiv上的目标检测论文，是至今为止检测效果最好的单阶段目标检测算法。思想借鉴CornerNet，使用标准的关键点估计网络检测目标关键点进而构造目标的预测框。ExtremeNet预测四个extreme point（顶、左、底、右）以及目标的中心点，如果这五个点满足几何对齐关系，就将其组合成一个目标框。ExtremeNet在COCO test-dev上的AP达到43.2%。此外，根据extreme point还可以得到更加精细的八边形分割估计结果，在COCO Mask上的AP达到34.6%。
+
+### 2.Preliminaries
+
+**Extreme and center points**。常见做法会用左上和右下两点标注矩形框。由于两个角点经常位于对象外部，这会导致效果不准确，并且需要多次调整，整个过程平均花费时间较长。本文则直接用极值点代替矩形框。若四个极值点为$((x^t,y^t),(x^i,y^i),(x^b,y^b),(x^r,y^r))$，则中心点为:
+
+$$(\frac{x^l+x^r}{2},\frac{y^t+y^b}{2})$$
+
+**Keypoint detection**。目前效果最好的关键点估计网络是104层的HourglassNetwork，该网络采用完全卷积的方式进行训练。HourglassNetwork为每个输出通道回归一个宽为W、高为H的heatmap：
+
+$$\hat{Y} \in (0,1)^{HW}$$
+
+训练时的label为多峰高斯热图multi-peak Gaussian heatmap $Y$，其中每个关键点定义高斯核的平均值。标准差要么是固定的，要么与对象大小成正比。高斯热图在L2 loss的情况下会作为回归目标，在逻辑回归的情况下作为weight map来减少正样本点附近像素点的惩罚。
+
+**CornetNet**。CornerNet使用HourglassNetwork作为检测器进行关键点估计，为矩形框的两个角点预测两套热图。为了平衡正样本点和负样本点，CornerNetwork在训练时使用了修正额focal loss：
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/extremenet/p1.png" /> 
+</div>
+
+其中`α`和`β`是超参数，训练期间固定`α=2、β=4`，`N`是图片中对象的数量。
+为了极点的sub-pixel准确度，CornerNetwork为每个角点回归了类别未知的关键点偏移量`△(α)`。这个回归过程恢复了HourglassNetwork下采样过程中丢失的信息。The offset map is trained with smooth L1 Loss [11] SL1 on ground truth extreme point locations:
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/extremenet/p2.png" /> 
+</div>
+
+其中，`s`是下采样因子（HourglassNetwork的`s=4`），$\vec{x}$为关键点坐标。
+接着，CornerNet使用关联特征将角点分组，本文沿用了CornerNet的网络架构和loss，但没有沿用关联特征。
+
+**Deep Extreme Cut**。DeepExtremeCut (DEXTRE)是一种基于极值点的图像实例分割算法，该算法取了四个极值点并裁剪这四个极值点组成的矩形框的图片区域作为输入，利用语义分割网络对相应对象进行类别不确定的前景分割。DeepExtremeCut学习了匹配输入极点的分割掩码。
+
+
+### 3.ExtremeNet介绍
+
+ExtremeNet是一个自底向上的目标检测框架，检测目标的四个极值点（顶端、左端、底端、右端），使用SOTA的关键点估计框架产生每个类别的五个Heatmaps（四个极值点和一个中心点）。使用纯几何方法组合同一目标的极值点：四个极值点的几何中心与预测的中心点heatmap匹配且高于阈值（暴力枚举，时间复杂度$O(n^4)$，不过$n$一般非常小）。
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/extremenet/p3.png" /> 
+</div>
+
+上图展示了算法的大致流程。首先产生四个预测极值点的heatmap（图顶部）和一个预测中心点的heatmap（图左下），提取极值点heatmap的峰值（图中左），暴力枚举所有组合，计算几何中心（图中右），如果几何中心与中心heatmap高度匹配，则接受该组合，否则拒绝（图右下）。
+
+该算法与CornerNet的区别在于关键点定义和组合。（1）CornerNet采用左上和右下角点，角点往往不在目标上，没有较强的外观特征；而ExtremeNet采用极值点，极值点在目标上，容易区分且具有一致的局部外观特征。（2）CornerNet点对组合是根据embedding vector的距离，而ExtremeNet则是根据几何中心点。ExtremeNet完全基于外观，没有任何的隐特征学习。
+
+
+### 4.网络结构
+
+ExtremeNet采用HourglassNetwork检测每个类别的5个关键点（四个极值点、一个中心点），沿用了CornerNet训练配置、loss和偏移量预测部分。偏移量预测部分是类别未知的，但极值点是类别明确的。偏移量预测是针对极值点的，中心点是没有偏移量预测的。 ExtremeNet网络输出`5xC`个heatmaps和`4x2`个偏移量maps（如下图），其中`C`是类别数量。一旦极值点明确了，网络就用几何的方式将他们分组到检测中。
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/extremenet/p4.png" /> 
+</div>
+
+
+### 5.Center Grouping(中心点分组)
+
+极值点位于对象不同的边上，这使得组合变得比较复杂，比如关联特征没有足够的全局特征来分组关键点。本文通过利用极值点的扩散性，提出了一个不同的分组方法。
+
+本文分组算法的输入是每个类别的五个heatmaps：一个中心heatmap和上下左右四个极值点。已知一个heatmap，本文通过检测所有的峰值点来抽取相应的关键点。一个峰值点是值大于$\tau_p$的任意像素点，且在周围的`3x3`像素窗口是局部最大值，这个过程叫做**ExtrectPeak**。
+
+已知从热力图$\hat Y^{(t)},\hat Y^{(l)},\hat Y^{(b)},\hat Y^{(r)}$中抽取的四个极点`t, b, r, l`，可计算出几何中心$c=(\frac{l_x+r_x}{2}, \frac{t_y+b_y}{2})$.如果中心点`c`被预测在center map$\hat Y^{(c)}$中，且分数较高，则认为这四个极点是一个有效检测：$\hat Y_{c_x,c_y}^{(c)} \geq \tau_c$ 其中($\tau_c$为阈值)。接着，以暴力方式罗列出所有的关键点`t, b, r, l`，分别从每一类中抽取检测。如下图，实验中设置$\tau_p=0.1$, $\tau_c=0.1$
+
+上述的暴力分组算法时间复杂度为$O(n^4)$，其中`n`为每个基础方向抽取的极点数量。补充的材料中提出一种比我们更快的时间复杂度为$O(n^2)$的算法，然而很难在GPU上加速，且当`n=40`时在MS COCO数据集上的效果比我们的算法要慢。
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/extremenet/p5.png" /> 
+</div>
+
+### 6.Ghost box suppression(Ghost box抑制)
+
+中心点分组可能对相同大小的三个等间距共线对象给出高置信度的false-positive检测。这里位于中间的对象有两个选择，检测出正确的小框，或预测一个包含相邻对象极值点的比较大的框，这些false-positive检测被称作ghost boxes。在实验中，这些ghost boxes是不常见的，但却是模型分组中的唯一错误类型。
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/extremenet/p6.png" /> 
+</div>
+
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/extremenet/p7.png" /> 
+</div>
+
+模型提出了一种简单的后处理方法来相处ghost boxes。根据定义一个ghost box包含许多其他小的检测对象，采用soft-NMS解决这个问题。若某个box所包含的所有框的分数和大于其自身的3倍，则最终分数除以2。soft-NMS类似于标准的基于重叠的NMS，但惩罚的是ghost boxes，而不是重叠的boxes。我们将在第10节介绍soft-NMS。
+
+
+### 7.Edge aggregation(边缘融合)
+
+极值点不总是唯一定义的，若极值点来自物体的垂直或水平边（如汽车顶部），则沿边缘任何一点都可被认为是极值点。因此我们的网络在对象的任一对齐边上产生弱响应，而不是单一的强峰值响应。这种弱响应存在两个问题：①弱响应可能低于峰值选择阈值，将完全错过极值点；②即使检测到关键点，它的分值也低于一个轻微旋转对象的强峰值响应。
+
+使用**边缘聚合**来解决这个问题。对于提取为局部最大值的每个极值点，在垂直方向(左右极点)或水平方向(顶部和底部极点)汇总其得分。然后对所有单调递减的分数进行聚合，并在聚合方向上的局部最小值处停止聚合。 特别地，若$m$为极值点，$N_i^{(m)}=\hat Y_{m_xi,m_y}$为该点的垂直或水平线段。若$i_0<0$, $i_1>0$,则两个最近的局部最小值为$N_{i_0}^{(m)}$和$N_{i_1}^{(m)}$，其中$N_{i_0-1}^{(m)}>N_{i_0}^{(m)}$,$N_{i_1}^{(m)}<N_{i_1+1}^{(m)}$。边缘聚合更新关键点的值为
+$$\tilde Y_m=\hat Y_m+\lambda_aggr \sum_{i=i_0}^{i_1}N_i^{(m)}$$,其中$\lambda_aggr$是聚合权重。在我们的实验中，设置$\lambda_aggr=0.1$，如下图所示：
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/extremenet/p8.png" /> 
+</div>
+
+
+### 8.Extreme Instance Segmentation
+
+极值点相比简单的边界框携带更多的关于对象的信息，其标注值至少是极值的两倍`(8 vs 4)`。我们提出一种使用极值点来近似对象掩码的简单方法，方法是创建一个以极值点为中心的八边形。具体地说，对于一个极值点，我们在其对应的边的两个方向上将其扩展到整个边长度的`1/4`的段。当它遇到一个角点时，线段被截断。然后我们把这四个部分的端点连接起来形成八边形。如下图所示：
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/extremenet/p9.png" /> 
+</div>
+
+为了进一步细化边界框分割，使用了`DeepExtremeCut[29]`，这是一个经过训练的深度网络，可以将手动提供的极值点转换为实例分割掩码。在本工作中，简单地将`DeepExtremeCut[29]`的手工输入替换为极值点预测，执行2个阶段的实例分割。具体地说，对于预测的每个边界框，需要裁剪边界框区域，使用预测的极值点绘制高斯图，然后将串联的图像提供给预先训练的DeepExtremeCut模型。DeepExtremeCut[29]是类别未知的，因此我们直接使用检测到的类别和ExtremeNet的得分，没有进一步的后处理。
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/extremenet/p10.png" /> 
+</div>
+
+
+### 9.Experiments
+
+作者在MS COCO上做实验进行算法评估。在COCO数据集中没有直接的极值点标注，不过对于实例分割掩码有完整的标注，因此，可以在多边形掩码标注中找到作为极值点的点。如果多边形的一条边平行于轴，或者有小于$3^。$的误差，边缘的中点则为中心点。
+
+**Training details**
+
+本文是基于CornerNet实现的，沿用了CornerNet的超参数：
+
+1）输入和输出分辨率分别为`511x511`、`128x128`；
+
+2）数据增强使用了翻转、`0.6`到`1.3`的随机缩放、随机裁剪和随机颜色抖动；
+
+3）使用`Adam`优化方式，学习率为`2.5e-4`；
+
+4）CornerNet在10个GPU上训练了`500k`次迭代，相当于在一个`GPU`上训练`140`天。考虑到GPU资源的限制，作者在CornerNet预训练模型上微调网络，随机初始化head layers，在5个GPU上迭代`250k`次，`batch size`设为`24`，在`200k`次迭代时学习率缩降`10`倍。
+
+**Testing details**
+
+对于每个输入图像，网络为极点生成4个`c`通道的heatmaps，为中心点生成1个`c`通道heatmap，以及4个2通道的offset maps。本文将边缘聚合应用于每个极点的heatmap，并将中心点的heatmap乘以2，以修正整体尺度变化。然后将中心分组算法应用于heatmap，在ExtrectPeak中最多提取40个top点，以保持枚举效率。通过在offset maps的相应位置添加偏移量，以细化预测的边界框坐标。
+
+与CornerNet一样，输入图片分辨率可以不同，不会resize到固定大小。测试时数据增强方式为图片翻转，在本文实验中，额外使用了`5`个多尺度`（0.5,0.75,1,1.25,1.5）`增强。最后，使用soft-NMS过滤检测结果。测试时，**一张图片耗时`322ms`,其中网络前向传播耗时`13ms`，分组耗时`150ms`，剩余时间消耗在NMS后处理上。**
+
+下图为ExtremeNet和目前比较好的方法在COCO test-dev上的对比结果。
+ExtremeNet在小目标和大小居中的目标上的效果比CornerNet要好，对于大目标，中心点响应图不够精确，这是因为几个像素的移动可能就会造成检测和false-negative之间的差异。
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/extremenet/p11.png" /> 
+</div>
+
+### 10.soft-NMS
+
+soft-NMS来自于ICCV2017的文章，是NMS算法的改进(本教程R-CNN算法中有详细的关于NMS的介绍)，从论文题目可以看出，改进仅仅花了一行代码！首先NMS（Non maximum suppression）是在object detection算法中必备的后处理步骤，目的是用来去除重复框，也就是降低误检（false positives）。NMS算法的大致过程可以看原文这段话：First, it sorts all detection boxes on the basis of their scores. The detection box M with the maximum score is selected and all other detection boxes with a significant overlap (using a pre-defined threshold) with M are suppressed. This process is recursively applied on the remaining boxes.
+
+那么传统的NMS算法存在什么问题呢？可以看下图。图中中，检测算法本来应该输出两个框，但是传统的NMS算法可能会把score较低的绿框过滤掉（如果绿框和红框的IOU大于设定的阈值就会被过滤掉），导致只检测出一个object（一个马），显然这样object的recall就比较低了。 
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/extremenet/p12.png" /> 
+</div>
+
+可以看出NMS算法是略显粗暴，因为NMS直接将和得分最大的box的IOU大于某个阈值的box的得分置零，那么有没有soft一点的方法呢？这就是本文提出Soft NMS。那么Soft-NMS算法到底是什么样呢？简单讲就是：An algorithm which decays the detection scores of all other objects as a continuous function of their overlap with M. 换句话说就是用稍低一点的分数来代替原有的分数，而不是直接置零。另外由于Soft NMS可以很方便地引入到object detection算法中，不需要重新训练原有的模型，因此这是该算法的一大优点。
+
+下图是Soft-NMS算法的伪代码。首先是关于三个输入$B$、$S$、$N_t$，在下图中已经介绍很清楚了。$D$集合用来放最终的box，在boxes集合$B$非空的前提下，搜索score集合$S$中数值最大的数，假设其下标为$m$，那么$b_m$（也是M）就是对应的box。然后将$M$和$D$集合合并，并从$B$集合中去除$M$。再循环集合$B$中的每个box，这个时候就有差别了，如果是传统的NMS操作，那么当$B$中的box $b_i$和$M$的IOU值大于阈值Nt，那么就从$B$和$S$中去除该box；如果是Soft NMS，则对于$B$中的box $b_i$也是先计算其和$M$的IOU，然后该IOU值作为函数$f()$的输入，最后和box $b_i$的score $s_i$相乘作为最后该box $b_i$的score。就是这么简单！ 
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/extremenet/p13.png" /> 
+</div>
+
+接下来得重点就是如何确定函数$f()$了。 
+首先NMS算法可以用下面的式子表示：
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/extremenet/p14.png" /> 
+</div>
+
+为了改变NMS这种hard threshold做法，并遵循IOU越大，得分越低的原则（IOU越大，越有可能是false positive），自然而然想到可以用下面这个公式来表示Soft-NMS： 
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/extremenet/p15.png" /> 
+</div>
+
+但是上面这个公式是不连续的，这样会导致box集合中的score出现断层，因此就有了下面这个Soft NMS式子（也是大部分实验中采用的式子）：
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/extremenet/p16.png" /> 
+</div>
+
+这个式子满足了：A continuous penalty function should have no penalty when there is no overlap and very high penalty at a high overlap.
+
+
+
+### 11.总结
+
+优点：
+
+延续CornerNet的检测新思路，将角点检测改为极值点检测，更加稳定，在muti-scale的测试下效果更好。
+
+缺点：
+
+1）无法规避的硬伤，ghost box 在实际场景中（并行的车辆）很可能出现。
+
+2）从效果上看，并没有比CorNerNet有明显的提升。
+
+3）速度很慢，主干网络计算量太大。
+
+
+### Reference
+
+[1].https://www.cnblogs.com/cieusy/p/10399960.html
+
+[2].https://blog.csdn.net/chunfengyanyulove/article/details/99181340
+
+[3].https://blog.csdn.net/weixin_39875161/article/details/93374834
+
+[4].https://www.wandouip.com/t5i247334/
+
+[5].https://zhuanlan.zhihu.com/p/57254154
+
+[6].https://www.jianshu.com/p/68039cb1ba80
+
+[7].https://blog.csdn.net/u014380165/article/details/79502197
+
+[8].https://www.jianshu.com/p/8da5b4593a16
+
+[9].https://arxiv.org/abs/1704.04503
+
+[10].https://arxiv.org/abs/1901.08043
+
+[11].https://github.com/xingyizhou/ExtremeNet
