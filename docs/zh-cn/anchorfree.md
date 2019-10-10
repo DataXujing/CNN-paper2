@@ -6,6 +6,8 @@
 <img src="zh-cn/img/anchorfree/p2.png" /> 
 </div>
 
+!> Anchor free 论文列表： https://github.com/VCBE123/AnchorFreeDetection
+
 ## 1.Stacked Hourglass Networks for Human Pose Estimation
 
 !> 论文地址：https://arxiv.org/abs/1603.06937
@@ -379,6 +381,9 @@ $L_{det}$为角点损失，$L_{pull}$、$L_{push}$为embedding损失，$L_{off}$
 
 ## 3.CornerNet-Lite
 
+!> 等待更新中。。。
+
+
 
 ## 4.ExtremeNet: Bottom-up Object Detection by Grouping Extreme and Center Points
 
@@ -608,3 +613,424 @@ soft-NMS来自于ICCV2017的文章，是NMS算法的改进(本教程R-CNN算法�
 [10].https://arxiv.org/abs/1901.08043
 
 [11].https://github.com/xingyizhou/ExtremeNet
+
+
+## 5.CenterNet:Objects as Points
+
+!>论文地址：https://arxiv.org/pdf/1904.07850.pdf
+
+!>项目地址：https://github.com/xingyizhou/CenterNet
+
+### 1.摘要
+
+最近anchor free的目标检测方法很多，尤其是CenterNet，是真正的anchor free + nms free方法，这篇CenterNet对应的是"Objects as Points"，不是另外一篇"CenterNet- Keypoint Triplets for Object Detection"。作者xinyi zhou也是之前ExtremeNet的作者。
+
+目标检测识别往往在图像上将目标以轴对称的框形式框出。大多成功的目标检测器都先穷举出潜在目标位置，然后对该位置进行分类，这种做法浪费时间，低效，还需要额外的后处理。本文中，采用不同的方法，构建模型时将目标作为一个点——即目标BBox的中心点。该检测器采用关键点估计来找到中心点，并回归到其他目标属性，例如尺寸，3D位置，方向，甚至姿态。这种基于中心点的方法，称为：**CenterNet**，相比较于基于BBox的检测器，CenterNet是端到端可微的，更简单，更快，更精确。实现了速度和精确的最好权衡，以下是其性能：
+
+MS COCO dataset, with 28:1% AP at 142 FPS, 37:4% AP at 52 FPS, and 45:1% AP with multi-scale testing at 1.4 FPS.
+
+用同个模型在KITTI benchmark 做3D bbox，在COCO keypoint dataset做人体姿态检测。同复杂的多阶段方法比较，取得了有竞争力的结果，而且做到了实时inference。
+
+CenterNet属于anchor-free系列的目标检测，相比于CornerNet做出了改进，使得检测速度和精度相比于one-stage和two-stage的框架都有不小的提高，尤其是与YOLOv3作比较，在相同速度的条件下，CenterNet的精度比YOLOv3提高了4个左右的点。
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/centernet/p1.png" /> 
+</div>
+
+在COCO上用ResNet18作为backbone可以达到精度28.1 速度142FPS，用Hourglass做backbone可以达到精度45.1速度1.4FPS。可谓是实现了速度和精度的平衡。
+
+
+### 2.Introduction
+
+目标检测 驱动了 很多基于视觉的任务，如 实例分割，姿态估计，跟踪，动作识别。且应用在下游业务中，如 监控，自动驾驶，视觉问答。当前检测器都以bbox轴对称框的形式紧紧贴合着目标。对于每个目标框，分类器来确定每个框中是否是特定类别目标还是背景。
+
++ One-stage detectors: 在图像上滑动复杂排列的可能bbox（即锚点）,然后直接对框进行分类，而不会指定框中内容。
++ Two-stage detectors: 对每个潜在框重新计算图像特征，然后将那些特征进行分类。
+
+后处理，即 NMS（非极大值抑制），通过计算Bbox间的IOU来删除同个目标的重复检测框。这种后处理很难区分和训练，因此现有大多检测器都不是端到端可训练的。
+
+本文通过目标中心点来呈现目标（见下图），然后在中心点位置回归出目标的一些属性，例如：size, dimension, 3D extent, orientation, pose。 而目标检测问题变成了一个标准的关键点估计问题。我们仅仅将图像传入全卷积网络，得到一个热力图，热力图峰值点即中心点，每个特征图的峰值点位置预测了目标的宽高信息。模型训练采用标准的监督学习，推理仅仅是单个前向传播网络，不存在NMS这类后处理。
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/centernet/p2.png" /> 
+</div>
+
+对CenterNet的模型做一些拓展（见下图），可在每个中心点输出3D目标框，多人姿态估计所需的结果。
+
++ 对于3D BBox检测： 直接回归得到目标的深度信息，3D框的尺寸，目标朝向；
++ 对于人姿态估计： 将关节点（2D joint）位置作为中心点的偏移量，直接在中心点位置回归出这些偏移量的值。
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/centernet/p3.png" /> 
+</div>
+
+### 3.Related work
+
+CenterNet与基于锚点的one-stage方法相近。中心点可看成形状未知的锚点（见下图）。但存在几个重要差别（本文创新点）：
+
++ 第一，分配的锚点仅仅是放在位置上，没有尺寸框。没有手动设置的阈值做前后景分类。（像Faster RCNN会将与GT IOU >0.7的作为前景，<0.3的作为背景，其他不管）；
++ 第二，每个目标仅仅有一个正的锚点，因此不会用到NMS，直接提取关键点特征图上局部峰值点（local peaks）；
++ 第三，CenterNet 相比较传统目标检测而言（缩放16倍尺度），使用更大分辨率的输出特征图（缩放了4倍），因此无需用到多重特征图锚点（FPN）；
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/centernet/p4.png" /> 
+</div>
+
+**通过关键点估计做目标检测：**
+我们并非第一个通过关键点估计做目标检测的。CornerNet将bbox的两个角作为关键点；ExtremeNet 检测所有目标的最上，最下，最左，最右，中心点；所有这些网络和我们的一样都建立在鲁棒的关键点估计网络之上。但是它们都需要经过一个关键点grouping阶段，这会降低算法整体速度；而我们的算法仅仅提取每个目标的中心点，无需对关键点进行grouping 或者是后处理；
+
+**单目3D目标检测：**
+3D BBox检测为自动驾驶赋能。Deep3Dbox使用一个slow-RCNN 风格的框架，该网络先检测2D目标，然后将目标送到3D估计网络；3D RCNN在Faster-RCNN上添加了额外的head来做3D projection；Deep Manta使用一个coarse-to-fine的Faster-RCNN ，在多任务中训练。而我们的模型同one-stage版本的Deep3Dbox 或3D RCNN相似，同样，CenterNet比它们都更简洁，更快。
+
+### 4.Preliminary(预备知识)
+
+令$I \in R^{W\times H\times 3}$ 为输入图像，其宽W，高H。我们目标是生成关键点热力图$\hat{Y}\in [0,1]^{\frac{W}{R}\times \frac{H}{R}\times C}$,其中R 是输出stride（即尺寸缩放比例），C是关键点类型数（即输出特征图通道数）；关键点类型有： `C = 17 `的人关节点，用于人姿态估计； `C = 80` 的目标类别，用于目标检测。我们默认采用下采用数为`R=4` ；$\hat Y_{x,y,c}=1$ 表示检测到的关键点；$\hat Y_{x,y,c}=0$表示背景；我们采用了几个不同的全卷积编码-解码网络来预测图像$I$得到的$\hat{Y}$ stacked hourglass network ， upconvolutional residual networks (ResNet)， deep layer aggregation (DLA) 。
+
+我们训练关键点预测网络时参照了Law和Deng (H. Law and J. Deng. Cornernet: Detecting objects as
+paired keypoints. In ECCV, 2018.)  对于 Ground Truth（即GT）的关键点$c$ ,其位置为$p \in R^{2}$，计算得到低分辨率（经过下采样）上对应的关键点$\tilde{p}=\left \lfloor \frac{p}{R} \right \rfloor $. 我们将 GT 关键点 通过高斯核  
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/centernet/p5.png" /> 
+</div>
+
+分散到热力图$\hat{Y}\in [0,1]^{\frac{W}{R}\times \frac{H}{R}\times C}$上，其中$\sigma_p$是目标尺度-自适应 的标准方差。如果对于同个类$c$（同个关键点或是目标类别）有两个高斯函数发生重叠，我们选择元素级最大的。训练目标函数如下，像素级逻辑回归的focal loss：
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/centernet/p6.png" /> 
+</div>
+
+其中$\alpha$和$\beta$是focal loss的超参数，实验中两个数分别设置为2和4，$N$是图像$I$ 中的关键点个数，除以$N$主要为了将所有focal loss归一化。
+
+由于图像下采样时，GT的关键点会因数据是离散的而产生偏差，我们对每个中心点附加预测了个局部偏移$\hat O \in R^{\frac{W}{R}\times\frac{H}{R}\times 2}$所有类别$c$共享同个偏移预测，这个偏移同个 L1 loss来训练：
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/centernet/p7.png" /> 
+</div>
+
+只会在关键点位置$\tilde{p}$做监督操作，其他位置无视。下面章节介绍如何将关键点估计用于目标检测。
+
+### 5.Objects as Points
+
+令$(x_1^{(k)},y_1^{(k)},x_2^{(k)},y_2^{(k)})$是目标$k$(其类别为$c_k$)的bbox,其中心位置为$p_k=(\frac{x_1^{(k)}+x_2^{(k)}}{2},\frac{y_1^{(k)}+y_2^{(k)}}{2})$，用关键点估计$\hat{Y}$来得到所有的中心点，此外，为每个目标$k$回归出目标尺寸$s_k=(x_2^{(k)}-x_1^{(k)},y_2^{(k)}-y_1^{(k)})$,为了减少计算负担，为每个目标种类使用单一的尺寸预测$\hat{S} \in R^{\frac{W}{R}\times\frac{H}{R}\times 2}$，为中心点位置添加了L1 loss:
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/centernet/p8.png" /> 
+</div>
+
+我们不将scale进行归一化，直接使用原始像素坐标。为了调节该loss的影响，将其乘了个系数，整个训练的目标loss函数为：
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/centernet/p9.png" /> 
+</div>
+
+实验中$\lambda_{size}=0.1$,$\lambda_{off}=1$，整个网络预测会在每个位置输出 `C+4`个值(即关键点类别`C`,偏移量的`x,y`，尺寸的`w,h`)，所有输出共享一个全卷积的backbone;
+
+**从中心点到BBox**
+
+在推理的时候，我们分别提取热力图上每个类别的峰值点。如何得到这些峰值点呢？做法是将热力图上的所有响应点与其连接的8个临近点(`3x3`)进行比较，如果该点响应值大于或等于其8个临近点值则保留，最后我们保留所有满足之前要求的前100个峰值点。令$\hat P_c$是检测到的$c$类别的$n$个中心点的合集。$\hat P=\\{(\hat x_i,\hat y_i)\\}^n_{i=1}$每个关键点以整型坐标$(x_i,y_i)$的形式给出，$\hat Y_{x_iy_iC}$作为测量得到的检测置信度，产生如下的bbox:
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/centernet/p10.png" /> 
+</div>
+
+其中$(\delta\hat x_i,\delta\hat y_i)=\hat O_{\hat x_i,\hat y_i}$是offset预测结果，$(\hat w_i,\hat h_i)=\hat S_{\hat x_i,\hat y_i}$是尺度预测结果；所有的输出都直接从关键点估计得到，无需基于IOU的NMS或其他后处理。
+
+**3D检测\***
+
+3D检测是对每个目标进行3维bbox估计，每个中心点需要3个附加信息：`depth`, `3D dimension`， `orientation`。我们为每个信息分别添加head.
+
+ 对于每个中心点，深度值depth是一个维度的。然后depth很难直接回归！我们参考【D. Eigen, C. Puhrsch, and R. Fergus. Depth map prediction from a single image using a multi-scale deep network. In NIPS, 2014.】对输出做了变换。$d=1/\sigma(\hat d)-1$其中$\sigma$是sigmod函数，在特征点估计网络上添加了一个深度计算通道$\hat D \in [0,1]^{\frac{W}{R}\times\frac{H}{R}}$该通道使用了两个卷积层，然后做ReLU 。我们用L1 loss来训练深度估计器。
+
+目标的3D维度是三个标量值。我们直接回归出它们（长宽高）的绝对值，单位为米，用的是一个独立的head : $\hat \Gamma \in [0,1]^{\frac{W}{R}\times\frac{H}{R}\times3}$和L1 loss;
+
+方向默认是单标量的值，然而其也很难回归。我们参考【A. Mousavian, D. Anguelov, J. Flynn, and J. Kosecka.
+3d bounding box estimation using deep learning and geometry. In CVPR, 2017.】， 用两个bins来呈现方向，且i做n-bin回归。特别地，方向用8个标量值来编码的形式，每个bin有4个值。对于一个bin,两个值用作softmax分类，其余两个值回归到在每个bin中的角度
+
+
+**人体姿态估计\***
+
+人的姿态估计旨在估计图像中每个人的`k`个2D人的关节点位置（在COCO中，`k`是17，即每个人有17个关节点）。因此，我们令中心点的姿态是`kx2`维的，然后将每个关键点（关节点对应的点）参数化为相对于中心点的偏移。 我们直接回归出关节点的偏移（像素单位）$\hat J \in R^{\frac{W}{R}\times\frac{H}{R}\times k\times2}$，用到了L1 loss；我们通过给loss添加mask方式来无视那些不可见的关键点（关节点）。此处参照了slow-RCNN。
+
+为了refine关键点（关节点），我们进一步估计`k`个人体关节点热力图$\Phi \in R^{\frac{W}{R}\times\frac{H}{R}\times k}$使用的是标准的bottom-up 多人体姿态估计,我们训练人的关节点热力图使用focal loss和像素偏移量，这块的思路和中心点的训练雷同。我们找到热力图上训练得到的最近的初始预测值，然后将中心偏移作为一个grouping的线索，来为每个关键点（关节点）分配其最近的人。具体的说用$(\hat x_i,\hat y_i)$是检测到的中心点。第一次回归得到的关节点为：$l_j=(\hat x,\hat y)+\hat J_{\hat x \hat yj} \quad for \quad j \in 1,...,k$. 我们提取到的所有关键点（关节点，此处是类似中心点检测用热力图回归得到的，对于热力图上值小于0.1的直接略去）：$L_j=\\{\hat l_{ji}\\}^{n_j}\_{i=1} \quad with \quad a \quad confidence>0.1 \quad for \quad each \quad joint \quad type \quad j \quad from \quad the \quad corresponding \quad heatmap \quad \hat \Phi_{..j}$
+
+然后将每个回归（第一次回归，通过偏移方式）位置$l_j$与最近的检测关键点（关节点）进行分配$arg min_{l\in L_j}(l-l_j)^2$，考虑到只对检测到的目标框中的关节点进行关联。
+
+
+### 6.Implementation details
+
+实验了4个结构：ResNet-18, ResNet-101, DLA-34， Hourglass-104. 我们用deformable卷积层来更改ResNets和DLA-34，按照原样使用Hourglass 网络。
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/centernet/p11.png" /> 
+</div>
+
+**Hourglass**
+
+堆叠的Hourglass网络通过两个连续的hourglass 模块对输入进行了4倍的下采样，每个hourglass 模块是个对称的5层 下和上卷积网络，且带有skip连接。该网络较大，但通常会生成最好的关键点估计。
+
+**ResNet**
+
+Xiao et al. [55]等人对标准的ResNet做了3个up-convolutional网络来得到更高的分辨率输出（最终stride为4）。为了节省计算量，我们改变这3个up-convolutional的输出通道数分别为256,128,64。up-convolutional核初始为双线性插值。
+
+**DLANet(深层聚合结构)**
+
+!> 论文地址：https://arxiv.org/pdf/1707.06484.pdf
+
+DLA来源于论文Deep Layer Aggregation, 一个CNN是由多个conv block组成，最简单的conv block由conv层+非线性层组成。其他的conv block有如下几种（不完全枚举）：
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/centernet/p14.jpg" /> 
+</div>
+
+上图中方框里的标注，第一个表示输出通道，中间表示卷积核尺寸，最后表示输入通道。(a)和(b)来自何恺明的ResNet，(c)来自CVPR2017的文章《Aggregated residual transformations for deep neural networks》
+
+连续的几个conv block可以组成一个subnetwork。要怎么来划分subnetwork？ 普遍的做法是按分辨率来划分，如ResNet101的res1-res5 block。
+
+这些conv block一个接着一个，只在最后得到prob map。 那么前面的block或者subnetwork的输出特征呢？ 如果能利用上，那岂不是锦上添花？ 当然，在这篇论文之前就已经有各类研究在做各个层的融合了，但都是“shallow aggregation”(浅层聚合)，如下图(b)。
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/centernet/p15.png" /> 
+</div>
+
+(b)比较常见的，逐级上采还原，如U-Net。但是，(b)这种结构，梯度反向传播经过一个聚合点便能传回到第一个subnetwork，所以称为“shallow aggregation”。
+
+论文提出“deep layer aggregation”（DLA），有两种：(c)iterative deep aggregation(IDA)和(d)hierarchical deep aggregation(HDA)。
+
+IDA如(c)所示，逐级融合各个subnetwork的特征的方向和(b)是相反的，先从靠近输入的subnetwork引出特征，再逐步聚合深层的特征。这样，梯度反向传导时再也不能仅经过一个聚合点了。上图(b)相当于对浅层加了监督，不利于优化，DLA就避免了此问题。
+
+IDA是针对subnetwork的，而HDA则是针对conv block。(d)每个block只接收上一个block传过来的feature，为HDA的基本结构；(e)block有融合前面block的feature，为HDA的变体；(f)也是一种变体，但减少了聚合点。
+
+上文提到了很多次聚合点，在论文里它是怎样的一种结构？如下：
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/centernet/p16.png" /> 
+</div>
+
+(b)普通的三输入的聚合点；(c)引入了残差结构，为了更好的进行梯度传导。
+
+*分类网络*
+
+分类网络例如ResNet 和ResNeXt都是阶段性的网络，每一个阶段都有多个残差网络组成，阶段之间通过下采样获得特征图。整个网络有32倍的降采样，最后通过对输出进行softmax得分，进而分类。
+
+DLA中，在阶段之间用IDA，在每个阶段内部使用HDA。通过共享聚合节点可以轻松组合这些类型的聚合。这种情况我们只需通过聚合方式来改变每个垂直方向的根节点。在各个阶段之间通过池化进行下采样。
+
+对于不同的框架，我们采用不同的处理方式。比如在DRN（带有空洞卷积的ResNet）中，我们将前两个阶段的最大池化代替为多个卷积，阶段1是`7x7`卷积+ `basic block`，阶段2是basic block。
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/centernet/p17.png" /> 
+</div>
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/centernet/p18.png" /> 
+</div>
+
+*密集预测网络*
+
+在语义分割中，我们需要通过聚合来融合局部和全局信息。在该部分中我们利用插值和IDA的进一步增强来达到任务的必要输出分辨率。
+
+插值IDA通过投影和上采样增加深度和分辨率，如下图所示。在网络优化期间共同学习所有投影和上采样参数。
+
+首先对`3-6`阶段的输出控制为32通道；
+然后对每个阶段都插值到与2阶段相同的分辨率；
+
+最后迭代性的融合这些阶段的信息以便获得高级和低级更深层次的融合。
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/centernet/p19.png" /> 
+</div>
+
+我们的融合和FCN，FPN的目的一样，但在方法上不一样，主要由浅层到深层进一步细化特征。 需要注意的是，在这种情况下我们使用IDA两次：一次连接骨干网络中的阶段并再次恢复分辨率。
+
+
+作者在分类和分割两类任务做了验证实验。从结果上来看，效果还是比较好的。
+
+
+**deformable(可变形)卷积和deformable ROI池化**
+
+!> 论文地址： https://arxiv.org/pdf/1703.06211.pdf
+
+*Motivation*
+
+现实图片中的物体变化很多，之前只能通过数据增强来使网络“记住”这些变种如n object scale, pose, viewpoint, and part deformation，但是这种数据增强只能依赖一些先验知识比如反转后物体类别不变等，但是有些变化是未知而且手动设计太不灵活，不易泛化和迁移。本文就从CNN model的基础结构入手，比如卷积采样时位置是固定的，pool时采样位置也是固定，ROI pool也是把ROI分成固定的空间bins，这些它就不能处理几何的变化，出现了一些问题，比如编码语义或者空间信息的高层神经元不希望同一层的每个激活单元元的感受野是一样的。在检测中都是以bbox提取特征，这对于非格子的物体是不利的。因此本文提出了可变形的卷积神经网络。
+
+例如，`3x3`的卷积或pool，正常的CNN网络采样固定的9个点，而改进后，这9个采样点是可以变形的，特殊的情况如(c)是放大了(d)是旋转了
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/centernet/p20.png" /> 
+</div>
+
+*实现*
+
+**普通CNN**: 以`3x3`卷积为例
+对于每个输出$y(p_0)$，都要从$x$上采样9个位置，这9个位置都在中心位置$x(p_0)$向四周扩散得到的gird形状上，`(-1,-1)`代表$x(p_0)$的左上角，`(1,1)`代表$x(p_0)$的右下角，其他类似。
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/centernet/p21.png" /> 
+</div>
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/centernet/p22.png" /> 
+</div>
+
+**可变形CNN**:同样对于每个输出$y(p_0)$，都要从$x$上采样9个位置，这9个位置是中心位置$x(p_0)$向四周扩散得到的，但是多了一个新的参数 $\Delta p_n$，允许采样点扩散成非gird形状,对于变形的卷积，增加了一个参数，即偏移量$\\{\Delta p_n|n=1,…,N\\}$, where $N=|R|$
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/centernet/p23.png" /> 
+</div>
+
+**注意$\Delta p_n$很有可能是小数，而feature map $x$上都是整数位置，这时候需要双线性插值**
+
+这个地方不仅需要后向传播$w(p_n)$, $x(p_0+p_n+\Delta p_n)$的梯度，还需要反传∆pn的梯度，需要仔细介绍下**双线性插值**
+
+*双线性插值*
+
+**线性插值**： 已知数据$(x_0, y_0)$ 与 $(x_1, y_1)$，要计算 $[x_0, x_1]$ 区间内某一位置$x$在直线上的$y$值(或某一位置$y$在直线上的$x$值，类似)
+用$x$和$x_0$，$x_1$的距离作为一个权重，用于$y_0$和$y_1$的加权
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/centernet/p24.png" /> 
+</div>
+
+上式中的$x(p_0+p_n+\Delta p_n)$的取值位置非整数，并不对应feature map上实际存在的点，所以必须用插值来得到，如果采用双线性插值的方法，$x(p_0+p_n+\Delta p_n)$可以变成下面公司。其中$x(q)$表示feature map上所有整数位置上的点的取值，$x(p_0+p_n+\Delta p_n)$表示加上偏移后所有小数位置的点的取值。
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/centernet/p26.png" /> 
+</div>
+
+$g(a, b)=max(0, 1−|a−b|)$. `q`就是临近的4个点, $p_0,p_n,\Delta p_n$都是二维坐标,可带入公式
+然后求导求梯度
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/centernet/p30.png" /> 
+</div>
+
+`∂G(q,p0+pn+∆pn)/∂∆pn` 可由公式(2)求出
+
+**双线性插值**：双线性插值本质上就是在两个方向上做线性插值。
+$x(p)$的浮点坐标为$(i+u,j+v)$ (其中$i$、$j$均为浮点坐标的整数部分，$u$、$v$为浮点坐标的小数部分，是取值$[0,1)$区间的浮点数)，则这个点的像素值$x(p):(i+u,j+v)$ 可由坐标为$x(q1):(i,j)$、$x(q2):(i+1,j)$、$x(q3):(i,j+1)$、$x(q4):(i+1,j+1)$所对应的周围四个像素的值决定
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/centernet/p25.png" /> 
+</div>
+
+上面是怎么推导出的呢？先拿最简单的例子来做说明，假设feature map只有4个点，如下图，则其中插入一个点$P(x,y)$的值可以用以下公式来得到，这就是双线形插值的标准公式，对于相邻的点来说$x_1-x_0=1$、$y_1-y_0=1$，所以可以继续简化公式。如果feature map上有`q`个点，两个公式等价。
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/centernet/p27.png" /> 
+</div>
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/centernet/p28.png" /> 
+</div>
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/centernet/p29.png" /> 
+</div>
+
+
+*Deformable Convolution*
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/centernet/p31.png" /> 
+</div>
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/centernet/p32.png" /> 
+</div>
+
+上图说明了一个`3X3`的变形卷积，首先通过一个小卷积层（绿色）的输出得到可变形卷积所需要的位移量，然后将其作用在卷积核（蓝色）上，达到可变形卷积的效果
+
+对于输入的一张`feature map`，假设原来的卷积操作是`3*3`的，那么为了学习offset，我们定义另外一个`3*3`的卷积层，输出的`offset field`其实就是原来`feature map`大小，`channel`数等于2（分别表示`x,y`方向的偏移）。这样的话，有了输入的`feature map`，有了和`feature map`一样大小的`offset field`，我们就可以进行`deformable卷积`运算。所有的参数都可以通过反向传播学习得到。
+
+```python
+#nxnet代码样例
+res5a_branch2a_relu = mx.symbol.Activation(name='res5a_branch2a_relu', data=scale5a_branch2a, act_type='relu')
+# 和DeformableConvolution卷积的参数都一致 
+# num_filter=num_deformable_group * 2 * kernel_height * kernel_width 
+# num_deformable_group可忽略，类似于组卷积，所以72/4=18=2*3*3
+res5a_branch2b_offset = mx.symbol.Convolution(name='res5a_branch2b_offset', data=res5a_branch2a_relu,num_filter=72, pad=(2, 2), kernel=(3, 3), stride=(1, 1), dilate=(2, 2), cudnn_off=True)
+
+res5a_branch2b = mx.contrib.symbol.DeformableConvolution(name='res5a_branch2b', data=res5a_branch2a_relu, offset=res5a_branch2b_offset,num_filter=512, pad=(2, 2), kernel=(3, 3), num_deformable_group=4, stride=(1, 1), dilate=(2, 2), no_bias=True)
+```
+
+*Deformable ROI Pooling*
+
+RoI池模块将任意大小的输入矩形区域转换为固定大小的特征。给定一个ROI，大小为`w*h`，它最后会被均匀分为`K*K`块，k是个自由参数。标准的ROI pooling是从输入的特征图`x`中生成`k*k`个输出特征图y.第`（i，j）`个块的pooling操作可以被定义为：
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/centernet/p33.png" /> 
+</div>
+
+$p_0$是左上方的角落块，$n_{ij}$是这个块内的像素值。类似的定义变形的ROI pooling，增加一个偏移量$\Delta p_{ij}$,如下定义
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/centernet/p34.png" /> 
+</div>
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/centernet/p35.png" /> 
+</div>
+
+
+首先，RoI池化(方程(5))生成池化后的特征映射。从特征映射中，一个`fc`层产生归一化偏移量$\Delta p^{ij}$，然后通过与RoI的宽和高进行逐元素的相乘将其转换为方程(6)中的偏移量$\Delta p_{ij}$，如：$\Delta p_{ij}=\gamma \Delta p^{ij}∘(w,h)$。这里$\gamma$是一个预定义的标量来调节偏移的大小。它经验地设定为`γ=0.1`。为了使偏移学习对RoI大小具有不变性，偏移归一化是必要的。
+
+```python
+#mxnet代码样例
+# 用1*1的卷积得到offset 2K*k(C+1)
+rfcn_cls_offset_t = mx.sym.Convolution(data=relu_new_1, kernel=(1, 1), num_filter=2 * 7 * 7 * num_classes, name="rfcn_cls_offset_t")
+
+rfcn_bbox_offset_t = mx.sym.Convolution(data=relu_new_1, kernel=(1, 1), num_filter=7 * 7 * 2, name="rfcn_bbox_offset_t")
+```
+
+**Training**
+
+训练输入图像尺寸：`512x512`; 输出分辨率：`128x128`  (即4倍stride)；采用数据增强方式：`随机flip`, `随机scaling (比例在0.6到1.3)`，`裁剪`，`颜色jittering`；`采用Adam优化器`；
+
+在3D估计分支任务中未采用数据增强（scaling和crop会影响尺寸）；
+
+**Inference**
+
+采用3个层次的测试增强：无增强，flip增强，flip和multi-scale（0.5,0.75,1.25,1.5）增强；For flip, we average the network
+outputs before decoding bounding boxes. For multi-scale,we use NMS to merge results.
+
+### 7.Experiments
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/centernet/p12.png" /> 
+</div>
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/centernet/p36.png" /> 
+</div>
+
+### 8.模型结构
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/centernet/p37.png" /> 
+</div>
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/centernet/p38.png" /> 
+</div>
+
+### Reference
+
+[1].https://blog.csdn.net/qq_29893385/article/details/90611770
+
+[2].https://www.jianshu.com/p/0ef56b59b9ac
+
+[3].https://blog.csdn.net/c20081052/article/details/89358658
+
+[4].https://arxiv.org/pdf/1904.07850.pdf
+
+[5].https://github.com/xingyizhou/CenterNet
+
+
+## 6.FoveaBox:Beyond Anchor-based Object Detector
+
+!> 论文地址： https://arxiv.org/pdf/1904.03797v1.pdf
+
+!> 代码地址： https://github.com/taokong/FoveaBox
+
+
+!> 等待更新中。。。。
