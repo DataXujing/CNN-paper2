@@ -1033,4 +1033,226 @@ outputs before decoding bounding boxes. For multi-scale,we use NMS to merge resu
 !> 代码地址： https://github.com/taokong/FoveaBox
 
 
-!> 等待更新中。。。。
+### 0.摘要
+
+我们提出了一个精确、灵活和完全无锚框的目标检测框架 FoveaBox。虽然几乎所有最先进的目标检测器都使用预定义的锚来枚举可能的位置、比例和纵横比来搜索对象，但是它们的性能和泛化能力也受到锚的设计的限制。相反，FoveaBox 直接学习对象存在的可能性和没有锚框参考的边界框坐标。实现方法：(a) 预测对象存在可能性的类别敏感语义映射（category-sensitive semantic maps），(b) 为每个可能包含对象的位置生成类别无关的边界框（category-agnostic bounding box）。目标框的尺度自然与每个输入图像的特征金字塔表示相关联。
+
+在没有附加功能的情况下，FoveaBox 在标准的 COCO 检测基准上实现了最先进的单模型性能 42.1 AP。特别是对于任意长径比的目标，与基于锚的检测器相比，FoveaBox 带来了显著的改进。更令人惊讶的是，当它受到拉伸测试图像的挑战时，FoveaBox 对边界框形状的变化分布具有很强的鲁棒性和泛化能力。
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/foveabox/p1.png" /> 
+</div>
+
+### 1.Introduction
+
+目标检测需要解决两个主要任务：识别和定位。给定任意图像，目标检测系统需要确定是否存在来自预定义类别的语义对象实例，如果存在，则返回空间位置和范围。为了将定位功能添加到通用目标检测系统中，滑动窗口方法多年来一直是[25][7]首选方法。
+
+最近，深度学习技术已经成为从数据[43][16]自动学习特征表示的强大方法。R-CNN [12]和 Fast RCNN [11]使用了数千个分类独立的区域建议来减少图像的搜索空间。区域建议（region proposal）生成阶段随后被基于锚的区域建议网络 ( Region Proposal Networks，RPN ) 所取代[40]。从那时起，锚框被广泛用作一个通用组件，用于搜索现代目标检测框架可能感兴趣的区域。简而言之，锚框法建议将盒子（box）空间 ( 包括位置、尺度、长宽比 ) 划分为离散的箱子，并在相应的箱子中细化目标箱子/框。大多数最先进的检测器依赖于锚盒/框来枚举目标对象[30]的可能位置、比例和纵横比。锚框是为两级检测器（Faster RCNN [40], FPN [27]）预测建议（proposal）或为单级检测器（SSD [31], RetinaNet [28]）预测最终边界框的，回归参考和分类候选项。然而，锚盒可以被看作是一种功能共享的滑动窗口方案，用于覆盖对象的可能位置。
+
+但是，使用锚框或(候选框)有一些缺点：1）首先，锚框引入了设计选择的额外超参数。在设计锚框时，最重要的因素之一是它覆盖目标位置空间的密度。为了获得良好的召回率，这些 anchor 是根据训练/验证集计算的统计数据精心设计的。2）其次，基于特定数据集的设计选择并不总是适用于其他应用程序，这损害了[46]通用性。例如，anchors 通常是方形的用于人脸检测。而行人检测则需要更多的 tall anchors。3）第三，由于在图像中有大量的候选对象位置，密集的目标检测器通常依赖于有效的技术来处理前景-背景（foreground-background）类别不平衡的挑战[28][23][41]。
+
+改进锚生成过程的一个选择是使其更加灵活。最近，有一些成功的工作试图提高锚框[46][45][49]的能力。在 MetaAnchor [46]中，锚函数是由任意自定义的先验框动态生成的。Guided-Anchoring 方法[45]联合预测了可能存在物体中心的位置以及不同位置的尺度和纵横比。在[49]中，作者还建议动态学习锚的形状。然而，这些工作仍然依赖于枚举可能的尺度和纵横比来优化模型。在 MetaAnchor 中，锚函数的输入是具有不同长径比和尺度的规则采样锚。在 Guided-Anchoring 中，假设每个锚的中心是固定的，并对`（w, h）`的多个对进行采样来近似以对应位置为中心的最佳形状。
+
+相比之下，人类视觉系统不需要任何预定义的形状模板[1]，就可以根据视觉皮层图（visual cortex map）识别实例在空间中的位置并预测边界。换句话说，我们人类在不枚举候选框的情况下，自然地识别出视觉场景中的对象。受此启发，一个直观的问题是，锚盒方案是指导搜索对象的最佳方法吗? 如果答案是否定的，我们是否可以设计一个准确的目标检测框架，而不依赖于 anchors 或候选框? 如果没有候选的锚框，人们可能会认为需要使用复杂的方法才能获得类似的结果。然而，我们展示了一个令人惊讶的简单和灵活的系统可以匹配之前最先进的目标检测性能，而不需要候选框。
+
+为此，我们提出了一个完全无锚框（anchor-free）的目标检测框架 FoveaBox。FoveaBox 源自人眼的 fovea（尤指视网膜的中央凹）：视野 ( 物体 ) 的中心具有最高的视觉敏锐度。FoveaBox 联合预测对象的中心区域可能存在的位置以及每个有效位置的边界框。由于[27]的特征金字塔表示，不同尺度的物体自然可以从多个层次的特征中检测出来。为了验证提出的检测方案的有效性，我们结合了特征金字塔网络的最新进展和我们的检测头（detection head），形成了 FoveaBox 框架。在没有附加功能的情况下，FoveaBox 在 COCO 目标检测任务[29]上获得了最先进的单模型结果。我们最好的单模型，基于 ResNeXt-101-FPN 主干，实现了 COCO test-dev AP 为 42.1，超过了之前发布的大多数基于锚的单模型结果。
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/foveabox/p2.png" /> 
+</div>
+
+由于FoveaBox在训练阶段和推断阶段都不依赖于默认的锚，所以它对边界框的分布更加稳健。为了验证这一点，我们手工拉伸了验证集的图像和标注，并将 FoveaBox 的稳健性与之前基于锚的模型[28]进行了比较。在这种设置下，FoveaBox 在很大程度上优于基于锚的方法。我们相信 FoveaBox 的简单的训练/推理方式，以及灵活性和准确性将有利于今后对目标检测及相关课题的研究。
+
+### 2.Related work
+
++ Classic Object Detectors: DPM, HOG, SIFT
+
+HOG 的全称是 Histogram of Oriented Gradient， 直译过来也就是梯度方向直方图。 就是计算各像素的梯度方向，统计成为直方图来作为特征表示目标。
+下面简述一下利用HOG + SVM 实现目标检测的简要步骤
+
+Step1：获取正样本集并用HOG计算特征得到HOG特征描述子。例如进行行人检测，可用IRINA等行人样本集，提取出行人的描述子。
+
+Step2：获取负样本集并用HOG计算特征得到HOG特征描述子。 负样本图像可用不含检测目标的图像随机剪裁得到。 通常负样本数量要远远大于正样本数目。
+
+Step3: 利用SVM训练正负正负样本，得到model。
+
+Step4：利用model进行负样本难例检测。对Training set 里的负样本进行多尺度检测，如果分类器误检出非目标则截取图像加入负样本中。(hard-negative mining)
+
+Step5:  结合难例重新训练model。
+
+Step6：应用最后的分类器model检测test set，对每幅图像的不同scale进行滑动扫描，提取descriptor并用分类器做分类。如果检测为目标则用bounding box 框出。图像扫描完成后应用 non-maximum suppression 来消除重叠多余的目标。
+
+<div style="width:900px; height:377px; overflow:hidden;align:center">
+<img width="256" height="377" src="zh-cn/img/anchorfree/foveabox/p3.gif"/>
+<img width="531" height="377" src="zh-cn/img/anchorfree/foveabox/p4.png"/>
+</div>
+
++ Modern Object Detectors: RCNN, RPN, SSD, YOLO
+
+关于上述详细细节内容可以参考本教程的其他章节，均有详细的讲解。
+
+### 3.FoveaBox
+
+FoveaBox 是一个单一的、统一的网络，由一个主干网络和两个特定于任务的子网络组成。主干网络负责计算整个输入图像上的卷积特征图，是一个现成的卷积网络。第一个子网对主干的输出按像素进行分类；第二个子网络对相应的位置执行边界框预测。虽然这些组件的细节有许多可能的选择，但为了简单和公平的比较，我们采用了 RetinaNet 的设计[28]。
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/foveabox/p5.png" /> 
+</div>
+
+#### 3.1.Feature Pyramid Network Backbone
+
+我们采用特征金字塔网络 (FPN)[27]作为后续检测的骨干网络。通常，FPN使用具有横向连接的自顶向下体系结构，从单尺度输入构建网络内特征金字塔。金字塔的每一层都可以用来检测不同尺度的物体。我们构造了一个层级为$\\{ P_{l} \\}$的金字塔，`l=3, 4,...,7`，其中$l$表示金字塔层级。$P_{l}$对输入的分辨率为$1/2^{l}$。所有金字塔级别都有`C=256`个通道。有关FPN 的更多细节,可以参考本教程的FPN章节。
+
+#### 3.2.Scale Assignment
+
+虽然我们的目标是预测目标对象的边界，但是由于目标对象的尺度变化较大，直接预测这些数字并不稳定。相反，我们根据特征金字塔层的数量将对象的尺度划分为几个箱子（bins）。每层金字塔有一个基本面积，$P_{3}$到$P_{7}$层的基本面积从$32^{2}$到$512^{2}$ 不等。对于level$P_{l}$，基本面积$S_{l}$是：
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/foveabox/p6.png" /> 
+</div>
+
+类似于基于ResNet的Faster R-CNN系统使用`C4`作为单尺度 feature map，我们将$S_{0}$设为16[40]。在FoveaBox 中，每层特征金字塔学会对特定尺度的对象做出响应。金字塔 level $l$上目标框的有效尺度范围为：
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/foveabox/p7.png" /> 
+</div>
+
+其中，依据经验设置$\eta$来控制每层金字塔的尺度范围。在训练过程中忽略不在相应尺度范围内的目标对象。注意，一个对象可能被网络的多层金字塔检测到，这与以前只将对象映射到一层特征金字塔[27][14]的做法不同。
+
+#### 3.3.Object Fovea
+
+每层金字塔的热图（pyramidal heatmaps）输出设置有$K$个通道，其中$K$为类别数，大小为$H×W$(上图)。每个通道都是一个二进制掩码，表示一个类存在的可能性。给定一个有效的 ground-truth 框，表示为$(x_{1},y_{1},x_{2},y_{2})$。我们首先用stride为$2^{l}$将该框映射到目标特征金字塔$P_{l}$中：
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/foveabox/p8.png" /> 
+</div>
+
+分数图上四边形的正极性区域(正样本)(positive area，fovea)$R^{pos}=(x_{1}^{''}, y_{1}^{''}, x_{2}^{''}, y_{2}^{''})$设计为原始四边形的缩小版（如上图所示）：
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/foveabox/p9.png" /> 
+</div>
+
+其中$\sigma_{1}$是收缩因子。正极性区域内的每个单元格（cell），都用相应的训练的目标类标签进行标注。负样本的定义，我们引入另一个收缩因子$\sigma_{2}$使用公式(4) 生成$R^{neg}$。负极性区域是整个feature map中除去$R^{neg}$的区域。如果一个单元（cell）没有被分配，它将在训练期间被忽略。正极性区域通常只占整个 feature map 的一小部分，因此我们使用`Focal loss`[28]来训练这个分支的目标$L_{cls}$。
+
+#### 3.4.Box Prediction
+
+对象中心（object fovea）只编码目标对象存在的可能性。要确定位置，模型必须预测每个潜在实例的边界框。每个 ground-truth 边界框都以$G=(x_{1},y_{1},x_{2},y_{2})$的方式指定。我们的目的是学习将 feature maps 中单元格$(x,y)$ 处的网络位置输出$(t_{x_{1}},t_{y_{1}},t_{x_{2}},t_{y_{2}})$，映射到 ground-truth 框`G`的转换：
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/foveabox/p10.png" /> 
+</div>
+
+其中$z=\sqrt{S_{l}}$是将输出空间投影到以1为中心的空间的归一化因子，使得目标的学习更容易、更稳定。这个函数首先将坐标$(x,y)$映射到输入图像，然后计算投影坐标与`G`之间的归一化偏移量。最后利用对数空间函数（log-space function）对目标进行正则化。为了简单起见，我们采用了广泛使用的 Smooth L1 loss[40]来训练框的预测$L_{box}$。优化目标后，可以在输出特征图上为每个正极性单元格$(x,y)$生成框的边界。我们注意到，在现代深度学习框架[36][4]中，公式(5)及其逆变换可以通过 element-wise layer（元素层）很容易地实现。
+
+#### 3.5.Optimization
+
+FoveaBox是用随机梯度下降(stochastic gradient descent，SGD) 训练的。我们在4个GPU上同步使用 SGD，每个小批处理（minibatch）共8张图像(每个GPU2张图像)。除非另有说明，所有模型都经过`270k`次迭代的训练，初始学习率为 `0.005`，然后在`180k`迭代时除以`10`，在`240k`迭代时再除以`10`。权重衰减为`0.0001`，动量为 `0.9`。除了标准的水平图像翻转，我们还利用随机纵横比抖动（random aspect ratio jittering）来减少过拟合。当定义$R^{pos}$和$R^{neg}$时，我们设置$\sigma_{1}=0.3$，$\sigma_{2}=0.4$。$R^{neg}$ 中的每个单元格都用相应的位置目标进行标注，用于边界框的训练。
+
+#### 3.6.Inference
+
+在推理过程中，我们首先使用一个`0.05`的置信度阈值过滤掉低置信度的预测。然后，我们从每个预测层中选择得分前`1000`的框。接着，对每个类分别应用阈值为`0.5`的非最大抑制(non-maximum suppression, NMS)。最后，为每个图像选择得分前`100`的预测。这个推理设置与Detectron基线[13]完全相同。尽管有更智能的方法来执行后处理，例如bbox voting[10]、Soft-NMS[2]或测试时图像增强，为了保持简单性并与基线模型进行公平比较，我们在这里不使用这些技巧。
+
+### 4.Experiments
+
+在COCO数据及上提供测试结果
+
+#### 4.1. Ablation Study
+ 
+**（1）Various anchor densities and FoveaBox**
+
+在基于锚的检测系统中，最重要的设计因素之一是它覆盖含有可能图像框的空间的密集程度。由于基于锚的检测器采用固定采样网格，这些方法中实现框（boxes）的高覆盖率的一种常用方法是在每个空间位置使用多个 anchors来覆盖不同尺度和长宽比的boxes。人们可能会期望，当我们在每个位置上附加更密集的锚时，总是可以获得更好的性能。为了验证这一假设，我们将 RetinaNet中，每个空间位置和每个金字塔级别使用的尺度和纵横比anchors数量进行扩展，包括每个位置的一个square anchor到每个位置的12个anchor。增加超过6-9个anchors 不会显示进一步的收益。性能 w.r.t. 密度的饱和意味着手工制作的、密度过大的anchors没有优势。
+
+过密的anchors不仅增加了前景-背景优化的难度，而且容易造成位置定义模糊的问题。对于每个输出空间位置，都有A个anchor，其标签由与ground-truth的IoU定义。其中，一些anchors 被定义为正样本，另一些anchors被定义为负样本。但是它们共享相同的输入特性。分类器不仅要区分不同位置的样本，还要区分同一位置的不同anchors。
+
+相比之下，FoveaBox在每个位置明确地预测一个目标，其性能并不比最好的基于锚的模型差。目标的标签是由它是否在对象的边框内定义的。与基于锚的方案相比，FoveaBox 具有几个优点：1）由于我们在每个位置只预测一个目标，因此输出空间减小为基于锚的方法的 1/A，其中 A 为每个位置的 anchor 个数。由于减少了前景-背景分类的难度，使得求解器更容易对模型进行优化。2）不存在模糊问题，优化目标更加直观。3）FoveaBox 更加灵活，因为我们不需要广泛地设计锚，就可以看到更好的选择。
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/foveabox/p11.png" /> 
+</div>
+
+
+**（2）Analysis of Scale Assignment**
+
+在 公式(2) 中，$\eta$控制每层金字塔的尺度分配范围。当$\eta =\sqrt{2}$时，将目标尺度划分为不重叠的箱子，每个箱子由相应的特征金字塔进行预测。随着$\eta$增加，每层金字塔将响应对象的多个尺度。下表显示了$\eta$对最终的检测性能的影响。我们为所有其他实验设置$\eta=2$。
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/foveabox/p12.png" /> 
+</div>
+
+**（3）FoveaBox is more robust to box distributions**
+
+与传统的预定义锚策略不同，FoveaBox的主要优点之一是对边界框的鲁棒预测。为了验证这一点，我们进行了两个实验来比较不同方法的定位性能。在第一个实验中，我们根据ground-truth 纵横比$U=\{u_{i}=min(\frac{h_{i}}{w_{i}},\frac{w_{i}}{h_{i}}) \}$，$i=1,...,N$ ，将验证集中的框分为三组，其中$N$是数据集中的实例数。我们比较了不同纵横比阈值下的FoveaBox和RetinaNet，如 表1(b) 所示。这里，`*`意味着用长宽比抖动来训练模型。我们发现，当$u$值较低时，两种方法的性能都最好。虽然当$u$增加时，FoveaBox的性能也会下降，但它比基于锚的RetinaNet要好得多。
+
+为了进一步验证不同方法对边界框的鲁棒性，我们手工拉伸了验证集中的图像和标注，并测验了不同检测器的行为。下图为不同`h/w`拉伸阈值下的定位性能。在`h/w=1` 的评价准则下，两个检测器的性能差距相对较小。随着拉伸阈值的增大，差距开始增大。具体来说，当将`h/w`拉伸`3`倍时，FoveaBox得到的 AP为`21.3`，这比相对的 RetinaNet好`3.7`分。
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/foveabox/p13.png" /> 
+</div>
+
+基于锚的方法依赖于使用带有锚（anchor）参考的框（box）回归来生成最终的边界框。在实际应用中，回归器是为正样本锚框（positive anchors）训练的，破坏了预测形状更任意的目标的通用性。在FoveaBox中，每个预测位置都不与特定的参考形状相关联，它直接预测目标的ground-truth框。由于FoveaBox 允许任意的纵横比，它能够更好地捕捉那些非常高或非常宽的对象。参见下图中的一些定性示例。
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/foveabox/p14.png" /> 
+</div>
+
+**（4）Per-class difference**
+
+下图显示了FoveaBox和RetinaNet的每个类别的AP差异。它们都具有ResNet-50-FPN主干和`800`的输入尺度。纵轴表示$AP_{FoveaBox}-AP_{RetinaNet}$ 。FoveaBox 在大多数类中都有改进，特别是对于那些边界框可能更加任意的类。对于类：toothbrush，fork，sports ball，snowboard，tie 和 train，AP的改进幅度大于5分。
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/foveabox/p15.png" /> 
+</div>
+
+**（5）Generating high-quality region proposals**
+
+将分类目标（classification target）更改为类不可知的头（class-agnostic head）非常简单，并且可以生成区域建议。我们将建议/提案性能与区域建议网络(RPN)[40]进行比较，并对 COCO minival 数据集上不同建议数量的平均召回率(AR)进行评估，如表1(c)所示。
+
+令人惊讶的是，在所有的标准中，我们的方法对比RPN基线有很大的优势。具体来说，在前100个区域建议中，FoveaBox获得的AR为53.0，比RPN高出8.5 分。这验证了我们的模型在生成高质量区域建议方面的能力。
+
+**（6）Across model depth and scale**
+
+下表显示了使用不同主干网络和输入分辨率的FoveaBox。推理设置与RetinaNet 完全相同，速度也与相应的基线相当。
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/foveabox/p16.png" /> 
+</div>
+
+如上表所示，FoveaBox在RetinaNet基线上持续改进了`1 ~ 2`个点。在分析小、中、大对象尺度下的性能时，我们发现改进来自于对象的所有尺度。
+
+
+#### 4.2. Main Results
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/foveabox/p17.png" /> 
+</div>
+
+
+### 5. More Discussions to Prior Works
+
+在结束之前，我们调查了FoveaBox和之前的一些作品之间的关系和区别。
+
+**（1）Score Mask for Text Detection**
+
+分数掩码技术在文本检测领域得到了广泛的应用[48][18][50]。这些工作通常利用全卷积网络[32]来预测目标场景文本和四边形的存在。与场景文本检测相比，通用目标检测面临着更多的遮挡、多类分类和尺度问题，具有更大的挑战性。单纯地将文本检测方法应用到通用目标检测中，往往会导致性能低下。
+
+**（2）Guided-Anchoring [45]**
+
+它联合预测了感兴趣的对象中心可能存在的位置，以及以相应位置为中心的比例尺和纵横比。如果`(x, y)`不在目标中心，检测到的框将不是最优框。Guided-Anchoring 依靠中心点给出最佳预测。相反，FoveaBox为每个前景位置预测对象的(左、上、右、下)边界，这更具有鲁棒性（robust）。
+
+**（3）FSAF [51]**
+
+这是FoveaBox的同时期作品。它也试图直接预测目标对象的边界框。FoveaBox与FSAF之间的区别是：1）FSAF 通过在线特性选择模块为每个实例和anchors选择合适的特性。而在FoveaBox 中，一个特定尺度的实例同时被相邻的金字塔优化，由式(2)决定，更加简单和鲁棒。2）为了优化框的边界，FSAF 利用了 IoU-Loss [47]最大限度地提高预测框和 ground-truth 之间的 IOU。而在FoveaBox中，我们使用Smooth L1 loss直接预测四个边界，这更加简单直观。3与FSAF相比，FoveaBox的性能要好得多，如下表所示：
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/foveabox/p18.png" /> 
+</div>
+
+**（4）CornerNet [26]**
+
+CornerNet提出通过左上角和右下角的关键点对检测对象。CornerNet 的关键步骤是识别哪些关键点属于同一个实例，并正确地对它们进行分组。相反，在FoveaBox中实例类和边界框关联在一起。我们直接预测框和类，不使用任何分组方案来分隔不同的实例。
+
+
+### 6. Conclusion
+
+我们提出了用于通用目标检测的FoveaBox。通过同时预测目标的位置和相应的边界，FoveaBox给出了一种不需要先验候选框的目标检测方法。我们在标准基准上证明了它的有效性，并报告了广泛的实验分析。
