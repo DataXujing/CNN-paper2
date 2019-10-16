@@ -46,3 +46,6 @@
 |2019-09-15            | 人体姿态估计沙漏网络       |
 |2019-09-20            | CornerNet                |
 |2019-09-26            | ExtremeNet               |
+|2019-10-10            | CenterNet                |
+|2019-10-14            | FoveaBox                 |
+|2019-10-15            | CornerNet-lite           |

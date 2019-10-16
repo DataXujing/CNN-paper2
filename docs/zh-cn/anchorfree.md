@@ -381,9 +381,165 @@ $L_{det}$为角点损失，$L_{pull}$、$L_{push}$为embedding损失，$L_{off}$
 
 ## 3.CornerNet-Lite
 
-!> 等待更新中。。。
+!> 论文地址：https://arxiv.org/abs/1904.08900
+
+!> 项目地址：https://github.com/princeton-vl/CornerNet-Lite
 
 
+### 0.摘要
+
+基于关键点的方法是目标检测中相对较新的范例，消除了对anchor boxes的需求并提供了简化的检测框架。基于Keypoint的CornerNet在单级（single-stage）检测器中实现了最先进的精度。然而，这种准确性来自高处理代价。在这项工作中，团队解决了基于关键点的高效目标检测问题，并引入了CornerNet-Lite。
+
+CornerNet-Lite是CornerNet的两种有效变体的组合：CornerNet-Saccade，它使用注意机制消除了对图像的所有像素进行彻底处理的需要，以及引入新的紧凑骨干架构的CornerNet-Squeeze。
+
+这两种变体共同解决了有效目标检测中的两个关键用例：在不牺牲精度的情况下提高效率，以及提高实时效率的准确性。CornerNet-Saccade适用于离线处理，将CornerNet的效率提高6.0倍，将COCO的效率提高1.0％。
+
+CornerNet-Squeeze适用于实时检测，提高了流行的实时检测器YOLOv3的效率和准确性（CornerNet-Squeeze为34ms|34.4mAP；COCO上YOLOv3为39ms|33mAP）。
+
+这些贡献首次共同揭示了基于关键点的检测对于需要处理效率的应用的潜力。
+
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/cornernet-lite/p1.png" /> 
+</div>
+
+
+### 1.介绍
+
+CornerNet的推理速度是其一个缺点，对于任意目标检测模型可以从两个方向提高其inference效率，一个是降低处理的像素量，另一个是减少每个像素的处理过程。针对这两个方向，分别提出了CornerNet-Saccade及CornerNet-Squeeze，统称为CornerNet-Lite.
+
+CornerNet-Saccade通过减少处理的像素的个数来提高inference的效率。利用一种类似于人眼扫视的注意力机制，首先经过一个下采样后的输入图片，生成一个attention map，然后再将其进行放大处理，接着进行后续模型的处理。这与之前原始的CornerNet在不同尺寸上使用全卷积是有区别的，CornerNet-Saccade通过选择一系列高分辨率的裁剪图来提高效率及准确率。
+
+CornerNet-Squeeze通过减少每个像素的处理过程来加速inference,其结合了SqueezeNet及MobileNet的思想，同时，引入了一个新的backbone hourglass，利用了`1x1`的卷积,bottleneck层及深度分离卷积。
+
+在CornerNet-Squeeze基础上增加saccades并不会进一步提高其效率，这是因为有saccade的存在，网络需要能够产生足够准确的注意力maps。但是CornerNet-Squeeze的结构并没有额外的计算资源。另外原始的CornerNet作用在多个尺寸中，提供了足够的空间来进行扫视操作，进而减少了处理像素的个数。相对的，CornerNet-Squeeze由于及其有限的inference负担，因此，只能在单尺寸上进行应用，因此，提高扫视的空间更少。
+
+CornerNet-Saccade用于离线处理，在准确率不降的情况下，提高了效率。CornerNet-Squeeze用于实时处理，在不牺牲效率的前提下提升其准确率。CornerNet-Saccade是首个将saccades与keypoint-based 目标检测结合的方法，与先前工作的关键不同点在于每个crop处理的方法。以前基于saccade的工作要么对每个crop只检测一个目标，像Faster R-CNN，要么在每个crop上产生多种检测器，双阶段的网络包含额外的sub-crops。相对的，CornerNet-Saccade在单阶段网络中每个crop产生多个检测器。
+
+CornerNet-Squeeze首次将SqueezeNet与Hourglass网络结构进行组合，并应用到目标检测任务中。Hourglass结构在准确率上表现较好，但不清楚在效率上是否也有较好的效果。但本文证实了这种情况的可能性是存在的。
+
+贡献：（1）提出了CornerNet-Saccade 及 CornerNet-Squeeze，用于提高基于关键点目标检测的效率。(2)COCO,提高了6倍检测效率，AP从42.2%提升至43.2%（3）将目标检测较好的算法YOLOv3的准确率及性能由33.0%39ms提升至34.4% 30ms。
+
+### 2.相关工作
+
+人类视觉中的 Saccades（扫视运动）是指用于固定不同图像区域的一系列快速眼动。在目标检测算法中，我们广义地使用该术语来表示在推理期间选择性地裁剪（crop）和处理图像区域（顺序地或并行地，像素或特征）。
+
+R-CNN系列论文中的saccades机制为single-type and single-object，也就是产生proposal的时候为单类型（前景类）单目标（每个proposal中仅含一个物体或没有），AutoFocus论文中的saccades机制为multi-type and mixed（产生多种类型的crop区域）
+
+CornerNet-Saccade中的 saccades是single type and multi-object，也就是通过attention map找到合适大小的前景区域，然后crop出来作为下一阶段的精检图片。CornerNet-Saccade 检测图像中可能的目标位置周围的小区域内的目标。它使用缩小后的完整图像来预测注意力图和粗边界框；两者都提出可能的对象位置，然后，CornerNet-Saccade通过检查以高分辨率为中心的区域来检测目标。它还可以通过控制每个图像处理的较大目标位置数来提高效率。具体流程如下图所示，主要分为两个阶段**估计目标位置**和**检测目标**：
+
+
+### 3.CornerNet-Saccade
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/cornernet-lite/p2.png" /> 
+</div>
+
+**估计目标位置（Estimating Object Locations）**
+
+CornerNet-Saccade第一阶段通过downsized图片预测attention maps和coarse bounding box，以获得图片中物体的位置和粗略尺寸，这种降采样方式利于减少推理时间和便于上下文信息获取。
+
+流程细节为首先将原始图片缩小到两种尺寸：长边为255或192像素，192填充0像素到255，然后并行处理。经过hourglass network（本文采用hourglass-54，由3个hourglass module组成），在hourglass-54的上采样层（具体在哪个hourglass module的上采样层论文中在3.5 Backbone Network部分有所提及，也就是最后一个module的三个上采样层，具体有待后期源码解析）预测3个attention maps（分别接一个`3 × 3 Conv-ReLU module`和一个`1 × 1 Conv-Sigmoid module）`，分别用于小（`小于32`）中（`32-96之间`）大（`大于96`）物体预测，预测不同大小尺寸便于后面crop的时候控制尺寸（finer尺度预测小物体，coarser尺度预测大物体），训练时使用`α = 2`的focal loss，设置gt bbox的中点为positive，bbox其余为负样本，测试时大于阈值`t=0.3`的生成物体中心位置。
+
+**检测目标（Detecting Objects）**
+
+*Crop区域的获取*
+
+CornerNet-Saccade第二阶段为精检测第一阶段在原图（高分辨率下）crop区域的目标。
+
+CornerNet-Saccade利用从downsized image中得到的位置来确定哪里需要进行处理。如果直接从downsized图片中裁剪，则一些目标物可能会太小以至于无法准确的进行检测。因此，需要刚开始就在高分辨率的feature map上得到尺寸信息。
+
+从Attention maps获取到的中心位置（粗略），可以根据大致的目标尺寸选择放大倍数（小目标放大更多），$s_s>s_m>s_l$,$s_s=4,s_m=2,s_l=1$,在每个可能位置$(x,y)$，放大downsized image $s_i$倍，$i$根据物体大小从`{s,m,l}`中选择，最后将此时的downsized image映射回原图，以$(x,y)$为中心点取`255×255`大小为crop区域。
+
+从预测的边界框中得到的位置包含更多目标物的尺寸信息。可以利用得到的边界框的尺寸来确定缩放大小。确定缩放比例后，使小目标的长边为24，中等目标的为64，大目标的为192。
+
+处理效率提升：1、利用GPU批量生成区域; 2、原图保存在GPU中，并在GPU中进行resize和crop
+
+*最终检测框生成以及冗余框消除*
+
+最终的检测框通过CornerNet-Saccade第二阶段的角点检测机制生成，与cornernet中完全一致，最后也是通过预测crop区域的corner heatmaps, embeddings and offsets，merge后坐标映射回原图。
+
+算法最后采用soft-nms消除冗余框，soft-nms无法消除crop区域中与边界接触的检测框，如下图（这种检测框框出来的物体是不完整的，并与完整检测框IoU较小，因此需要手工消除），可以在程序中直接删除该部分框。
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/cornernet-lite/p3.png" /> 
+</div>
+
+
+*其他*
+
++ 精度和效率权衡: 根据分数排列第一阶段获取到的物体位置，取前$K_{max}$个区域送入第二阶段精检测网络
+
++ 抑制冗余目标位置：当物体接近时，如下图中的红点和蓝点所代表的人，会生成两个crop区域（红框和蓝框），作者通过类nms处理此类情况，首先通过分数排序位置，然后取分数最大值crop区域，消除与该区域IoU较大的区域。
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/cornernet-lite/p4.png" /> 
+</div>
+
++ 骨干网络：本文提出由3个hourglass module组成的Hourglass-54作为主干网络，相比cornernet的hourglass-104主干网络（2个hourglass module）更轻量。下采样步长为2，在每个下采样层，跳连接，上采样层都有一个残差模块，每个hourglass module在下采样部分缩小三倍尺寸同时增加通道数`（384,384,512）`，module中部的512通道也含有一个残差模块。
+
++ 训练细节：在4块1080ti上使用batch size为48进行训练，超参与cornernet相同，loss function优化策略也是adam。
+
+下图是我们根据上述过程完善的CornerNet-Saccade结构示意图，其中隐藏了过程中选取最终检测框的soft-nms和边界框的剔除过程：
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/cornernet-lite/p11.png" /> 
+</div>
+
+
+
+### 4.CornerNet-Squeeze
+
+与专注于subset of the pixels以减少处理量的CornerNet-Saccade相比，而CornerNet-Squeeze 探索了一种减少每像素处理量的替代方法。在CornerNet中，大部分计算资源都花在了Hourglass-104上。Hourglass-104 由残差块构成，其由两个`3×3`卷积层和跳连接（skip connection）组成。尽管Hourglass-104实现了很强的性能，但在参数数量和推理时间方面却很耗时。为了降低Hourglass-104的复杂性，本文将来自SqueezeNet和MobileNets 的想法融入到轻量级hourglass架构中。
+
+主要操作是：受SqueezeNet启发，CornerNet-Squeeze将`residual block`替换为SqueezeNet中的`Fire module`，受MobileNet启发，CornerNet-Squeeze将第二层的`3x3`标准卷积替换为`3x3`深度可分离卷积（`depth-wise separable convolution`）
+
+具体如下表所示：（关于SqueezeNet和MobileNet可参考本教程其他章节）
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/cornernet-lite/p5.png" /> 
+</div>
+
+**训练细节**：超参设置与cornernet相同，由于参数量减少，可以增大训练batch size，batch size of 55 on four 1080Ti GPUs (13 images on the master GPU and 14 images per GPU for the rest of the GPUs).
+
+### 5.实验
+
+开源代码是基于PyToch1.0.0，在COCO数据集上进行测试。测试硬件环境为：1080ti GPU + Intel Core i7-7700k CPU。
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/cornernet-lite/p6.png" /> 
+</div>
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/cornernet-lite/p7.png" /> 
+</div>
+
+上表对比CornerNet和CornerNet-Saccade训练效率，可以看出在GPU的内存使用上节省了将近60%。
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/cornernet-lite/p8.png" /> 
+</div>
+
+上表是CornerNet-Squeeze与YOLOv3对比，可以看出无论是Python还是效率更高的C版本YOLO都弱于CornerNet-Squeeze。
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/cornernet-lite/p9.png" /> 
+</div>
+
+
+上表中证明无法将本论文中的两种网络机制联合，原因是CornerNet-Squeeze没有足够的能力提供对CornerNet-Saccade贡献巨大的attention maps的预测。
+
+<div align=center>
+<img src="zh-cn/img/anchorfree/cornernet-lite/p10.png" /> 
+</div>
+
+上表表明本文中的两种网络架构，CornerNet-Squeeze在精度和速度方面对标YOLOv3完胜，CornerNet-Saccade主要在精度方面对标CornerNet完胜（速度意义不大）。
+
+### 6.总结
+
+本论文主要提出两种CornerNet的改进方法，并在速度和精度方面取得较大意义，分别对标之前的CornerNet和YOLOv3，与此同时的另一篇基于CornerNet关键点的arXiv论文（2019.04）Centernet(<https://arxiv.org/abs/1904.08189>)提出Keypoint Triplets思想也对Cornernet进行优化，达到目前单阶段目标检测器最高精度（47.0%）。
+
+------
 
 ## 4.ExtremeNet: Bottom-up Object Detection by Grouping Extreme and Center Points
 
