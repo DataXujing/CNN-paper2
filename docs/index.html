@@ -12,13 +12,13 @@
 
 <!--   <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" > </script> -->
 
-  <script type="text/x-mathjax-config">
+<!--   <script type="text/x-mathjax-config">
     MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
   </script>
-
-  <script type="text/javascript" 
+ -->
+<!--   <script type="text/javascript" 
     src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
-  </script>
+  </script> -->
   <!-- 放大图片 -->
   <script src="//unpkg.com/docsify/lib/plugins/zoom-image.js"></script>
 
@@ -29,9 +29,12 @@
   <!-- md5加密 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.11.0/js/md5.min.js"></script>
 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js"></script>
+
 
   
-  <script type="text/x-mathjax-config">
+  <!-- <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
     tex2jax: {
       inlineMath: [['$','$'], ['\\(','\\)']],
@@ -71,7 +74,7 @@
                 }
             }
     });
-  </script>
+  </script> -->
 
 
 
@@ -144,7 +147,28 @@
   // gitalk.render('gitalk-container')
 </script>
 
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+      processEscapes: true,
+      skipTags: ["script", "noscript", "style", "textarea", "pre", "code", "a"]
+    },
+    "HTML-CSS": { fonts: ["TeX"] }
+  });
+</script>
 
+
+ <script src="docsify.js"></script>
+  <script src="//unpkg.com/docsify/lib/plugins/zoom-image.js"></script>
+  <script src="//unpkg.com/docsify-copy-code"></script>
+  <script src="//unpkg.com/prismjs/components/prism-bash.js"></script>
+  <script src="//unpkg.com/prismjs/components/prism-python.js"></script>
+  <!-- <script src="//unpkg.com/docsify/lib/plugins/search.js"></script> -->
+  <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
 
   <!-- 代码高亮 -->
